@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>มีโปรมาบอก · ตราประทับรับรองโปรลดแรง</title>
+
+<!-- ===== รูปพรีวิวตอนแชร์ FB/LINE : แก้ PASTE_FILE_ID เป็น FILE_ID รูปแบนเนอร์ของคุณ ===== -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="มีโปรมาบอก · คัดโปรลดแรงมาบอกทุกสัปดาห์">
+<meta property="og:description" content="ของใช้ในบ้าน บำรุงผิว บำรุงเส้นผม เครื่องสำอาง — คัดเฉพาะตัวที่ลดจริง ประทับตรารับรองแล้ว">
+<meta property="og:image" content="https://lh3.googleusercontent.com/d/PASTE_FILE_ID=w1200">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chonburi&family=Sarabun:wght@400;500;600&family=Prompt:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lacquer:  #5E0A16;
+    --lacquer2: #3E060E;
+    --ruby:     #7E1220;
+    --card:     #6B0F1C;
+    --gold:     #D9AE52;
+    --gold-hi:  #F4DFA0;
+    --gold-dim: #8A6A2A;
+    --ivory:    #FBF1E2;
+    --ivory-dim:#D6BFA6;
+    --line:     rgba(217,174,82,0.28);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:
+      radial-gradient(120% 60% at 50% 0%, #7A1020 0%, var(--lacquer) 42%, var(--lacquer2) 100%)
+      fixed, var(--lacquer2);
+    color: var(--ivory);
+    font-family:'Sarabun', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ display:block; max-width:100%; }
+
+  /* ---------- ตราประทับ (signature) ---------- */
+  .seal{ display:block; }
+  .seal .ring{ fill:none; stroke:var(--gold); }
+  .seal .disc{ fill:var(--ruby); }
+  .seal .tick{ stroke:var(--gold); stroke-width:2; stroke-linecap:round; }
+  .seal .mark{ fill:var(--gold-hi); font-family:'Chonburi',serif; }
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    position:sticky; top:0; z-index:60;
+    background: linear-gradient(180deg, rgba(62,6,14,0.96), rgba(62,6,14,0.88));
+    backdrop-filter: blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .crest{
+    display:flex; align-items:center; gap:12px;
+    max-width:1120px; margin:0 auto;
+    padding:12px 16px 9px;
+  }
+  .crest .seal{ width:40px; height:40px; flex:0 0 auto; }
+  .wordmark{
+    font-family:'Chonburi', serif;
+    font-size:22px;
+    line-height:1.15;
+    background: linear-gradient(100deg, var(--gold-dim) 8%, var(--gold-hi) 32%, var(--gold) 46%, var(--gold-hi) 62%, var(--gold-dim) 92%);
+    background-size:250% 100%;
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+    animation: sheen 7s linear infinite;
+  }
+  @keyframes sheen{ from{ background-position:180% 0; } to{ background-position:-80% 0; } }
+  .motto{
+    font-size:11px; color:var(--ivory-dim);
+    letter-spacing:.02em;
+  }
+
+  .pills{
+    display:flex; gap:8px;
+    max-width:1120px; margin:0 auto;
+    padding:0 16px 11px;
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .pills::-webkit-scrollbar{ display:none; }
+  .pill{
+    flex:0 0 auto;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ivory);
+    font-family:'Sarabun',sans-serif; font-size:13.5px; font-weight:500;
+    padding:6px 15px; border-radius:999px;
+    cursor:pointer; white-space:nowrap;
+    transition:background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .pill:hover{ border-color:var(--gold); }
+  .pill[aria-selected="true"]{
+    background:linear-gradient(180deg, var(--gold-hi), var(--gold));
+    color:#3E060E; border-color:var(--gold-hi); font-weight:600;
+  }
+  .pill em{ font-style:normal; font-family:'Prompt',sans-serif; font-size:11px; opacity:.6; margin-left:5px; }
+
+  /* ---------- แบนเนอร์หมุน ---------- */
+  .hero{ max-width:1120px; margin:0 auto; padding:18px 16px 4px; }
+  .cover{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:linear-gradient(180deg, var(--card), var(--ruby));
+    box-shadow: 0 20px 50px rgba(0,0,0,.42), inset 0 1px 0 rgba(244,223,160,.14);
+    overflow:hidden;
+    display:grid; grid-template-columns:1fr;
+  }
+  .cover-media{
+    aspect-ratio:4/3;
+    background:#4A0A14 center/cover no-repeat;
+  }
+  .cover-body{ padding:20px 20px 24px; display:flex; flex-direction:column; gap:7px; }
+  .kicker{
+    font-family:'Prompt',sans-serif;
+    font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--gold);
+  }
+  .cover-title{
+    font-family:'Chonburi',serif;
+    font-size:clamp(20px,5vw,29px);
+    line-height:1.32;
+    color:var(--ivory);
+  }
+  .cover-desc{ font-size:13.5px; color:var(--ivory-dim); }
+  .cover-price{ display:flex; align-items:baseline; gap:10px; margin-top:5px; }
+  .now{ font-family:'Prompt',sans-serif; font-weight:700; font-size:27px; color:var(--gold-hi); }
+  .was{ font-size:14px; color:var(--ivory-dim); text-decoration:line-through; opacity:.75; }
+  .cover-cta{
+    margin-top:13px; align-self:flex-start;
+    background:linear-gradient(180deg, var(--gold-hi), var(--gold));
+    color:#3E060E; text-decoration:none;
+    font-family:'Prompt',sans-serif; font-weight:700; font-size:14px;
+    padding:12px 26px; border-radius:999px;
+    box-shadow:0 8px 22px rgba(217,174,82,.3);
+  }
+  .cover-cta:active{ transform:translateY(1px); }
+
+  .cover .stamp{
+    position:absolute; right:14px; bottom:-24px; z-index:3;
+    width:94px; height:94px;
+    transform:rotate(-10deg);
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.45));
+  }
+  .cover .stamp.pop{ animation:pop .5s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes pop{ 0%{ transform:rotate(-10deg) scale(1.45); opacity:0; } 100%{ transform:rotate(-10deg) scale(1); opacity:1; } }
+
+  .ends{
+    display:inline-flex; align-items:center; gap:6px;
+    align-self:flex-start;
+    border:1px solid var(--line); border-radius:999px;
+    padding:3px 11px; margin-top:2px;
+    font-family:'Prompt',sans-serif; font-size:11px; font-weight:600;
+    color:var(--gold);
+  }
+
+  .dots{ display:flex; gap:6px; justify-content:center; padding:18px 0 2px; }
+  .dot{
+    width:6px; height:6px; border-radius:999px; padding:0;
+    background:rgba(217,174,82,.3); border:0; cursor:pointer;
+    transition:background .2s ease, width .2s ease;
+  }
+  .dot[aria-current="true"]{ background:var(--gold-hi); width:20px; }
+
+  /* ---------- ตาราง ---------- */
+  .wrap{ max-width:1120px; margin:0 auto; padding:24px 16px 80px; }
+  .rule{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .rule h2{ font-family:'Chonburi',serif; font-size:19px; color:var(--gold-hi); white-space:nowrap; font-weight:400; }
+  .rule i{ flex:1; height:1px; background:linear-gradient(90deg, var(--line), transparent); }
+  .rule span{ font-family:'Prompt',sans-serif; font-size:11.5px; color:var(--ivory-dim); }
+
+  .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  @media(min-width:640px){ .grid{ grid-template-columns:repeat(3,1fr); gap:16px; } }
+  @media(min-width:900px){ .grid{ grid-template-columns:repeat(4,1fr); gap:18px; } }
+
+  .card{
+    position:relative;
+    background:linear-gradient(180deg, var(--card), #5C0B16);
+    border:1px solid var(--line);
+    border-radius:15px;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .card:hover{ transform:translateY(-3px); border-color:var(--gold); }
+  .card-media{ aspect-ratio:1/1; background:#4A0A14 center/cover no-repeat; }
+  .card .stamp{
+    position:absolute; top:8px; left:8px; z-index:2;
+    width:50px; height:50px;
+    transform:rotate(-10deg);
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.4));
+  }
+  .card-body{ padding:11px 12px 13px; display:flex; flex-direction:column; gap:5px; flex:1; }
+  .card-name{
+    font-size:13px; font-weight:500; line-height:1.45; color:var(--ivory);
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .card-price{ display:flex; align-items:baseline; gap:6px; margin-top:auto; padding-top:4px; }
+  .card-now{ font-family:'Prompt',sans-serif; font-weight:700; font-size:16px; color:var(--gold-hi); }
+  .card-was{ font-size:11.5px; color:var(--ivory-dim); text-decoration:line-through; opacity:.7; }
+  .card-ends{ font-family:'Prompt',sans-serif; font-size:10.5px; color:var(--gold); }
+  .card-cta{
+    margin-top:8px; text-align:center; text-decoration:none;
+    border:1px solid var(--gold); color:var(--gold-hi);
+    border-radius:999px; padding:7px;
+    font-family:'Prompt',sans-serif; font-weight:600; font-size:12.5px;
+    transition:background .18s ease, color .18s ease;
+  }
+  .card-cta:hover{ background:linear-gradient(180deg, var(--gold-hi), var(--gold)); color:#3E060E; }
+
+  .more{
+    display:block; margin:28px auto 0;
+    background:transparent; border:1px solid var(--line); color:var(--ivory);
+    border-radius:999px; padding:11px 30px; cursor:pointer;
+    font-family:'Sarabun',sans-serif; font-size:13.5px;
+  }
+  .more:hover{ border-color:var(--gold); }
+
+  .msg{ grid-column:1/-1; text-align:center; color:var(--ivory-dim); font-size:14px; padding:44px 12px; }
+
+  :focus-visible{ outline:2px solid var(--gold-hi); outline-offset:2px; }
+
+  @media(min-width:820px){
+    .cover{ grid-template-columns:1.1fr 1fr; }
+    .cover-media{ aspect-ratio:auto; min-height:340px; }
+    .cover-body{ padding:36px 36px 40px; justify-content:center; }
+    .cover .stamp{ right:auto; left:52.4%; bottom:22px; transform:translateX(-50%) rotate(-10deg); }
+    .cover .stamp.pop{ animation:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="crest">
+    <svg class="seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="disc" cx="50" cy="50" r="41"/>
+      <circle class="ring" cx="50" cy="50" r="45" stroke-width="1.5"/>
+      <circle class="ring" cx="50" cy="50" r="36" stroke-width="1"/>
+      <g class="tick" id="crest-ticks"></g>
+      <text class="mark" x="50" y="63" text-anchor="middle" font-size="34">%</text>
+    </svg>
+    <div>
+      <div class="wordmark">มีโปรมาบอก</div>
+      <div class="motto">คัดโปรลดแรง ประทับตรารับรอง ทุกสัปดาห์</div>
+    </div>
+  </div>
+  <div class="pills" id="pills" role="tablist"></div>
+</header>
+
+<section class="hero" id="hero" hidden>
+  <div class="cover" id="cover"></div>
+  <div class="dots" id="dots"></div>
+</section>
+
+<main class="wrap">
+  <div class="rule">
+    <h2 id="rule-title">ทั้งหมด</h2>
+    <i></i>
+    <span id="rule-count"></span>
+  </div>
+  <div class="grid" id="grid">
+    <div class="msg">กำลังโหลดสินค้า…</div>
+  </div>
+  <button class="more" id="more" hidden>ดูเพิ่ม</button>
+</main>
+
+<script>
+  /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
+  var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
+
+  var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
+  var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
+  var PAGE_SIZE = 12;
+
+  var elPills=document.getElementById('pills'), elGrid=document.getElementById('grid'),
+      elHero=document.getElementById('hero'), elCover=document.getElementById('cover'),
+      elDots=document.getElementById('dots'), elMore=document.getElementById('more'),
+      elTitle=document.getElementById('rule-title'), elCount=document.getElementById('rule-count');
+
+  var all=[], cats=[], featured=[], current='all', shown=PAGE_SIZE, slide=0, timer=null;
+
+  function esc(s){
+    return String(s===null||s===undefined?'':s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function imgUrl(raw,w){
+    var s=String(raw===null||raw===undefined?'':raw).trim();
+    if(!s) return '';
+    var m=s.match(/\/d\/([-\w]{25,})/)||s.match(/[?&]id=([-\w]{25,})/)||s.match(/^([-\w]{25,})$/);
+    return m ? 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||700) : s;
+  }
+  function isOn(v){ return v===true || String(v).trim().toUpperCase()==='TRUE'; }
+  function num(v){ var n=Number(String(v).replace(/[^\d.]/g,'')); return isFinite(n)?n:0; }
+  function pct(p){ var f=num(p.Price), s=num(p.PromoPrice); return (f>0&&s>0&&s<f)?Math.round((1-s/f)*100):0; }
+  function priceNow(p){ return pct(p)>0 ? p.PromoPrice : p.Price; }
+  function baht(v){ return '฿'+Number(num(v)).toLocaleString('th-TH'); }
+  function slugOf(c){ return CAT_SLUG[c] || encodeURIComponent(c); }
+
+  function daysLeft(p){
+    var raw=String(p.Ends===null||p.Ends===undefined?'':p.Ends).trim();
+    if(!raw) return null;
+    var d=new Date(raw+'T23:59:59');
+    if(isNaN(d.getTime())) return null;
+    var diff=Math.ceil((d-new Date())/86400000);
+    return diff;
+  }
+  function endsText(p){
+    var d=daysLeft(p);
+    if(d===null||d<0||d>7) return '';
+    if(d===0) return 'วันสุดท้าย';
+    return 'เหลืออีก '+d+' วัน';
+  }
+
+  /* ตราประทับ % */
+  function ticksHtml(){
+    var g='';
+    for(var i=0;i<28;i++){
+      var a=i*(360/28)*Math.PI/180;
+      g+='<line x1="'+(50+40.5*Math.cos(a)).toFixed(2)+'" y1="'+(50+40.5*Math.sin(a)).toFixed(2)
+       +'" x2="'+(50+44*Math.cos(a)).toFixed(2)+'" y2="'+(50+44*Math.sin(a)).toFixed(2)+'"/>';
+    }
+    return g;
+  }
+  function stampSvg(p, big){
+    var d=pct(p);
+    if(!d) return '';
+    return '<svg class="stamp'+(big?' pop':'')+'" viewBox="0 0 100 100" aria-label="ลด '+d+'%">'
+      + '<circle class="disc" cx="50" cy="50" r="41"/>'
+      + '<circle class="ring" cx="50" cy="50" r="45" stroke-width="1.5"/>'
+      + '<circle class="ring" cx="50" cy="50" r="36" stroke-width="1"/>'
+      + '<g class="tick">'+ticksHtml()+'</g>'
+      + '<text class="mark" x="50" y="'+(big?54:56)+'" text-anchor="middle" font-size="'+(big?26:25)+'">-'+d+'%</text>'
+      + (big?'<text class="mark" x="50" y="70" text-anchor="middle" font-size="10">รับรองแล้ว</text>':'')
+      + '</svg>';
+  }
+  document.getElementById('crest-ticks').innerHTML = ticksHtml();
+
+  /* ---------- แบนเนอร์ ---------- */
+  function renderCover(){
+    if(!featured.length) return;
+    var p=featured[slide%featured.length], d=pct(p), e=endsText(p);
+    elCover.innerHTML =
+      '<div class="cover-media" style="background-image:url(\''+esc(imgUrl(p.ImageURL,900))+'\')"></div>'
+      + stampSvg(p,true)
+      + '<div class="cover-body">'
+      + '<div class="kicker">'+esc(p.Category||'ดีลประจำสัปดาห์')+'</div>'
+      + '<div class="cover-title">'+esc(p.ProductName)+'</div>'
+      + (p.Description?'<div class="cover-desc">'+esc(p.Description)+'</div>':'')
+      + (e?'<div class="ends">⏳ '+esc(e)+'</div>':'')
+      + '<div class="cover-price"><span class="now">'+baht(priceNow(p))+'</span>'
+      + (d?'<span class="was">'+baht(p.Price)+'</span>':'')+'</div>'
+      + '<a class="cover-cta" href="'+esc(p.AffiliateLink)+'" target="_blank" rel="noopener sponsored">ดูดีลนี้</a>'
+      + '</div>';
+
+    var dots='';
+    for(var i=0;i<featured.length;i++){
+      dots+='<button class="dot" data-i="'+i+'" aria-label="ดีลที่ '+(i+1)+'"'
+          +(i===slide%featured.length?' aria-current="true"':'')+'></button>';
+    }
+    elDots.innerHTML = featured.length>1?dots:'';
+    elHero.hidden=false;
+  }
+  function go(i){ slide=(i+featured.length)%featured.length; renderCover(); restart(); }
+  function restart(){
+    if(timer) clearInterval(timer);
+    if(featured.length>1) timer=setInterval(function(){ slide++; renderCover(); }, 5000);
+  }
+  elDots.addEventListener('click',function(e){ var b=e.target.closest('.dot'); if(b) go(Number(b.dataset.i)); });
+  var tx=null;
+  elCover.addEventListener('touchstart',function(e){ tx=e.changedTouches[0].clientX; },{passive:true});
+  elCover.addEventListener('touchend',function(e){
+    if(tx===null) return;
+    var dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>45) go(slide+(dx<0?1:-1));
+    tx=null;
+  },{passive:true});
+
+  /* ---------- หมวด + ตาราง ---------- */
+  function listFor(c){ return c==='all'?all:all.filter(function(p){ return String(p.Category).trim()===c; }); }
+  function renderPills(){
+    var html='<button class="pill" role="tab" data-c="all"'+(current==='all'?' aria-selected="true"':'')
+           +'>ทั้งหมด<em>'+all.length+'</em></button>';
+    cats.forEach(function(c){
+      html+='<button class="pill" role="tab" data-c="'+esc(c)+'"'+(current===c?' aria-selected="true"':'')
+          +'>'+esc(c)+'<em>'+listFor(c).length+'</em></button>';
+    });
+    elPills.innerHTML=html;
+  }
+  function cardHtml(p){
+    var d=pct(p), e=endsText(p);
+    return '<article class="card">'
+      + '<div class="card-media" style="background-image:url(\''+esc(imgUrl(p.ImageURL,500))+'\')"></div>'
+      + stampSvg(p,false)
+      + '<div class="card-body">'
+      + '<div class="card-name">'+esc(p.ProductName)+'</div>'
+      + (e?'<div class="card-ends">⏳ '+esc(e)+'</div>':'')
+      + '<div class="card-price"><span class="card-now">'+baht(priceNow(p))+'</span>'
+      + (d?'<span class="card-was">'+baht(p.Price)+'</span>':'')+'</div>'
+      + '<a class="card-cta" href="'+esc(p.AffiliateLink)+'" target="_blank" rel="noopener sponsored">ดูสินค้า</a>'
+      + '</div></article>';
+  }
+  function renderGrid(){
+    var list=listFor(current);
+    elTitle.textContent = current==='all'?'ทั้งหมด':current;
+    elCount.textContent = list.length+' รายการ';
+    if(!list.length){
+      elGrid.innerHTML='<div class="msg">หมวดนี้ยังไม่มีสินค้า เลือกหมวดอื่นได้เลย</div>';
+      elMore.hidden=true; return;
+    }
+    elGrid.innerHTML=list.slice(0,shown).map(cardHtml).join('');
+    elMore.hidden = list.length<=shown;
+  }
+  function select(c,push){
+    current=c; shown=PAGE_SIZE;
+    renderPills(); renderGrid();
+    if(push) history.replaceState(null,'', c==='all'?' ':'#'+slugOf(c));
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+  elPills.addEventListener('click',function(e){ var b=e.target.closest('.pill'); if(b) select(b.dataset.c,true); });
+  elMore.addEventListener('click',function(){ shown+=PAGE_SIZE; renderGrid(); });
+
+  /* ---------- โหลดข้อมูล ---------- */
+  function fail(m){ elGrid.innerHTML='<div class="msg">โหลดสินค้าไม่สำเร็จ: '+esc(m)+'</div>'; elMore.hidden=true; }
+
+  function build(data){
+    all=(data&&data.products)?data.products:[];
+    all.sort(function(a,b){ return pct(b)-pct(a); });
+
+    var seen={};
+    all.forEach(function(p){ var c=String(p.Category).trim(); if(c) seen[c]=1; });
+    cats=CAT_ORDER.filter(function(c){ return seen[c]; })
+      .concat(Object.keys(seen).filter(function(c){ return CAT_ORDER.indexOf(c)===-1; }));
+
+    featured=all.filter(function(p){ return isOn(p.Featured); });
+    if(!featured.length) featured=all.filter(function(p){ return pct(p)>0; }).slice(0,5);
+    if(!featured.length) featured=all.slice(0,3);
+
+    var h=decodeURIComponent((location.hash||'').replace('#',''));
+    var match=cats.filter(function(c){ return slugOf(c)===h || c===h; })[0];
+    current=match||'all';
+
+    renderPills(); renderCover(); restart(); renderGrid();
+  }
+
+  var loaded=false;
+  window.__promo=function(data){
+    loaded=true;
+    try{ build(data); }catch(err){ fail('แสดงผลไม่สำเร็จ — '+err.message); }
+  };
+  window.onerror=function(msg){ if(!loaded) fail(msg); };
+
+  (function(){
+    if(WEBAPP_URL.indexOf('http')!==0){ fail('ยังไม่ได้ใส่ WEBAPP_URL ในไฟล์ index.html'); return; }
+    var s=document.createElement('script');
+    s.src=WEBAPP_URL+'?callback=__promo&t='+Date.now();
+    s.onerror=function(){ fail('เชื่อมต่อ Backend ไม่ได้ — ตรวจว่า Deploy ตั้ง Who has access เป็น Anyone'); };
+    document.body.appendChild(s);
+    setTimeout(function(){ if(!loaded) fail('หมดเวลารอข้อมูล (Backend ไม่ตอบกลับ)'); },15000);
+  })();
+</script>
+
+</body>
+</html>
