@@ -535,7 +535,7 @@
 <script>
   /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
-  var VER = "v9";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v10";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -571,7 +571,7 @@
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
-  var IMG_PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%234A0A14'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23D9AE52' stroke-opacity='.45' stroke-width='2'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='26' font-family='Georgia,serif' fill='%23D9AE52' fill-opacity='.5'%3E%25%3C/text%3E%3C/svg%3E";
+  var IMG_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22%3E%3Crect%20width=%22100%22%20height=%22100%22%20fill=%22%23F6EEE8%22/%3E%3Ccircle%20cx=%2250%22%20cy=%2246%22%20r=%2216%22%20fill=%22none%22%20stroke=%22%23D9C3B4%22%20stroke-width=%222%22/%3E%3Ctext%20x=%2250%22%20y=%2253%22%20text-anchor=%22middle%22%20font-size=%2216%22%20font-family=%22Georgia,serif%22%20fill=%22%23C9A98F%22%3E%25%3C/text%3E%3Ctext%20x=%2250%22%20y=%2278%22%20text-anchor=%22middle%22%20font-size=%228%22%20font-family=%22sans-serif%22%20fill=%22%23B39C8B%22%3Eไม่มีรูป%3C/text%3E%3C/svg%3E";
   function imgUrl(raw,w){
     var s=String(raw===null||raw===undefined?'':raw).trim();
     if(!s) return '';
@@ -579,7 +579,16 @@
     var m=s.match(/\/d\/([-\w]{25,})/)||s.match(/[?&]id=([-\w]{25,})/)||s.match(/^([-\w]{25,})$/);
     return m ? 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||700) : s;
   }
-  var ONERR = ' onerror="this.onerror=null;this.src=\'' + IMG_PLACEHOLDER + '\'"';
+  var ONERR = '';   /* ไม่ใช้ onerror ในแท็กแล้ว - ดักที่ document ข้างล่างแทน */
+
+  /* รูปไหนโหลดไม่ขึ้น -> เปลี่ยนเป็นรูปสำรองอัตโนมัติ (ใช้ capture เพราะ error ของ <img> ไม่ลอยขึ้น) */
+  document.addEventListener('error', function(e){
+    var t=e.target;
+    if(t && t.tagName==='IMG' && !t.dataset.fb){
+      t.dataset.fb='1';
+      t.src=IMG_PLACEHOLDER;
+    }
+  }, true);
   function isOn(v){ return v===true || String(v).trim().toUpperCase()==='TRUE'; }
   function num(v){ var n=Number(String(v).replace(/[^\d.]/g,'')); return isFinite(n)?n:0; }
   function pct(p){ var f=num(p.Price), s=num(p.PromoPrice); return (f>0&&s>0&&s<f)?Math.round((1-s/f)*100):0; }
