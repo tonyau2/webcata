@@ -221,6 +221,12 @@
   .end-btn svg{ width:16px; height:16px; }
 
   /* ---------- 1) แถบความคืบหน้าการเลื่อน ---------- */
+  .alertbar{
+    display:none; margin:0; padding:11px 14px;
+    background:#3B0A12; color:#FFD9DE; font-size:12.5px; line-height:1.5;
+    border-bottom:2px solid var(--red);
+  }
+  .alertbar b{ color:#fff; }
   .prog{ position:fixed; top:0; left:0; height:2px; z-index:70; width:0;
     background:linear-gradient(90deg, var(--red), var(--flame), var(--gold-hi)); transition:width .1s linear; }
 
@@ -382,6 +388,7 @@
 <body>
 
 <div class="prog" id="prog"></div>
+<div class="alertbar" id="alertbar"></div>
 
 <header class="masthead">
   <div class="crest">
@@ -465,6 +472,7 @@
 <script>
   /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
+  var VER = "v7";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -973,7 +981,13 @@
   })();
 
   /* ---------- โหลดข้อมูล ---------- */
-  function fail(m){ elGrid.innerHTML='<div class="msg">โหลดสินค้าไม่สำเร็จ: '+esc(m)+'</div>'; elMore.hidden=true; }
+  function fail(m){
+    /* โชว์ error ตรงที่มองเห็นเสมอ (เมื่อก่อนซ่อนอยู่ใน #grid ที่ถูกปิดไว้) */
+    var ab=document.getElementById('alertbar');
+    if(ab){ ab.innerHTML='<b>โหลดสินค้าไม่สำเร็จ</b> — '+esc(m)+' <br>(เวอร์ชันไฟล์: '+VER+')'; ab.style.display='block'; }
+    if(elGrid) elGrid.innerHTML='<div class="msg">โหลดสินค้าไม่สำเร็จ: '+esc(m)+'</div>';
+    if(elMore) elMore.hidden=true;
+  }
 
   function build(data){
     all=(data&&data.products)?data.products:[];
@@ -1007,8 +1021,13 @@
           + (best ? ' · ลดสูงสุด <b id="c2">0</b>' : '')
           + (nFlash ? ' · ⚡ ใกล้หมด '+nFlash+' ชิ้น' : '');
         var c1=document.getElementById('c1'), c2=document.getElementById('c2');
-        if(c1) countUp(c1, all.length, '', 800);
-        if(c2) countUp(c2, best, '%', 1000);
+        try{
+          if(c1) countUp(c1, all.length, '', 800);
+          if(c2) countUp(c2, best, '%', 1000);
+        }catch(e){
+          if(c1) c1.textContent=all.length;
+          if(c2) c2.textContent=best+'%';
+        }
       }
     }
 
@@ -1019,6 +1038,8 @@
     renderReel((data&&data.videos)?data.videos:[]);
     track('view','','');
   }
+
+  try{ console.log('มีโปรมาบอก '+VER); }catch(e){}
 
   var loaded=false;
   window.__promo=function(data){
