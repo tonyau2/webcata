@@ -5,11 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>มีโปรมาบอก · คัดโปรลดแรงมาบอกทุกสัปดาห์</title>
 
-<!-- ===== รูปพรีวิวตอนแชร์ FB/LINE : แก้ PASTE_FILE_ID เป็น FILE_ID รูปแบนเนอร์ของคุณ ===== -->
+
 <meta property="og:type" content="website">
 <meta property="og:title" content="มีโปรมาบอก · คัดโปรลดแรงมาบอกทุกสัปดาห์">
 <meta property="og:description" content="ของใช้ในบ้าน บำรุงผิว บำรุงเส้นผม เครื่องสำอาง — คัดเฉพาะตัวที่ลดจริง ประทับตรารับรองแล้ว">
-<meta property="og:image" content="https://lh3.googleusercontent.com/d/PASTE_FILE_ID=w1200">
+<!-- ===== รูปพรีวิวตอนแชร์ FB/LINE =====
+     ไม่ต้องออกแบบอะไร! เอา "ลิงก์รูปสินค้า" ที่สวยที่สุด 1 รูปมาใส่แทน PASTE_IMAGE_URL ข้างล่าง
+     เช่น https://tonyau2.github.io/webcata/img/serum1.jpg
+     หรือ ลิงก์รูปจาก Drive ก็ได้ (แบบ lh3.googleusercontent.com/d/FILE_ID=w1200)   -->
+<meta property="og:image" content="PASTE_IMAGE_URL">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23C8102E'/><text x='50' y='71' text-anchor='middle' font-size='60' font-family='Helvetica,Arial,sans-serif' font-weight='700' fill='%23fff'>%25</text></svg>">
@@ -276,62 +280,7 @@
   .imgband img{ width:100%; aspect-ratio:2/1; object-fit:cover; display:block; }
   @media(min-width:820px){ .imgband img{ aspect-ratio:2.6/1; } }
 
-  /* ---------- แถบข่าววิ่ง ---------- */
-  function renderTicker(codes){
-    var el=document.getElementById('ticker'), tr=document.getElementById('ticker-tr');
-    if(!el||!tr||!all.length) return;
-
-    var best=0; all.forEach(function(p){ var x=pct(p); if(x>best) best=x; });
-    var nFlash=all.filter(isFlash).length;
-    var bits=[];
-    if(best) bits.push('🔥 ลดสูงสุด '+best+'%');
-    bits.push('🛍️ คัดมาแล้ว '+all.length+' ดีล');
-    if(nFlash) bits.push('⚡ ใกล้หมดเวลา '+nFlash+' ชิ้น รีบเลย');
-    if(codes && codes.length) bits.push('🎟️ โค้ดส่วนลด '+codes.length+' โค้ด กดคัดลอกได้เลย');
-    cats.forEach(function(c){
-      var n=listFor(c).length;
-      if(n) bits.push((CAT_ICON[c]||'•')+' '+c+' '+n+' ชิ้น');
-    });
-    bits.push('✅ อัปเดตใหม่ทุกสัปดาห์');
-
-    var one=bits.map(function(b){ return '<span>'+esc(b)+'</span>'; }).join('');
-    tr.innerHTML = one + one;          // ซ้ำ 2 ชุด ให้วิ่งวนไม่มีรอยต่อ
-    el.hidden=false;
-  }
-
-  /* ---------- การ์ดโผล่ทีละใบตอนเลื่อนถึง ---------- */
-  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting) return;
-      e.target.classList.add('in');
-      io.unobserve(e.target);
-    });
-  }, { rootMargin:'0px 0px -8% 0px', threshold:.05 }) : null;
-
-  function revealIn(scope){
-    if(!io) return;
-    var els=(scope||document).querySelectorAll('.card:not(.in), .tile:not(.in), .tk:not(.in)');
-    for(var i=0;i<els.length;i++){
-      els[i].classList.add('rv');
-      els[i].style.transitionDelay = Math.min(i,8)*45 + 'ms';
-      io.observe(els[i]);
-    }
-  }
-
-  /* ---------- นับเลขขึ้น ---------- */
-  function countUp(el, to, suffix, ms){
-    var t0=null;
-    function step(t){
-      if(!t0) t0=t;
-      var k=Math.min(1,(t-t0)/(ms||900));
-      var v=Math.round(to*(1-Math.pow(1-k,3)));
-      el.textContent = v + (suffix||'');
-      if(k<1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  /* ---------- ไทล์หมวด ---------- */
+  /* ---------- ไทล์หมวด [CSS] ---------- */
   #tiles{ display:none; max-width:1180px; margin:0 auto; padding:18px 16px 0; }
   .tiles{ display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
   @media(min-width:620px){ .tiles{ grid-template-columns:repeat(6,1fr); gap:12px; } }
@@ -734,6 +683,61 @@
   elTrack.addEventListener('click',function(e){ if(moved){ e.preventDefault(); moved=false; } });
 
   /* ---------- ไทล์หมวด ---------- */
+  /* ---------- แถบข่าววิ่ง ---------- */
+  function renderTicker(codes){
+    var el=document.getElementById('ticker'), tr=document.getElementById('ticker-tr');
+    if(!el||!tr||!all.length) return;
+
+    var best=0; all.forEach(function(p){ var x=pct(p); if(x>best) best=x; });
+    var nFlash=all.filter(isFlash).length;
+    var bits=[];
+    if(best) bits.push('🔥 ลดสูงสุด '+best+'%');
+    bits.push('🛍️ คัดมาแล้ว '+all.length+' ดีล');
+    if(nFlash) bits.push('⚡ ใกล้หมดเวลา '+nFlash+' ชิ้น รีบเลย');
+    if(codes && codes.length) bits.push('🎟️ โค้ดส่วนลด '+codes.length+' โค้ด กดคัดลอกได้เลย');
+    cats.forEach(function(c){
+      var n=listFor(c).length;
+      if(n) bits.push((CAT_ICON[c]||'•')+' '+c+' '+n+' ชิ้น');
+    });
+    bits.push('✅ อัปเดตใหม่ทุกสัปดาห์');
+
+    var one=bits.map(function(b){ return '<span>'+esc(b)+'</span>'; }).join('');
+    tr.innerHTML = one + one;          // ซ้ำ 2 ชุด ให้วิ่งวนไม่มีรอยต่อ
+    el.hidden=false;
+  }
+
+  /* ---------- การ์ดโผล่ทีละใบตอนเลื่อนถึง ---------- */
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin:'0px 0px -8% 0px', threshold:.05 }) : null;
+
+  function revealIn(scope){
+    if(!io) return;
+    var els=(scope||document).querySelectorAll('.card:not(.in), .tile:not(.in), .tk:not(.in)');
+    for(var i=0;i<els.length;i++){
+      els[i].classList.add('rv');
+      els[i].style.transitionDelay = Math.min(i,8)*45 + 'ms';
+      io.observe(els[i]);
+    }
+  }
+
+  /* ---------- นับเลขขึ้น ---------- */
+  function countUp(el, to, suffix, ms){
+    var t0=null;
+    function step(t){
+      if(!t0) t0=t;
+      var k=Math.min(1,(t-t0)/(ms||900));
+      var v=Math.round(to*(1-Math.pow(1-k,3)));
+      el.textContent = v + (suffix||'');
+      if(k<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
   function renderTiles(){
     if(!cats.length) return;
     var h='';
