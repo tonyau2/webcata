@@ -535,7 +535,7 @@
 <script>
   /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
-  var VER = "v10";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v11";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -577,7 +577,10 @@
     if(!s) return '';
     if(!s) return IMG_PLACEHOLDER;
     var m=s.match(/\/d\/([-\w]{25,})/)||s.match(/[?&]id=([-\w]{25,})/)||s.match(/^([-\w]{25,})$/);
-    return m ? 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||700) : s;
+    if(m) return 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||700);
+    /* พิมพ์แค่ "serum1.jpg" ในชีต -> เติม img/ ให้เอง */
+    if(!/^https?:/i.test(s) && s.indexOf('/')===-1) return 'img/'+s;
+    return s;
   }
   var ONERR = '';   /* ไม่ใช้ onerror ในแท็กแล้ว - ดักที่ document ข้างล่างแทน */
 
