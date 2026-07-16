@@ -535,7 +535,7 @@
 <script>
   /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
-  var VER = "v8";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v9";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -549,6 +549,7 @@
   var AUTO_FLASH  = true;   // ปิดได้ด้วยการเปลี่ยนเป็น false
   var SLOT_HOURS  = 6;      // สลับของใหม่ทุกกี่ชั่วโมง
   var SLOT_COUNT  = 6;      // หยิบขึ้นรอบครั้งละกี่ชิ้น
+  var BANNER_MAX  = 6;      // แบนเนอร์โชว์ได้สูงสุดกี่สไลด์ (ติ๊ก Featured เกินนี้ = หมุนเวียนตามรอบ)
 
   /* ====== ข้อความปุ่ม — แก้ตรงนี้ที่เดียว เปลี่ยนทั้งเว็บ ====== */
   var CTA_CARD   = 'ดูใน Shopee';        // ปุ่มบนการ์ดสินค้า (พื้นที่แคบ ควรสั้น)
@@ -613,9 +614,9 @@
     var pool = all.filter(function(p){ return pct(p)>0; });
     if(!pool.length) pool = all.slice();
     seededPick(pool, Math.min(SLOT_COUNT, pool.length), slotIndex())
-      .forEach(function(p){ autoSet[String(p.ProductName)] = 1; });
+      .forEach(function(p){ autoSet[p.__id] = 1; });
   }
-  function isAuto(p){ return !!autoSet[String(p.ProductName)]; }
+  function isAuto(p){ return !!autoSet[p.__id]; }
 
   /* ---------- เวลาสิ้นสุดโปร ---------- */
   function endTime(p){
@@ -733,11 +734,11 @@
       var p=featured[i], d=pct(p);
       html += '<div class="slide">'
         + '<a class="banner" href="'+esc(p.AffiliateLink)+'" target="_blank" rel="noopener sponsored"'
-        + ' data-name="'+esc(p.ProductName)+'" data-cat="'+esc(p.Category||'')+'">'
+        + ' data-name="'+esc(p.ProductName||p.AffiliateLink)+'" data-cat="'+esc(p.Category||'')+'">'
         + '<div class="banner-img"><img'+ONERR+' alt="'+esc(p.ProductName)+'" src="'+esc(imgUrl(p.ImageURL,700))+'"></div>'
         + '<div class="banner-txt">'
         + '<div class="kicker">'+esc(p.Category||'ดีลประจำสัปดาห์')+'</div>'
-        + '<div class="banner-name">'+esc(p.ProductName)+'</div>'
+        + (p.ProductName ? '<div class="banner-name">'+esc(p.ProductName)+'</div>' : '')
         + endsHtml(p,'ends')
         + '<div class="banner-price"><span class="now">'+baht(priceNow(p))+'</span>'
         + (d?'<span class="was">'+baht(p.Price)+'</span>':'')+'</div>'
@@ -939,7 +940,7 @@
     var d=pct(p), link=String(p.AffiliateLink||'');
     return '<article class="card">'
       + '<a class="card-hit" href="'+esc(link)+'" target="_blank" rel="noopener sponsored"'
-      + ' data-name="'+esc(p.ProductName)+'" data-cat="'+esc(p.Category||'')+'" aria-label="'+esc(p.ProductName)+'"></a>'
+      + ' data-name="'+esc(p.ProductName||link)+'" data-cat="'+esc(p.Category||'')+'" aria-label="'+esc(p.ProductName||'ดูสินค้า')+'"></a>'
       + '<div class="card-media"><img loading="lazy" decoding="async"'+ONERR+' alt="'+esc(p.ProductName)+'" src="'+esc(imgUrl(p.ImageURL,500))+'"></div>'
       + (d ? '<span class="tag'+(d>=HOT_PCT?' hot':'')+'">'+(d>=HOT_PCT?'🔥 ':'')+'-'+d+'%</span>' : '')
       + '<div class="sh">'
@@ -947,7 +948,7 @@
       + '<button data-sh="fb" data-u="'+esc(link)+'" data-n="'+esc(p.ProductName)+'" title="แชร์ Facebook" aria-label="แชร์ Facebook">'+ICON_FB+'</button>'
       + '</div>'
       + '<div class="card-body">'
-      + '<div class="card-name">'+esc(p.ProductName)+'</div>'
+      + (p.ProductName ? '<div class="card-name">'+esc(p.ProductName)+'</div>' : '')
       + endsHtml(p,'card-ends')
       + '<div class="card-price"><span class="card-now">'+baht(priceNow(p))+'</span>'
       + (d?'<span class="card-was">'+baht(p.Price)+'</span>':'')+'</div>'
@@ -1114,6 +1115,7 @@
 
   function build(data){
     all=(data&&data.products)?data.products:[];
+    all.forEach(function(p,i){ p.__id = 'p'+i; });   // id ประจำแถว ไม่ขึ้นกับชื่อ
     all.sort(function(a,b){ return pct(b)-pct(a); });
 
     var seen={};
@@ -1121,9 +1123,15 @@
     cats=CAT_ORDER.filter(function(c){ return seen[c]; })
       .concat(Object.keys(seen).filter(function(c){ return CAT_ORDER.indexOf(c)===-1; }));
 
-    featured=all.filter(function(p){ return isOn(p.Featured); });
-    if(!featured.length) featured=all.filter(function(p){ return pct(p)>0; }).slice(0,5);
-    if(!featured.length) featured=all.slice(0,3);
+    var picked=all.filter(function(p){ return isOn(p.Featured); });
+    if(!picked.length) picked=all.filter(function(p){ return pct(p)>0; });
+    if(!picked.length) picked=all.slice();
+
+    /* ติ๊ก Featured เยอะเกิน -> ไม่ยัดลงแบนเนอร์ทีเดียว แต่หมุนเวียนทีละ BANNER_MAX ตามรอบเวลา
+       => ทุกตัวได้ขึ้นแบนเนอร์ครบ แค่คนละรอบ */
+    featured = (picked.length > BANNER_MAX)
+      ? seededPick(picked, BANNER_MAX, slotIndex()+777)
+      : picked.slice(0, BANNER_MAX);
 
     banners=((data&&data.banners)?data.banners:[]).filter(function(b){ return String(b.ImageURL||'').trim(); });
     buildAutoFlash();
