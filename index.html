@@ -94,7 +94,8 @@
     box-shadow:0 10px 30px rgba(0,0,0,.22);
   }
   .banner-img img{ width:100%; height:100%; object-fit:contain; }
-  .banner-txt{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; position:relative; z-index:2; }
+  .banner-txt{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; position:relative; z-index:2; padding-right:76px; }
+  @media(min-width:820px){ .banner-txt{ padding-right:130px; } }
   .kicker{ font-size:9.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-hi); }
   .banner-name{
     font-family:'Trirong',serif; font-weight:500;
@@ -244,14 +245,23 @@
   @keyframes au3{ 0%,100%{ transform:translate3d(0,0,0); } 50%{ transform:translate3d(-26%,20%,0); } }
 
   /* ---------- 3) ตัวเลขส่วนลดยักษ์ ---------- */
-  .banner-num{
-    position:absolute; right:-2%; bottom:-14%;
-    font-family:'Anuphan',sans-serif; font-weight:700;
-    font-size:clamp(88px,26vw,190px); line-height:.8; letter-spacing:-.05em;
-    color:rgba(255,255,255,.15); z-index:1; pointer-events:none;
-    font-variant-numeric:tabular-nums; user-select:none;
+  /* ป้ายส่วนลดบนแบนเนอร์ — อ่านออกชัด ไม่ล้นขอบ */
+  .banner-off{
+    position:absolute; right:16px; top:50%; transform:translateY(-50%);
+    z-index:2; pointer-events:none; text-align:center; color:#fff;
+    text-shadow:0 3px 14px rgba(0,0,0,.3);
   }
-  .banner-num span{ font-size:.42em; letter-spacing:-.02em; }
+  .banner-off .lb{ font-size:11px; font-weight:600; letter-spacing:.16em; opacity:.9; }
+  .banner-off .nm{
+    font-weight:700; font-size:clamp(38px,10vw,68px); line-height:.95;
+    letter-spacing:-.03em; font-variant-numeric:tabular-nums;
+  }
+  .banner-off .nm span{ font-size:.5em; }
+  .banner-off .sub{
+    display:inline-block; margin-top:5px; padding:2px 9px; border-radius:999px;
+    background:rgba(255,255,255,.2); font-size:10px; font-weight:700; letter-spacing:.08em;
+  }
+  @media(max-width:520px){ .banner-off{ right:10px; } .banner-off .lb{ font-size:9px; } }
 
   /* ---------- 4) แถบข่าววิ่ง ---------- */
   .ticker{
@@ -327,6 +337,59 @@
   .rowx::-webkit-scrollbar{ display:none; }
   .rowx .card{ flex:0 0 44%; max-width:185px; scroll-snap-align:start; }
   @media(min-width:620px){ .rowx .card{ flex:0 0 210px; max-width:210px; } }
+
+  /* ---------- ⚡ ฟ้าผ่า + 🔥 ไฟ ---------- */
+  .sect.flash{
+    background:
+      linear-gradient(115deg, rgba(255,106,43,.2), rgba(224,27,61,.14) 45%, transparent 78%),
+      linear-gradient(180deg, rgba(255,106,43,.1), transparent 72%);
+    background-size:220% 100%, 100% 100%;
+    animation:sweep 5.5s ease-in-out infinite;
+    border-radius:14px; padding:14px 16px 8px; position:relative; overflow:hidden;
+  }
+  @keyframes sweep{ 0%,100%{ background-position:0% 0, 0 0; } 50%{ background-position:100% 0, 0 0; } }
+
+  /* แสงฟ้าผ่าวาบ */
+  .sect.flash::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(100deg, transparent 42%, rgba(255,255,255,.5) 50%, transparent 58%);
+    transform:translateX(-120%);
+    animation:bolt 7s ease-in-out infinite;
+  }
+  @keyframes bolt{
+    0%,84%{ transform:translateX(-120%); opacity:0; }
+    86%{ opacity:.9; }
+    92%{ transform:translateX(120%); opacity:.9; }
+    93%,100%{ opacity:0; transform:translateX(120%); }
+  }
+  .sect.flash > *{ position:relative; z-index:1; }
+
+  .zap{ display:inline-block; animation:zap 2.4s ease-in-out infinite; transform-origin:50% 60%; }
+  @keyframes zap{
+    0%,70%,100%{ transform:scale(1) rotate(0); filter:none; }
+    76%{ transform:scale(1.32) rotate(-9deg); filter:drop-shadow(0 0 9px #FFD84D); }
+    82%{ transform:scale(1.1) rotate(6deg); filter:drop-shadow(0 0 5px #FFB020); }
+  }
+
+  /* ป้ายไฟลุก */
+  .tag.hot{
+    background:linear-gradient(135deg, var(--red), var(--flame));
+    animation:ember 1.9s ease-in-out infinite;
+  }
+  @keyframes ember{
+    0%,100%{ box-shadow:0 0 0 0 rgba(255,106,43,.55), 0 3px 10px rgba(255,106,43,.4); }
+    50%{ box-shadow:0 0 0 5px rgba(255,106,43,0), 0 3px 16px rgba(255,106,43,.75); }
+  }
+
+  /* นาฬิกาแฟลช */
+  .flash-clock{
+    display:inline-flex; align-items:center; gap:5px;
+    background:linear-gradient(180deg, var(--red), var(--red-2)); color:#fff;
+    border-radius:8px; padding:3px 10px; margin-left:2px;
+    font-size:12px; font-weight:700; font-variant-numeric:tabular-nums;
+    box-shadow:0 3px 12px rgba(224,27,61,.35);
+  }
+  .flash-note{ font-size:10.5px; color:var(--dim); margin-top:5px; }
 
   /* ---------- คูปองทรงตั๋ว ---------- */
   #codes{ display:none; max-width:1180px; margin:0 auto; padding:20px 16px 0; }
@@ -472,7 +535,7 @@
 <script>
   /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
-  var VER = "v7";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v8";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -480,7 +543,12 @@
   var HOT_PCT   = 50;   // ลดตั้งแต่กี่ % ขึ้นไป ให้ติดป้ายไฟ 🔥
   var PAGE_SIZE = 12;
   var SLIDE_MS  = 4500;
-  var FLASH_MS  = 24*60*60*1000;   // เหลือน้อยกว่านี้ = ขึ้นเป็น "ดีลด่วน" นาฬิกาเดิน (24 ชม.)
+  var FLASH_MS  = 24*60*60*1000;   // ถ้ากรอก Ends เอง เหลือน้อยกว่านี้ = ดีลด่วน
+
+  /* ====== ⚡ ดีลรอบอัตโนมัติ — ระบบสุ่มเอง ไม่ต้องกรอกอะไร ====== */
+  var AUTO_FLASH  = true;   // ปิดได้ด้วยการเปลี่ยนเป็น false
+  var SLOT_HOURS  = 6;      // สลับของใหม่ทุกกี่ชั่วโมง
+  var SLOT_COUNT  = 6;      // หยิบขึ้นรอบครั้งละกี่ชิ้น
 
   /* ====== ข้อความปุ่ม — แก้ตรงนี้ที่เดียว เปลี่ยนทั้งเว็บ ====== */
   var CTA_CARD   = 'ดูใน Shopee';        // ปุ่มบนการ์ดสินค้า (พื้นที่แคบ ควรสั้น)
@@ -523,6 +591,32 @@
     return CAT_SLUG[c] || encodeURIComponent(c);
   }
 
+  /* ---------- ⚡ ดีลรอบอัตโนมัติ ---------- */
+  var SLOT_MS = SLOT_HOURS*60*60*1000;
+  function slotIndex(){ return Math.floor(Date.now()/SLOT_MS); }
+  function slotEnd(){ return (slotIndex()+1)*SLOT_MS; }
+
+  /* สุ่มแบบมีเมล็ด: เมล็ดเดียวกัน = ผลเหมือนกันทุกเครื่อง
+     พอถึงรอบใหม่ เมล็ดเปลี่ยน = ของสลับชุดเอง */
+  function seededPick(list, n, seed){
+    var a=list.slice(), s=(seed>>>0)||1;
+    function rnd(){ s=(s*1664525+1013904223)>>>0; return s/4294967296; }
+    for(var i=a.length-1;i>0;i--){
+      var j=Math.floor(rnd()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t;
+    }
+    return a.slice(0,n);
+  }
+  var autoSet = {};
+  function buildAutoFlash(){
+    autoSet = {};
+    if(!AUTO_FLASH) return;
+    var pool = all.filter(function(p){ return pct(p)>0; });
+    if(!pool.length) pool = all.slice();
+    seededPick(pool, Math.min(SLOT_COUNT, pool.length), slotIndex())
+      .forEach(function(p){ autoSet[String(p.ProductName)] = 1; });
+  }
+  function isAuto(p){ return !!autoSet[String(p.ProductName)]; }
+
   /* ---------- เวลาสิ้นสุดโปร ---------- */
   function endTime(p){
     var raw=String(p.Ends===null||p.Ends===undefined?'':p.Ends).trim();
@@ -551,7 +645,11 @@
     if(d>7) return null;
     return { text:'เหลืออีก '+d+' วัน' };
   }
-  function isFlash(p){ var i=endsInfo(p); return !!(i&&i.flash); }
+  function isFlash(p){
+    var i=endsInfo(p);
+    if(i && i.flash) return true;      // กรอก Ends เอง และใกล้หมดจริง
+    return isAuto(p);                  // หรือระบบหยิบขึ้นรอบนี้
+  }
   function endsHtml(p, cls){
     var i=endsInfo(p);
     if(!i || i.expired || !i.text) return '';
@@ -561,9 +659,17 @@
   /* นาฬิกาเดินทุกวินาที */
   setInterval(function(){
     var els=document.querySelectorAll('[data-end]');
+    var rolled=false;
     for(var i=0;i<els.length;i++){
       var left=Number(els[i].dataset.end)-Date.now();
-      els[i].textContent = left>0 ? '⚡ '+hhmmss(left) : '⚡ หมดเวลา';
+      if(left>0){ els[i].textContent='⚡ '+hhmmss(left); }
+      else { els[i].textContent='⚡ กำลังสลับรอบใหม่…'; rolled=true; }
+    }
+    /* ถึงรอบใหม่ -> สุ่มชุดใหม่ทันที ไม่ต้องรีเฟรช */
+    if(rolled && all.length){
+      buildAutoFlash();
+      renderPills(); renderTiles();
+      if(current==='home') renderHome(); else renderGrid();
     }
   }, 1000);
 
@@ -637,7 +743,9 @@
         + (d?'<span class="was">'+baht(p.Price)+'</span>':'')+'</div>'
         + '<div class="go">'+esc(CTA_BANNER)+'</div>'
         + '</div>'
-        + (d ? '<div class="banner-num">-'+d+'<span>%</span></div>' : '')
+        + (d ? '<div class="banner-off"><div class="lb">ลดสูงสุด</div>'
+             + '<div class="nm">'+d+'<span>%</span></div>'
+             + '<div class="sub">OFF</div></div>' : '')
         + '</a></div>';
     }
     elTrack.innerHTML = html;
@@ -751,7 +859,7 @@
     var h='';
     var nFlash=listFor('__flash').length;
     if(nFlash) h+='<button class="tile" data-c="__flash"><span class="tile-ico">⚡</span>'
-      +'<span class="tile-nm">ดีลด่วน</span><span class="tile-ct">'+nFlash+' ชิ้น</span></button>';
+      +'<span class="tile-nm">ดีลรอบนี้</span><span class="tile-ct">'+nFlash+' ชิ้น</span></button>';
     cats.forEach(function(c){
       h+='<button class="tile" data-c="'+esc(c)+'">'
         +'<span class="tile-ico">'+(CAT_ICON[c]||'🛍️')+'</span>'
@@ -769,18 +877,23 @@
   });
 
   /* ---------- หน้าแรก: แบ่งเป็นชั้นๆ ตามหมวด ---------- */
-  function rowSection(title, list, cat, hot){
+  function rowSection(title, list, cat, hot, extra){
     if(!list.length) return '';
     return '<section class="sect'+(hot?' flash':'')+'">'
       + '<div class="sect-head"><h2>'+title+'</h2><i></i>'
+      + (extra||'')
       + '<button class="sect-more" data-c="'+esc(cat)+'">ดูทั้งหมด →</button></div>'
+      + (hot ? '<div class="flash-note">ของในรอบนี้คัดสลับใหม่ทุก '+SLOT_HOURS+' ชั่วโมง — ราคาตามที่แสดงไว้</div>' : '')
       + '<div class="rowx">'+list.slice(0,ROW_MAX).map(cardHtml).join('')+'</div>'
       + '</section>';
   }
   function renderHome(){
     var h='';
     var flash=listFor('__flash');
-    if(flash.length) h+=rowSection('⚡ ดีลด่วน — ใกล้หมดเวลา', flash, '__flash', true);
+    if(flash.length){
+      var clk='<span class="flash-clock" data-end="'+slotEnd()+'">⚡ 00:00:00</span>';
+      h+=rowSection('<span class="zap">⚡</span> ดีลรอบนี้ · สลับของใหม่ใน', flash, '__flash', true, clk);
+    }
 
     var hot=all.filter(function(p){ return pct(p)>=HOT_PCT; });
     if(hot.length) h+=rowSection('🔥 ลดหนักที่สุด', hot, 'all', false);
@@ -798,14 +911,20 @@
   /* ---------- หมวด + ตาราง ---------- */
   function listFor(c){
     if(c==='all') return all;
-    if(c==='__flash') return all.filter(isFlash).sort(function(a,b){ return endTime(a)-endTime(b); });
+    if(c==='__flash') return all.filter(isFlash).sort(function(a,b){
+      var ta=endTime(a), tb=endTime(b);
+      if(ta===null && tb===null) return pct(b)-pct(a);
+      if(ta===null) return 1;
+      if(tb===null) return -1;
+      return ta-tb;
+    });
     return all.filter(function(p){ return String(p.Category).trim()===c; });
   }
   function renderPills(){
     var nFlash=listFor('__flash').length;
     var html='';
     if(nFlash) html+='<button class="pill flash" role="tab" data-c="__flash"'
-      +(current==='__flash'?' aria-selected="true"':'')+'>⚡ ดีลด่วน<em>'+nFlash+'</em></button>';
+      +(current==='__flash'?' aria-selected="true"':'')+'>⚡ ดีลรอบนี้<em>'+nFlash+'</em></button>';
     html='<button class="pill" role="tab" data-c="home"'+(current==='home'?' aria-selected="true"':'')
        +'>🏠 หน้าแรก</button>'+html;
     html+='<button class="pill" role="tab" data-c="all"'+(current==='all'?' aria-selected="true"':'')
@@ -837,7 +956,11 @@
   }
   function renderGrid(){
     var list=listFor(current);
-    elTitle.textContent = current==='all' ? 'ทั้งหมด' : (current==='__flash' ? '⚡ ดีลด่วน — ใกล้หมดเวลา' : current);
+    if(current==='__flash'){
+      elTitle.innerHTML = '<span class="zap">⚡</span> ดีลรอบนี้ <span class="flash-clock" data-end="'+slotEnd()+'">⚡ 00:00:00</span>';
+    } else {
+      elTitle.textContent = current==='all' ? 'ทั้งหมด' : current;
+    }
     elCount.textContent = list.length+' รายการ';
     if(!list.length){
       elGrid.innerHTML='<div class="msg">หมวดนี้ยังไม่มีสินค้า เลือกหมวดอื่นได้เลย</div>';
@@ -1003,6 +1126,7 @@
     if(!featured.length) featured=all.slice(0,3);
 
     banners=((data&&data.banners)?data.banners:[]).filter(function(b){ return String(b.ImageURL||'').trim(); });
+    buildAutoFlash();
 
     var h=decodeURIComponent((location.hash||'').replace('#',''));
     var match=cats.filter(function(c){ return slugOf(c)===h || c===h; })[0];
