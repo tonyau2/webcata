@@ -47,9 +47,13 @@
   .logo img{ display:block; height:100%; width:auto; object-fit:contain; }
   .logo.img-mode{
     background:none; box-shadow:none; padding:0; border-radius:0;
-    width:auto; height:40px;      /* โลโก้แนวนอน: คุมความสูง ให้กว้างอิสระตามสัดส่วนจริง */
-    max-width:180px;
+    width:auto; height:62px; max-width:270px;
+    filter:drop-shadow(0 3px 10px rgba(224,27,61,.3)) drop-shadow(0 0 14px rgba(240,212,136,.4));
+    animation:logoIn .5s cubic-bezier(.2,1.3,.4,1);
   }
+  @keyframes logoIn{ from{ opacity:0; transform:scale(.86); } to{ opacity:1; transform:none; } }
+  @media(min-width:820px){ .logo.img-mode{ height:78px; max-width:330px; } }
+  /* กฎเก่าที่ไม่ได้ใช้แล้ว (ระบบยุบหัวเว็บถูกถอดออกไปแล้ว) */
   body.compact .logo.img-mode{ height:0; overflow:hidden; }
   .logo{
     width:34px; height:34px; flex:0 0 auto; border-radius:9px;
@@ -521,7 +525,7 @@
 <script>
   /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
-  var VER = "v15";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v16";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -538,10 +542,11 @@
   var BANNER_MAX  = 6;      // แบนเนอร์โชว์ได้สูงสุดกี่สไลด์ (ติ๊ก Featured เกินนี้ = หมุนเวียนตามรอบ)
 
   /* ====== ข้อความปุ่ม — แก้ตรงนี้ที่เดียว เปลี่ยนทั้งเว็บ ====== */
-  /* ====== โลโก้ ====== 
-     ถ้ามีรูปโลโก้: อัปขึ้น img/ แล้วใส่ชื่อไฟล์ตรงนี้ เช่น 'logo.png'
-     เว้นว่าง = ใช้ป้าย % แบบเดิม */
-  var LOGO_URL   = '';
+  /* ====== โลโก้ ======
+     ค่าเริ่มต้นหาไฟล์ img/logo.png ให้เอง
+     - มีไฟล์  -> ใช้โลโก้รูป และซ่อนชื่อ text ทิ้ง
+     - ไม่มีไฟล์ -> ถอยกลับไปใช้ป้าย % อัตโนมัติ ไม่พัง ไม่ต้องแก้อะไร */
+  var LOGO_URL   = 'logo.png';
 
   var CTA_CARD   = 'ดูใน Shopee';        // ปุ่มบนการ์ดสินค้า (พื้นที่แคบ ควรสั้น)
   var CTA_BANNER = 'ดูดีลนี้ที่ Shopee →'; // ข้อความบนแบนเนอร์ (พื้นที่กว้าง ยาวได้)
@@ -1129,18 +1134,22 @@
 
   try{ console.log('มีโปรมาบอก '+VER); }catch(e){}
 
-  /* ใส่โลโก้รูปถ้ามี — ใช้กฎเติม img/ อัตโนมัติแบบเดียวกับรูปสินค้า (imgUrl) กันพลาดซ้ำ */
+  /* ใส่โลโก้รูป — ลองโหลดก่อน สำเร็จค่อยสลับ ไม่สำเร็จก็ใช้ป้าย % เดิม (ไม่มี error โผล่) */
   (function(){
     if(!LOGO_URL) return;
     var lg=document.querySelector('.logo');
     if(!lg) return;
-    lg.className='logo img-mode';
-    lg.innerHTML='<img alt="มีโปรมาบอก" src="'+esc(imgUrl(LOGO_URL, 360))+'">';
 
-    /* โลโก้รูปมีชื่อ "มีโปรมาบอก" วาดอยู่ในรูปแล้ว
-       ซ่อนตัวหนังสือชื่อแบบ text ทิ้ง กันชื่อซ้ำ/ทับกัน เหลือแค่บรรทัดสรุปดีล */
-    var wm=document.querySelector('.wordmark');
-    if(wm) wm.style.display='none';
+    var probe=new Image();
+    probe.onload=function(){
+      lg.className='logo img-mode';
+      lg.innerHTML='<img alt="มีโปรมาบอก" src="'+esc(imgUrl(LOGO_URL,420))+'">';
+      /* ชื่อแบรนด์วาดอยู่ในรูปแล้ว -> ซ่อนตัวหนังสือกันชื่อซ้ำ */
+      var wm=document.querySelector('.wordmark');
+      if(wm) wm.style.display='none';
+    };
+    probe.onerror=function(){ /* ไม่มีไฟล์โลโก้ -> เงียบๆ ใช้ป้าย % ต่อไป */ };
+    probe.src=imgUrl(LOGO_URL,420);
   })();
 
   var loaded=false;
