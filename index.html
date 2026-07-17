@@ -9,11 +9,12 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="มีโปรมาบอก · คัดโปรลดแรงมาบอกทุกสัปดาห์">
 <meta property="og:description" content="ของใช้ในบ้าน บำรุงผิว บำรุงเส้นผม เครื่องสำอาง — คัดเฉพาะตัวที่ลดจริง ประทับตรารับรองแล้ว">
-<!-- ===== รูปพรีวิวตอนแชร์ FB/LINE =====
-     ไม่ต้องออกแบบอะไร! เอา "ลิงก์รูปสินค้า" ที่สวยที่สุด 1 รูปมาใส่แทน PASTE_IMAGE_URL ข้างล่าง
-     เช่น https://tonyau2.github.io/webcata/img/serum1.jpg
-     หรือ ลิงก์รูปจาก Drive ก็ได้ (แบบ lh3.googleusercontent.com/d/FILE_ID=w1200)   -->
-<meta property="og:image" content="PASTE_IMAGE_URL">
+<meta property="og:url" content="https://tonyau2.github.io/webcata/">
+<meta property="og:site_name" content="มีโปรมาบอก">
+<meta property="og:image" content="https://tonyau2.github.io/webcata/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="มีโปรมาบอก - คัดโปรลดแรง">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23C8102E'/><text x='50' y='71' text-anchor='middle' font-size='60' font-family='Helvetica,Arial,sans-serif' font-weight='700' fill='%23fff'>%25</text></svg>">
@@ -44,17 +45,24 @@
   /* ---------- Masthead ---------- */
   .masthead{ position:sticky; top:0; z-index:60; background:rgba(251,246,242,.92); backdrop-filter:blur(14px); border-bottom:1px solid var(--hair); }
   .crest{ display:flex; align-items:center; gap:10px; max-width:1180px; margin:0 auto; padding:10px 16px 7px; }
-  .logo img{ display:block; height:100%; width:auto; object-fit:contain; }
+  /* โลโก้รูป: คุมขนาดที่ "ตัวรูป" โดยตรง ไม่ใช่ที่กล่อง -> ไม่มีทางบานเกินอีก */
   .logo.img-mode{
+    display:block; width:auto; height:auto;
     background:none; box-shadow:none; padding:0; border-radius:0;
-    width:auto; height:62px; max-width:270px;
-    filter:drop-shadow(0 3px 10px rgba(224,27,61,.3)) drop-shadow(0 0 14px rgba(240,212,136,.4));
+    flex:0 0 auto; line-height:0;
     animation:logoIn .5s cubic-bezier(.2,1.3,.4,1);
   }
-  @keyframes logoIn{ from{ opacity:0; transform:scale(.86); } to{ opacity:1; transform:none; } }
-  @media(min-width:820px){ .logo.img-mode{ height:78px; max-width:330px; } }
-  /* กฎเก่าที่ไม่ได้ใช้แล้ว (ระบบยุบหัวเว็บถูกถอดออกไปแล้ว) */
-  body.compact .logo.img-mode{ height:0; overflow:hidden; }
+  .logo.img-mode img{
+    display:block;
+    height:46px; width:auto; max-width:190px;
+    object-fit:contain;
+    filter:drop-shadow(0 2px 7px rgba(224,27,61,.28));
+  }
+  @media(min-width:820px){
+    .logo.img-mode img{ height:56px; max-width:240px; }
+  }
+  @keyframes logoIn{ from{ opacity:0; transform:scale(.9); } to{ opacity:1; transform:none; } }
+
   .logo{
     width:34px; height:34px; flex:0 0 auto; border-radius:9px;
     background:linear-gradient(160deg, var(--red), var(--red-2));
@@ -76,7 +84,7 @@
   }
   .pill:hover{ border-color:var(--hair-2); }
   .pill[aria-selected="true"]{ background:var(--ink); color:#fff; border-color:var(--ink); font-weight:600; }
-  .pill em{ font-style:normal; font-size:11px; opacity:.5; margin-left:5px; font-weight:400; }
+  .pill em{ display:none; }
   .pill.flash{ border-color:rgba(200,16,46,.4); color:var(--red); }
   .pill.flash[aria-selected="true"]{ background:var(--red); color:#fff; border-color:var(--red); }
 
@@ -182,6 +190,8 @@
   .card-now{ font-weight:700; font-size:17px; color:var(--red); letter-spacing:-.01em; }
   .card-was{ font-size:11.5px; color:var(--dim); text-decoration:line-through; opacity:.8; }
   .card-ends{ font-size:10.5px; font-weight:700; color:var(--red); }
+  .sold{ font-size:10.5px; color:var(--dim); }
+  .banner .sold{ color:rgba(255,255,255,.8); font-size:11.5px; }
   .clock{ font-variant-numeric:tabular-nums; background:rgba(200,16,46,.1); border-radius:5px; padding:1px 5px; display:inline-block; }
   .band .clock{ background:rgba(0,0,0,.24); color:#fff; font-size:11.5px; }
   .card-cta{ margin-top:6px; font-size:11.5px; font-weight:600; color:var(--gold); display:inline-flex; align-items:center; gap:4px; }
@@ -195,6 +205,11 @@
     font-family:'Anuphan',sans-serif; font-size:13px;
   }
   .more:hover{ border-color:var(--hair-2); }
+  .notice{
+    max-width:1180px; margin:16px auto 0; padding:10px 14px;
+    background:#FFF9EE; border:1px solid rgba(201,153,47,.35);
+    border-radius:9px; color:#7A6034; font-size:11.5px; line-height:1.55;
+  }
   .msg{ grid-column:1/-1; text-align:center; color:var(--dim); font-size:14px; padding:44px 12px; }
 
   .sk{ background:var(--surface); border:1px solid var(--hair); border-radius:12px; overflow:hidden; }
@@ -221,7 +236,13 @@
   .clip-cap{ padding:9px 12px 11px; font-size:12.5px; color:var(--dim); }
 
   /* ---------- ท้ายเว็บ ---------- */
-  .end{ max-width:1180px; margin:0 auto; padding:34px 16px 44px; text-align:center; }
+  .notice{
+    max-width:1180px; margin:26px auto 0; padding:11px 16px;
+    display:flex; gap:9px; align-items:flex-start;
+    font-size:11px; line-height:1.55; color:var(--dim);
+  }
+  .notice b{ color:var(--red); font-weight:700; flex:0 0 auto; }
+  .end{ max-width:1180px; margin:0 auto; padding:20px 16px 44px; text-align:center; }
   .end-title{ font-size:12.5px; color:var(--dim); margin-bottom:10px; }
   .end-btns{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
   .end-btn{
@@ -494,6 +515,7 @@
     <div class="sk"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
   </div>
   <button class="more" id="more" hidden>ดูเพิ่ม</button>
+  <div class="notice">ℹ️ ราคาและส่วนลดอาจมีการเปลี่ยนแปลงตามโปรโมชั่นและแคมเปญของ Shopee โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอปพลิเคชัน</div>
 </main>
 
 <section id="reel">
@@ -504,6 +526,11 @@
   </div>
   <div class="reel-row" id="reel-row"></div>
 </section>
+
+<div class="notice">
+  <b>ℹ️</b>
+  <span>ราคาและส่วนลดอาจมีการเปลี่ยนแปลงตามโปรโมชั่นและแคมเปญของ Shopee โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอปพลิเคชัน</span>
+</div>
 
 <div class="end">
   <div class="end-title">ถูกใจดีลไหน ส่งให้เพื่อนได้เลย</div>
@@ -525,7 +552,7 @@
 <script>
   /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
   var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
-  var VER = "v16";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v18";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -537,7 +564,7 @@
 
   /* ====== ⚡ ดีลรอบอัตโนมัติ — ระบบสุ่มเอง ไม่ต้องกรอกอะไร ====== */
   var AUTO_FLASH  = true;   // ปิดได้ด้วยการเปลี่ยนเป็น false
-  var SLOT_HOURS  = 6;      // สลับของใหม่ทุกกี่ชั่วโมง
+  var SLOT_HOURS  = 1;      // สลับของใหม่ทุกกี่ชั่วโมง (สลับจริงตามนี้ นาฬิกาเดินตรงกัน)
   var SLOT_COUNT  = 6;      // หยิบขึ้นรอบครั้งละกี่ชิ้น
   var BANNER_MAX  = 6;      // แบนเนอร์โชว์ได้สูงสุดกี่สไลด์ (ติ๊ก Featured เกินนี้ = หมุนเวียนตามรอบ)
 
@@ -546,7 +573,7 @@
      ค่าเริ่มต้นหาไฟล์ img/logo.png ให้เอง
      - มีไฟล์  -> ใช้โลโก้รูป และซ่อนชื่อ text ทิ้ง
      - ไม่มีไฟล์ -> ถอยกลับไปใช้ป้าย % อัตโนมัติ ไม่พัง ไม่ต้องแก้อะไร */
-  var LOGO_URL   = 'logo.png';
+  var LOGO_URL   = 'logo-trim.png';
 
   var CTA_CARD   = 'ดูใน Shopee';        // ปุ่มบนการ์ดสินค้า (พื้นที่แคบ ควรสั้น)
   var CTA_BANNER = 'ดูดีลนี้ที่ Shopee →'; // ข้อความบนแบนเนอร์ (พื้นที่กว้าง ยาวได้)
@@ -592,6 +619,20 @@
   function pct(p){ var f=num(p.Price), s=num(p.PromoPrice); return (f>0&&s>0&&s<f)?Math.round((1-s/f)*100):0; }
   function priceNow(p){ return pct(p)>0 ? p.PromoPrice : p.Price; }
   function baht(v){ return '฿'+Number(num(v)).toLocaleString('th-TH'); }
+
+  /* ยอดขาย: กรอกเลขดิบจาก Shopee ในคอลัมน์ Sold -> แสดงแบบ Shopee (1.2พัน / 1.5หมื่น) */
+  function soldText(p){
+    var raw=String(p.Sold===null||p.Sold===undefined?'':p.Sold).trim();
+    if(!raw) return '';
+    var n=num(raw);
+    if(!n) return '';
+    var t;
+    if(n>=1000000) t=(n/1000000).toFixed(n%1000000?1:0).replace(/\.0$/,'')+' ล้าน';
+    else if(n>=10000) t=(n/10000).toFixed(n%10000?1:0).replace(/\.0$/,'')+' หมื่น';
+    else if(n>=1000) t=(n/1000).toFixed(n%1000?1:0).replace(/\.0$/,'')+' พัน';
+    else t=String(n);
+    return 'ขายแล้ว '+t+' ชิ้น';
+  }
   function slugOf(c){
     if(c==='__flash') return 'flash';
     if(c==='all') return 'all';
@@ -745,6 +786,7 @@
         + '<div class="banner-txt">'
         + '<div class="kicker">'+esc(p.Category||'ดีลประจำสัปดาห์')+'</div>'
         + (p.ProductName ? '<div class="banner-name">'+esc(p.ProductName)+'</div>' : '')
+        + (soldText(p) ? '<div class="sold">🛒 '+esc(soldText(p))+'</div>' : '')
         + endsHtml(p,'ends')
         + '<div class="banner-price"><span class="now">'+baht(priceNow(p))+'</span>'
         + (d?'<span class="was">'+baht(p.Price)+'</span>':'')+'</div>'
@@ -821,6 +863,8 @@
     bits.push('💥 ราคา Shopee เปลี่ยนได้ตลอด เจอถูกใจกดเลย');
     bits.push('👆 แตะที่รูปได้เลย ไปหน้าสั่งซื้อทันที');
     bits.push('👍 กดตามเพจ ไม่พลาดดีลใหม่');
+    bits.push('ℹ️ ราคาและส่วนลดอาจเปลี่ยนตามโปรโมชั่นและแคมเปญของ Shopee โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอป');
+    bits.push('ℹ️ ราคาและส่วนลดอาจเปลี่ยนตามแคมเปญของ Shopee — เช็คราคาล่าสุดในแอปอีกครั้ง');
 
     var one=bits.map(function(b){ return '<span>'+esc(b)+'</span>'; }).join('');
     tr.innerHTML = one + one;
@@ -896,12 +940,12 @@
     var nFlash=listFor('__flash').length;
     var html='';
     if(nFlash) html+='<button class="pill flash" role="tab" data-c="__flash"'
-      +(current==='__flash'?' aria-selected="true"':'')+'>⚡ ดีลรอบนี้<em>'+nFlash+'</em></button>';
+      +(current==='__flash'?' aria-selected="true"':'')+'>⚡ ดีลรอบนี้</button>';
     html+='<button class="pill" role="tab" data-c="all"'+(current==='all'?' aria-selected="true"':'')
-       +'>ทั้งหมด<em>'+all.length+'</em></button>';
+       +'>ทั้งหมด</button>';
     cats.forEach(function(c){
       html+='<button class="pill" role="tab" data-c="'+esc(c)+'"'+(current===c?' aria-selected="true"':'')
-          +'>'+(CAT_ICON[c]?CAT_ICON[c]+' ':'')+esc(c)+'<em>'+listFor(c).length+'</em></button>';
+          +'>'+(CAT_ICON[c]?CAT_ICON[c]+' ':'')+esc(c)+'</button>';
     });
     elPills.innerHTML=html;
   }
@@ -918,6 +962,7 @@
       + '</div>'
       + '<div class="card-body">'
       + (p.ProductName ? '<div class="card-name">'+esc(p.ProductName)+'</div>' : '')
+      + (soldText(p) ? '<div class="sold">🛒 '+esc(soldText(p))+'</div>' : '')
       + endsHtml(p,'card-ends')
       + '<div class="card-price"><span class="card-now">'+baht(priceNow(p))+'</span>'
       + (d?'<span class="card-was">'+baht(p.Price)+'</span>':'')+'</div>'
@@ -931,7 +976,7 @@
     } else {
       elTitle.textContent = current==='all' ? 'ทั้งหมด' : current;
     }
-    elCount.textContent = list.length+' รายการ';
+    elCount.textContent = '';
     if(!list.length){
       elGrid.innerHTML='<div class="msg">หมวดนี้ยังไม่มีสินค้า เลือกหมวดอื่นได้เลย</div>';
       elMore.hidden=true; return;
