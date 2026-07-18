@@ -219,6 +219,13 @@
   @keyframes favPop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.25); } 100%{ transform:scale(1); } }
   .pill.favs{ border-color:rgba(224,27,61,.35); color:var(--red); }
   .pill.favs[aria-selected="true"]{ background:var(--red); color:#fff; border-color:var(--red); }
+  .favcount{
+    display:inline-flex !important; align-items:center; justify-content:center;
+    min-width:16px; height:16px; padding:0 4px; margin-left:5px;
+    border-radius:999px; background:var(--red); color:#fff;
+    font-size:10px; font-weight:700; font-style:normal; vertical-align:middle;
+  }
+  .pill.favs[aria-selected="true"] .favcount{ background:#fff; color:var(--red); }
   .card-body{ padding:9px 10px 11px; display:flex; flex-direction:column; gap:2px; flex:1; }
   .card-name{
     font-size:13px; font-weight:500; line-height:1.45; color:var(--dim);
@@ -605,11 +612,21 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v26";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v27";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
   var CAT_ICON  = {'ของใช้ในบ้าน':'🏠','บำรุงผิว':'✨','บำรุงเส้นผม':'💇‍♀️','เครื่องสำอาง':'💄','เสื้อผ้า':'👗'};
+
+  /* หมวดที่ไม่มีอีโมจิกำหนดไว้ตายตัว (เช่นเพิ่มหมวดใหม่ในชีตแล้วไม่ได้แก้โค้ด)
+     -> สุ่มอีโมจิให้เองแบบคงที่ (หมวดเดิมได้อีโมจิเดิมเสมอ ไม่สุ่มใหม่ทุกครั้งที่รีเฟรช) */
+  var ICON_POOL = ['🎁','🛍️','⭐','💎','🌸','🍀','🎀','💫','🧡','🩷','🦋','🌈','🧴','👜','🕶️','⌚','🧢','🎈','🧸','🪄'];
+  function catIcon_(c){
+    if(CAT_ICON[c]) return CAT_ICON[c];
+    var h=0;
+    for(var i=0;i<c.length;i++) h=(h*31 + c.charCodeAt(i))>>>0;
+    return ICON_POOL[h % ICON_POOL.length];
+  }
   var HOT_PCT   = 50;   // ลดตั้งแต่กี่ % ขึ้นไป ให้ติดป้ายไฟ 🔥
   var PAGE_SIZE = 12;
   var SLIDE_MS  = 4500;
@@ -1093,13 +1110,14 @@
     var html='';
     if(nFlash) html+='<button class="pill flash" role="tab" data-c="__flash"'
       +(current==='__flash'?' aria-selected="true"':'')+'>⚡ ดีลรอบนี้</button>';
-    if(nFavs) html+='<button class="pill favs" role="tab" data-c="__favs"'
-      +(current==='__favs'?' aria-selected="true"':'')+'>❤️ รายการโปรด</button>';
+    html+='<button class="pill favs" role="tab" data-c="__favs"'
+      +(current==='__favs'?' aria-selected="true"':'')+'>❤️ รายการโปรด'
+      +(nFavs?'<em class=\"favcount\">'+nFavs+'</em>':'')+'</button>';
     html+='<button class="pill" role="tab" data-c="all"'+(current==='all'?' aria-selected="true"':'')
        +'>ทั้งหมด</button>';
     cats.forEach(function(c){
       html+='<button class="pill" role="tab" data-c="'+esc(c)+'"'+(current===c?' aria-selected="true"':'')
-          +'>'+(CAT_ICON[c]?CAT_ICON[c]+' ':'')+esc(c)+'</button>';
+          +'>'+catIcon_(c)+' '+esc(c)+'</button>';
     });
     elPills.innerHTML=html;
   }
