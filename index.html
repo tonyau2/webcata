@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>มีโปรมาบอก · คัดโปรลดแรงมาบอกทุกสัปดาห์</title>
+<title>มีโปรมาบอก · คัดโปรลดแรง สลับใหม่ทุกชั่วโมง</title>
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="มีโปรมาบอก · คัดโปรลดแรงมาบอกทุกสัปดาห์">
-<meta property="og:description" content="ของใช้ในบ้าน บำรุงผิว บำรุงเส้นผม เครื่องสำอาง — คัดเฉพาะตัวที่ลดจริง ประทับตรารับรองแล้ว">
+<meta property="og:title" content="มีโปรมาบอก · คัดโปรลดแรง สลับใหม่ทุกชั่วโมง">
+<meta property="og:description" content="ของใช้ในบ้าน บำรุงผิว บำรุงเส้นผม เครื่องสำอาง — คัดเฉพาะตัวที่ลดจริง ดีลรอบใหม่ทุกชั่วโมง">
 <meta property="og:url" content="https://tonyau2.github.io/webcata/">
 <meta property="og:site_name" content="มีโปรมาบอก">
 <meta property="og:image" content="https://tonyau2.github.io/webcata/img/og.jpg">
@@ -332,8 +332,8 @@
   .rv.in{ opacity:1; transform:none; transition:opacity .5s cubic-bezier(.22,1,.36,1), transform .5s cubic-bezier(.22,1,.36,1); }
 
   /* ---------- 6) ปุ่มกดแล้วมีชีวิต ---------- */
-  .tile:active, .pill:active, .more:active, .end-btn:active, .tk-copy:active{ transform:scale(.96); }
-  .tile, .pill, .more, .end-btn, .tk-copy{ transition:transform .12s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease, color .15s ease; }
+  .tile:active, .pill:active, .more:active, .end-btn:active{ transform:scale(.96); }
+  .tile, .pill, .more, .end-btn{ transition:transform .12s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease, color .15s ease; }
   .card{ will-change:transform; }
   .card:active{ transform:scale(.985); }
 
@@ -419,44 +419,44 @@
   }
   .flash-note{ font-size:10.5px; color:var(--dim); margin-top:5px; }
 
-  /* ---------- คูปองทรงตั๋ว ---------- */
+  /* ---------- การ์ดสิทธิพิเศษทรงตั๋ว (กดทั้งใบ -> เด้ง Shopee ทันที) ---------- */
   #codes{ display:none; max-width:1180px; margin:0 auto; padding:20px 16px 0; }
   .tk-row{ display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; padding:2px 0 8px; scrollbar-width:none; }
   .tk-row::-webkit-scrollbar{ display:none; }
-  .tk{
+  a.tk{
     position:relative; flex:0 0 auto; scroll-snap-align:start;
-    width:min(84vw,340px); display:flex;
+    width:min(84vw,340px); display:flex; text-decoration:none; color:inherit;
     background:var(--surface); border:1px solid rgba(201,153,47,.4);
     border-radius:12px; overflow:hidden;
     box-shadow:0 4px 14px rgba(165,15,42,.08);
+    transition:transform .15s ease, box-shadow .15s ease;
   }
-  .tk::before, .tk::after{
-    content:''; position:absolute; left:120px; width:14px; height:14px;
+  a.tk:hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(165,15,42,.16); }
+  a.tk::before, a.tk::after{
+    content:''; position:absolute; left:76px; width:14px; height:14px;
     background:var(--paper); border-radius:50%; transform:translateX(-50%); z-index:2;
   }
-  .tk::before{ top:-7px; }
-  .tk::after{ bottom:-7px; }
+  a.tk::before{ top:-7px; }
+  a.tk::after{ bottom:-7px; }
   .tk-l{
-    flex:0 0 120px; padding:12px 8px;
+    flex:0 0 76px; padding:12px 6px;
     background:linear-gradient(165deg, var(--cream), #FCE7C4);
     border-right:2px dashed rgba(43,13,19,.2);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px;
+    display:flex; align-items:center; justify-content:center;
   }
-  .tk-code{
-    font-weight:700; font-size:14.5px; letter-spacing:.05em; color:var(--red-2);
-    text-align:center; word-break:break-all; line-height:1.25;
-  }
-  .tk-copy{
-    border:0; cursor:pointer; border-radius:7px; padding:5px 11px;
+  .tk-badge{ font-size:30px; line-height:1; filter:drop-shadow(0 2px 4px rgba(0,0,0,.15)); }
+  .tk-r{ flex:1; min-width:0; padding:11px 13px; display:flex; flex-direction:column; justify-content:center; gap:4px; }
+  .tk-title{ font-weight:700; font-size:14px; color:var(--ink); line-height:1.35; }
+  .tk-detail{ font-size:11.5px; color:var(--dim); line-height:1.4; }
+  .tk-ends{ font-size:10.5px; font-weight:700; color:var(--red); margin-top:1px; }
+  .tk-cta{
+    display:inline-block; margin-top:6px; align-self:flex-start;
+    border:0; border-radius:7px; padding:6px 12px;
     background:linear-gradient(180deg, var(--red), var(--red-2)); color:#fff;
     font-family:'Anuphan',sans-serif; font-size:11.5px; font-weight:700;
     box-shadow:0 3px 9px rgba(224,27,61,.32);
   }
-  .tk-copy:active{ transform:translateY(1px); }
-  .tk-r{ flex:1; min-width:0; padding:11px 13px; display:flex; flex-direction:column; justify-content:center; gap:3px; }
-  .tk-title{ font-weight:700; font-size:14px; color:var(--ink); line-height:1.35; }
-  .tk-detail{ font-size:11.5px; color:var(--dim); line-height:1.4; }
-  .tk-ends{ font-size:10.5px; font-weight:700; color:var(--red); margin-top:2px; }
+  a.tk:active .tk-cta{ transform:scale(.96); }
 
   /* ---------- ป้ายลดหนัก ---------- */
   .tag.hot{ background:linear-gradient(135deg, var(--red), var(--flame)); box-shadow:0 3px 10px rgba(255,106,43,.4); }
@@ -506,9 +506,9 @@
 
 <section id="codes">
   <div class="rule hot">
-    <h2>🎟️ โค้ดส่วนลดประจำเดือน</h2>
+    <h2>🎁 สิทธิพิเศษวันนี้</h2>
     <i></i>
-    <span>กดคัดลอกแล้วใช้ได้เลย</span>
+    <span>กดที่การ์ดเพื่อรับสิทธิ์</span>
   </div>
   <div class="tk-row" id="tk-row"></div>
 </section>
@@ -517,7 +517,7 @@
 
 <main class="wrap" id="catview">
   <div class="rule">
-    <button class="back" id="back">← ทั้งหมด</button>
+    <button class="back" id="back">← หน้าแรก</button>
     <h2 id="rule-title">ทั้งหมด</h2>
     <i></i>
     <span id="rule-count"></span>
@@ -565,7 +565,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v20";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v21";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -1043,30 +1043,31 @@
   elPills.addEventListener('click',function(e){ var b=e.target.closest('.pill'); if(b) select(b.dataset.c,true); });
   elMore.addEventListener('click',function(){ shown+=PAGE_SIZE; renderGrid(); });
 
-  /* ---------- คูปองโค้ดส่วนลด ---------- */
+  /* ---------- การ์ดสิทธิพิเศษ (กดแล้วเด้งไป Shopee ทันที ไม่มีขั้นตอนคัดลอก) ---------- */
   var elCodes=document.getElementById('codes'), elTkRow=document.getElementById('tk-row');
+  var DEAL_BTN_DEFAULT = 'กดรับสิทธิ์นี้เลย ก่อนหมดเขต ⚡';   // ใช้เมื่อไม่ได้กรอก ButtonText ในชีต
 
   function renderCodes(codes){
     if(!codes || !codes.length || !elCodes) return;
     var html='', n=0;
     for(var i=0;i<codes.length;i++){
       var c=codes[i];
-      var code=String(c.Code||'').trim();
-      if(!code) continue;
+      var link=String(c.Link||'').trim();
+      if(!link) continue;                  // ไม่มีลิงก์ = ข้าม กันการ์ดกดแล้วไม่ไปไหน
       var info=endsInfo({ Ends:c.Ends });
-      if(info && info.expired) continue;   // โค้ดหมดอายุ ซ่อนเอง
+      if(info && info.expired) continue;   // หมดอายุ ซ่อนเอง
       n++;
       var ends = (info && info.text) ? (info.flash ? '⚡ '+info.text : '⏳ '+info.text) : '';
-      html += '<div class="tk">'
-        + '<div class="tk-l">'
-        + '<div class="tk-code">'+esc(code)+'</div>'
-        + '<button class="tk-copy" data-code="'+esc(code)+'" data-link="'+esc(c.Link||'')+'">คัดลอกโค้ด</button>'
-        + '</div>'
+      var btnText = String(c.ButtonText||'').trim() || DEAL_BTN_DEFAULT;   // แก้ข้อความปุ่มได้จากชีต
+      html += '<a class="tk" href="'+esc(link)+'" target="_blank" rel="noopener sponsored"'
+        + ' data-name="'+esc(c.Title||link)+'" data-cat="deal">'
+        + '<div class="tk-l"><div class="tk-badge">🎁</div></div>'
         + '<div class="tk-r">'
-        + '<div class="tk-title">'+esc(c.Title||'ส่วนลดพิเศษ')+'</div>'
+        + '<div class="tk-title">'+esc(c.Title||'สิทธิพิเศษวันนี้')+'</div>'
         + (c.Detail?'<div class="tk-detail">'+esc(c.Detail)+'</div>':'')
         + (ends?'<div class="tk-ends">'+esc(ends)+'</div>':'')
-        + '</div></div>';
+        + '<span class="tk-cta">'+esc(btnText)+'</span>'
+        + '</div></a>';
     }
     if(!n) return;
     elTkRow.innerHTML=html;
@@ -1075,14 +1076,8 @@
   }
 
   if(elTkRow) elTkRow.addEventListener('click', function(e){
-    var b=e.target.closest('.tk-copy');
-    if(!b) return;
-    var code=b.dataset.code, link=b.dataset.link;
-    try{ if(navigator.clipboard) navigator.clipboard.writeText(code); }catch(err){}
-    track('code', code, '');
-    b.textContent='✅ คัดลอกแล้ว';
-    setTimeout(function(){ b.textContent='คัดลอกโค้ด'; }, 2000);
-    if(link && link.indexOf('http')===0) window.open(link,'_blank','noopener');
+    var a=e.target.closest('a.tk');
+    if(a) track('deal', a.dataset.name, '');
   });
 
   /* ---------- คลิปรีวิว (ล่างสุด) ---------- */
