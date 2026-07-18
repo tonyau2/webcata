@@ -10,7 +10,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="โค้ดส่วนลด Shopee วันนี้ กดรับได้เลย | มีโปรมาบอก">
-<meta property="og:description" content="รวมโค้ดส่วนลด Shopee ล่าสุดวันนี้ อัปเดตสม่ำเสมอ กดที่รูปแล้วไปรับโค้ด ไม่ต้องเสียเวลาหาโค้ดเอง">
+<meta property="og:description" content="รวมโค้ดส่วนลด Shopee ล่าสุดวันนี้ อัปเดตสม่ำเสมอ กดที่การ์ดแล้วไปหน้าสั่งซื้อได้ทันที">
 <meta property="og:url" content="https://meepromabok.com/code/">
 <meta property="og:site_name" content="มีโปรมาบอก">
 <meta property="og:image" content="https://meepromabok.com/img/og.jpg">
@@ -68,7 +68,9 @@
     border-right:2px dashed rgba(43,13,19,.2);
     display:flex; align-items:center; justify-content:center;
   }
-  .tk-badge{ font-size:34px; line-height:1; }
+  .tk-badge{ font-size:34px; line-height:1; transition:transform .25s cubic-bezier(.34,1.56,.64,1); }
+  a.tk:hover .tk-badge, a.tk:focus-visible .tk-badge{ transform:rotate(-8deg) scale(1.12); }
+  a.tk:active .tk-badge{ transform:rotate(4deg) scale(.96); }
   .tk-r{ flex:1; min-width:0; padding:14px 16px; display:flex; flex-direction:column; justify-content:center; gap:5px; }
   .tk-title{ font-weight:700; font-size:15px; color:var(--ink); line-height:1.35; }
   .tk-detail{ font-size:12.5px; color:var(--dim); line-height:1.4; }
@@ -82,6 +84,32 @@
   }
 
   .msg{ text-align:center; color:var(--dim); font-size:14px; padding:50px 12px; }
+
+  .sect2{ max-width:900px; margin:0 auto; padding:38px 16px 0; }
+  .sect2-head{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .sect2-head h2{ font-family:'Trirong',serif; font-weight:600; font-size:17px; color:var(--ink); white-space:nowrap; }
+  .sect2-head i{ flex:1; height:1px; background:var(--hair); }
+  .pgrid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  @media(min-width:560px){ .pgrid{ grid-template-columns:repeat(3,1fr); } }
+  @media(min-width:760px){ .pgrid{ grid-template-columns:repeat(4,1fr); } }
+  a.pcard{
+    display:flex; flex-direction:column; text-decoration:none; color:inherit;
+    background:var(--surface); border:1px solid var(--hair); border-radius:12px; overflow:hidden;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  a.pcard:hover{ transform:translateY(-2px); border-color:var(--hair-2); }
+  .pcard-media{ position:relative; aspect-ratio:1/1; background:#fff; }
+  .pcard-media img{ width:100%; height:100%; object-fit:contain; }
+  .pcard-tag{
+    position:absolute; top:6px; left:6px; background:var(--red); color:#fff;
+    font-size:10.5px; font-weight:700; padding:2px 6px; border-radius:6px;
+  }
+  .pcard-body{ padding:9px 10px 11px; display:flex; flex-direction:column; gap:4px; flex:1; }
+  .pcard-name{ font-size:11.5px; color:var(--dim); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .pcard-price{ display:flex; align-items:baseline; gap:5px; margin-top:auto; }
+  .pcard-now{ font-weight:700; font-size:14.5px; color:var(--red); }
+  .pcard-was{ font-size:10.5px; color:var(--dim); text-decoration:line-through; opacity:.8; }
+  .pcard-cta{ margin-top:6px; font-size:11px; font-weight:600; color:var(--gold); }
   .sk{ background:var(--surface); border:1px solid var(--hair); border-radius:14px; height:96px; overflow:hidden; position:relative; }
   .sk::after{ content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent 25%, rgba(201,153,47,.12) 50%, transparent 75%); background-size:200% 100%; animation:shim 1.4s ease infinite; }
   @keyframes shim{ from{ background-position:120% 0; } to{ background-position:-20% 0; } }
@@ -108,6 +136,11 @@
     <div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div>
   </div>
 </main>
+
+<section class="sect2" id="prodsec" hidden>
+  <div class="sect2-head"><h2>🔥 สินค้าลดแรงวันนี้</h2><i></i></div>
+  <div class="pgrid" id="pgrid"></div>
+</section>
 
 <footer>
   <a href="https://meepromabok.com/">เลือกซื้อสินค้าลดราคาทั้งหมด →</a>
@@ -176,10 +209,55 @@
     elGrid.innerHTML='<div class="msg">โหลดข้อมูลไม่สำเร็จ: '+esc(msg)+'<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">ไปที่หน้าหลักแทน →</a></div>';
   }
 
+  /* ---------- สินค้าลดแรง (ใช้ข้อมูลชุดเดียวกับที่โหลดโค้ดมาแล้ว ไม่ยิงขอเพิ่ม) ---------- */
+  var elProdSec = document.getElementById('prodsec');
+  var elPGrid   = document.getElementById('pgrid');
+  var PRODUCT_LIMIT = 8;
+
+  function imgUrl(raw, w){
+    var s = String(raw===null||raw===undefined?'':raw).trim();
+    if(!s) return '';
+    var m = s.match(/\/d\/([-\w]{25,})/) || s.match(/[?&]id=([-\w]{25,})/) || s.match(/^([-\w]{25,})$/);
+    if(m) return 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||500);
+    if(!/^https?:/i.test(s) && s.indexOf('/')===-1) return '../img/'+s;
+    return s;
+  }
+  function num(v){ var n=Number(String(v).replace(/[^\d.]/g,'')); return isFinite(n)?n:0; }
+  function pct(p){ var f=num(p.Price), s=num(p.PromoPrice); return (f>0&&s>0&&s<f)?Math.round((1-s/f)*100):0; }
+  function baht(v){ return '฿'+Number(num(v)).toLocaleString('th-TH'); }
+
+  function pcardHtml(p){
+    var d=pct(p), link=String(p.AffiliateLink||'');
+    if(!link) return '';
+    var now = d>0 ? p.PromoPrice : p.Price;
+    return '<a class="pcard" href="'+esc(link)+'" target="_blank" rel="noopener sponsored">'
+      + '<div class="pcard-media">'
+      + (d?'<span class="pcard-tag">-'+d+'%</span>':'')
+      + '<img loading="lazy" alt="'+esc(p.ProductName)+'" src="'+esc(imgUrl(p.ImageURL,400))+'"></div>'
+      + '<div class="pcard-body">'
+      + '<div class="pcard-name">'+esc(p.ProductName)+'</div>'
+      + '<div class="pcard-price"><span class="pcard-now">'+baht(now)+'</span>'
+      + (d?'<span class="pcard-was">'+baht(p.Price)+'</span>':'')+'</div>'
+      + '<span class="pcard-cta">ดูใน Shopee →</span>'
+      + '</div></a>';
+  }
+
+  function renderProducts(products){
+    if(!products || !products.length || !elProdSec) return;
+    var picked = products.slice().sort(function(a,b){ return pct(b)-pct(a); }).slice(0, PRODUCT_LIMIT);
+    var html = picked.map(pcardHtml).join('');
+    if(!html) return;
+    elPGrid.innerHTML = html;
+    elProdSec.hidden = false;
+  }
+
   var loaded=false;
   window.__codesPage=function(data){
     loaded=true;
-    try{ render(data && data.codes ? data.codes : []); }
+    try{
+      render(data && data.codes ? data.codes : []);
+      renderProducts(data && data.products ? data.products : []);
+    }
     catch(e){ fail('แสดงผลไม่สำเร็จ'); }
   };
   (function(){
