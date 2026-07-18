@@ -47,6 +47,27 @@
   /* ---------- Masthead ---------- */
   .masthead{ position:sticky; top:0; z-index:60; background:rgba(251,246,242,.92); backdrop-filter:blur(14px); border-bottom:1px solid var(--hair); }
   .crest{ display:flex; align-items:center; gap:10px; max-width:1180px; margin:0 auto; padding:10px 16px 7px; }
+  .crest-txt{ flex:1; min-width:0; }
+
+  .favhead{
+    flex:0 0 auto; position:relative;
+    width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--hair); background:var(--surface);
+    display:grid; place-items:center; cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .favhead:hover{ border-color:rgba(224,27,61,.4); }
+  .favhead svg{ width:19px; height:19px; fill:none; stroke:var(--red); stroke-width:2; transition:fill .15s ease; }
+  .favhead.on{ background:var(--red); border-color:var(--red); animation:favPop .3s ease; }
+  .favhead.on svg{ fill:#fff; stroke:#fff; }
+  .favhead-badge{
+    position:absolute; top:-4px; right:-4px;
+    min-width:17px; height:17px; padding:0 4px; border-radius:999px;
+    background:var(--red); color:#fff; border:2px solid var(--paper);
+    font-family:'Anuphan',sans-serif; font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .favhead.on .favhead-badge{ border-color:var(--red); background:#fff; color:var(--red); }
   /* โลโก้รูป: คุมขนาดที่ "ตัวรูป" โดยตรง ไม่ใช่ที่กล่อง -> ไม่มีทางบานเกินอีก */
   .logo.img-mode{
     display:block; width:auto; height:auto;
@@ -217,15 +238,6 @@
   .fav-btn.on svg{ fill:var(--red); stroke:var(--red); }
   .fav-btn.on{ animation:favPop .3s ease; }
   @keyframes favPop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.25); } 100%{ transform:scale(1); } }
-  .pill.favs{ border-color:rgba(224,27,61,.35); color:var(--red); }
-  .pill.favs[aria-selected="true"]{ background:var(--red); color:#fff; border-color:var(--red); }
-  .favcount{
-    display:inline-flex !important; align-items:center; justify-content:center;
-    min-width:16px; height:16px; padding:0 4px; margin-left:5px;
-    border-radius:999px; background:var(--red); color:#fff;
-    font-size:10px; font-weight:700; font-style:normal; vertical-align:middle;
-  }
-  .pill.favs[aria-selected="true"] .favcount{ background:#fff; color:var(--red); }
   .card-body{ padding:9px 10px 11px; display:flex; flex-direction:column; gap:2px; flex:1; }
   .card-name{
     font-size:13px; font-weight:500; line-height:1.45; color:var(--dim);
@@ -524,10 +536,14 @@
 <header class="masthead">
   <div class="crest">
     <div class="logo">%</div>
-    <div>
+    <div class="crest-txt">
       <div class="wordmark">มีโปรมาบอก</div>
       <div class="motto" id="motto">กำลังเช็คดีลวันนี้…</div>
     </div>
+    <button class="favhead" id="favhead" aria-label="รายการโปรด">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5c-.25 0-.5-.08-.7-.24C7.1 17 3.5 13.6 3.5 9.9 3.5 7.1 5.7 5 8.4 5c1.5 0 2.9.7 3.6 1.9C12.7 5.7 14.1 5 15.6 5c2.7 0 4.9 2.1 4.9 4.9 0 3.7-3.6 7.1-7.8 10.36-.2.16-.45.24-.7.24z"/></svg>
+      <span class="favhead-badge" id="favhead-badge" hidden>0</span>
+    </button>
   </div>
   <div class="pills" id="pills" role="tablist"></div>
   <div class="searchrow">
@@ -612,7 +628,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v27";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v28";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -653,7 +669,9 @@
       elBack=document.getElementById('back'),
       elAlso=document.getElementById('alsorow'),
       elSearch=document.getElementById('search'),
-      elSearchX=document.getElementById('search-x');
+      elSearchX=document.getElementById('search-x'),
+      elFavHead=document.getElementById('favhead'),
+      elFavBadge=document.getElementById('favhead-badge');
 
   var all=[], cats=[], featured=[], banners=[], current='home', shown=PAGE_SIZE, slide=0, timer=null;
   var ROW_MAX = 10;   // จำนวนสินค้าต่อแถวในหน้าแรก
@@ -739,6 +757,14 @@
   }
   function favId_(p){ return String(p.AffiliateLink || p.ProductName || ''); }
   function isFav_(id){ return !!favSet[id]; }
+  function favCount_(){ return Object.keys(favSet).length; }
+  function updateFavHead_(){
+    if(!elFavHead || !elFavBadge) return;
+    var n = favCount_();
+    elFavHead.classList.toggle('on', current==='__favs');
+    if(n){ elFavBadge.hidden=false; elFavBadge.textContent = n>99 ? '99+' : String(n); }
+    else { elFavBadge.hidden=true; }
+  }
   function toggleFav_(id){
     if(favSet[id]) delete favSet[id]; else favSet[id] = 1;
     saveFavs_();
@@ -871,7 +897,8 @@
         el.classList.toggle('on', on);
       });
       track(on?'fav_add':'fav_remove', fb.dataset.n, '');
-      if(current==='__favs'){ renderPills(); renderGrid(); }   // อยู่ในหน้ารายการโปรด แล้วเอาออก -> หายจากรายการทันที
+      updateFavHead_();
+      if(current==='__favs'){ renderGrid(); }   // อยู่ในหน้ารายการโปรด แล้วเอาออก -> หายจากรายการทันที
       return;
     }
     var b=e.target.closest('[data-sh]');
@@ -1085,6 +1112,9 @@
     if(e.target.closest('#seeall')) select('all', true);
   });
   elBack.addEventListener('click', function(){ select('all', true); });
+  if(elFavHead) elFavHead.addEventListener('click', function(){
+    select(current==='__favs' ? 'all' : '__favs', true);
+  });
 
   /* ---------- หมวด + ตาราง ---------- */
   function listFor(c){
@@ -1106,13 +1136,9 @@
   }
   function renderPills(){
     var nFlash=listFor('__flash').length;
-    var nFavs=listFor('__favs').length;
     var html='';
     if(nFlash) html+='<button class="pill flash" role="tab" data-c="__flash"'
       +(current==='__flash'?' aria-selected="true"':'')+'>⚡ ดีลรอบนี้</button>';
-    html+='<button class="pill favs" role="tab" data-c="__favs"'
-      +(current==='__favs'?' aria-selected="true"':'')+'>❤️ รายการโปรด'
-      +(nFavs?'<em class=\"favcount\">'+nFavs+'</em>':'')+'</button>';
     html+='<button class="pill" role="tab" data-c="all"'+(current==='all'?' aria-selected="true"':'')
        +'>ทั้งหมด</button>';
     cats.forEach(function(c){
@@ -1120,6 +1146,7 @@
           +'>'+catIcon_(c)+' '+esc(c)+'</button>';
     });
     elPills.innerHTML=html;
+    updateFavHead_();
   }
   function cardHtml(p){
     var d=pct(p), link=String(p.AffiliateLink||'');
