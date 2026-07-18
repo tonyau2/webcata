@@ -29,7 +29,7 @@
     --paper:  #FFF3EA;
     --surface:#FFFFFF;
     --ink:    #2B0D13;
-    --dim:    #8C7873;
+    --dim:    #6E5A52;
     --red:    #E01B3D;
     --red-2:  #A50F2A;
     --flame:  #FF6A2B;
@@ -41,7 +41,7 @@
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  body{ background:var(--paper); color:var(--ink); font-family:'Anuphan',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  body{ background:var(--paper); color:var(--ink); font-family:'Anuphan',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; }
   img{ display:block; max-width:100%; }
 
   /* ---------- Masthead ---------- */
@@ -78,6 +78,28 @@
 
   .pills{ display:flex; gap:7px; max-width:1180px; margin:0 auto; padding:0 16px 9px; overflow-x:auto; scrollbar-width:none; }
   .pills::-webkit-scrollbar{ display:none; }
+
+  .searchrow{ max-width:1180px; margin:0 auto; padding:0 16px 10px; }
+  .search-wrap{
+    position:relative; display:flex; align-items:center;
+    background:var(--surface); border:1px solid var(--hair); border-radius:10px;
+    padding:0 12px; height:40px; max-width:420px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-wrap:focus-within{ border-color:var(--red); box-shadow:0 0 0 3px rgba(224,27,61,.1); }
+  .search-ico{ width:16px; height:16px; color:var(--dim); flex:0 0 auto; }
+  #search{
+    flex:1; min-width:0; border:0; outline:0; background:transparent;
+    font-family:'Anuphan',sans-serif; font-size:13.5px; color:var(--ink);
+    padding:0 8px; height:100%;
+  }
+  #search::placeholder{ color:var(--dim); }
+  #search::-webkit-search-cancel-button{ display:none; }
+  #search-x{
+    border:0; background:var(--paper); color:var(--dim); cursor:pointer;
+    width:20px; height:20px; border-radius:50%; font-size:11px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center;
+  }
   .pill{
     flex:0 0 auto; background:var(--surface); border:1px solid var(--hair); color:var(--ink);
     font-family:'Anuphan',sans-serif; font-size:13px; font-weight:500;
@@ -191,9 +213,15 @@
   }
   .sh button:hover{ transform:scale(1.1); border-color:var(--hair-2); }
   .sh svg{ width:19px; height:19px; display:block; }
+  .fav-btn svg{ fill:none; stroke:var(--dim); stroke-width:2; transition:fill .15s ease, stroke .15s ease; }
+  .fav-btn.on svg{ fill:var(--red); stroke:var(--red); }
+  .fav-btn.on{ animation:favPop .3s ease; }
+  @keyframes favPop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.25); } 100%{ transform:scale(1); } }
+  .pill.favs{ border-color:rgba(224,27,61,.35); color:var(--red); }
+  .pill.favs[aria-selected="true"]{ background:var(--red); color:#fff; border-color:var(--red); }
   .card-body{ padding:9px 10px 11px; display:flex; flex-direction:column; gap:2px; flex:1; }
   .card-name{
-    font-size:12.5px; font-weight:400; line-height:1.45; color:var(--dim);
+    font-size:13px; font-weight:500; line-height:1.45; color:var(--dim);
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
   .card-price{ display:flex; align-items:baseline; gap:6px; margin-top:auto; padding-top:5px; }
@@ -495,6 +523,13 @@
     </div>
   </div>
   <div class="pills" id="pills" role="tablist"></div>
+  <div class="searchrow">
+    <div class="search-wrap">
+      <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.2" y1="16.2" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="search" id="search" placeholder="ค้นหาสินค้า เช่น เซรั่ม ลิปสติก แชมพู…" autocomplete="off" enterkeyhint="search">
+      <button id="search-x" aria-label="ล้างคำค้นหา" hidden>✕</button>
+    </div>
+  </div>
 </header>
 
 <section class="hero" id="hero" hidden>
@@ -570,7 +605,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v25";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v26";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -599,10 +634,13 @@
       elReel=document.getElementById('reel'), elReelRow=document.getElementById('reel-row'),
       elCatView=document.getElementById('catview'),
       elBack=document.getElementById('back'),
-      elAlso=document.getElementById('alsorow');
+      elAlso=document.getElementById('alsorow'),
+      elSearch=document.getElementById('search'),
+      elSearchX=document.getElementById('search-x');
 
   var all=[], cats=[], featured=[], banners=[], current='home', shown=PAGE_SIZE, slide=0, timer=null;
   var ROW_MAX = 10;   // จำนวนสินค้าต่อแถวในหน้าแรก
+  var searchQuery = '';
 
   function esc(s){
     return String(s===null||s===undefined?'':s)
@@ -662,10 +700,35 @@
   }
   function slugOf(c){
     if(c==='__flash') return 'flash';
+    if(c==='__favs') return 'favorites';
     if(c==='all') return 'all';
     if(c==='home') return '';
     return CAT_SLUG[c] || encodeURIComponent(c);
   }
+
+  /* ---------- ❤️ รายการโปรด (localStorage — ไม่ต้อง login) ---------- */
+  var FAV_KEY = 'meepromabok_favs';
+  var favSet = {};
+  function loadFavs_(){
+    try{
+      var raw = localStorage.getItem(FAV_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      favSet = {};
+      arr.forEach(function(id){ favSet[id] = 1; });
+    }catch(e){ favSet = {}; }   // เบราว์เซอร์บล็อก storage หรือ private mode -> ใช้งานได้ปกติ แค่จำไม่ได้ข้ามรอบ
+  }
+  function saveFavs_(){
+    try{ localStorage.setItem(FAV_KEY, JSON.stringify(Object.keys(favSet))); }catch(e){}
+  }
+  function favId_(p){ return String(p.AffiliateLink || p.ProductName || ''); }
+  function isFav_(id){ return !!favSet[id]; }
+  function toggleFav_(id){
+    if(favSet[id]) delete favSet[id]; else favSet[id] = 1;
+    saveFavs_();
+  }
+  loadFavs_();
+
+  var ICON_HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5c-.25 0-.5-.08-.7-.24C7.1 17 3.5 13.6 3.5 9.9 3.5 7.1 5.7 5 8.4 5c1.5 0 2.9.7 3.6 1.9C12.7 5.7 14.1 5 15.6 5c2.7 0 4.9 2.1 4.9 4.9 0 3.7-3.6 7.1-7.8 10.36-.2.16-.45.24-.7.24z"/></svg>';
 
   /* ---------- ⚡ ดีลรอบอัตโนมัติ ---------- */
   var SLOT_MS = SLOT_HOURS*60*60*1000;
@@ -781,6 +844,19 @@
     }catch(e){}
   }
   document.addEventListener('click', function(e){
+    var fb=e.target.closest('[data-fav]');
+    if(fb){
+      e.preventDefault(); e.stopPropagation();
+      var id=fb.dataset.fav;
+      toggleFav_(id);
+      var on=isFav_(id);
+      document.querySelectorAll('[data-fav="'+CSS.escape(id)+'"]').forEach(function(el){
+        el.classList.toggle('on', on);
+      });
+      track(on?'fav_add':'fav_remove', fb.dataset.n, '');
+      if(current==='__favs'){ renderPills(); renderGrid(); }   // อยู่ในหน้ารายการโปรด แล้วเอาออก -> หายจากรายการทันที
+      return;
+    }
     var b=e.target.closest('[data-sh]');
     if(b){
       e.preventDefault(); e.stopPropagation();
@@ -1003,13 +1079,22 @@
       if(tb===null) return -1;
       return ta-tb;
     });
+    if(c==='__favs') return all.filter(function(p){ return isFav_(favId_(p)); });
+    if(c==='__search'){
+      var q=searchQuery.trim().toLowerCase();
+      if(!q) return [];
+      return all.filter(function(p){ return String(p.ProductName||'').toLowerCase().indexOf(q)!==-1; });
+    }
     return all.filter(function(p){ return String(p.Category).trim()===c; });
   }
   function renderPills(){
     var nFlash=listFor('__flash').length;
+    var nFavs=listFor('__favs').length;
     var html='';
     if(nFlash) html+='<button class="pill flash" role="tab" data-c="__flash"'
       +(current==='__flash'?' aria-selected="true"':'')+'>⚡ ดีลรอบนี้</button>';
+    if(nFavs) html+='<button class="pill favs" role="tab" data-c="__favs"'
+      +(current==='__favs'?' aria-selected="true"':'')+'>❤️ รายการโปรด</button>';
     html+='<button class="pill" role="tab" data-c="all"'+(current==='all'?' aria-selected="true"':'')
        +'>ทั้งหมด</button>';
     cats.forEach(function(c){
@@ -1020,12 +1105,14 @@
   }
   function cardHtml(p){
     var d=pct(p), link=String(p.AffiliateLink||'');
+    var fid=favId_(p);
     return '<article class="card">'
       + '<a class="card-hit" href="'+esc(link)+'" target="_blank" rel="noopener sponsored"'
       + ' data-name="'+esc(p.ProductName||link)+'" data-cat="'+esc(p.Category||'')+'" aria-label="'+esc(p.ProductName||'ดูสินค้า')+'"></a>'
       + '<div class="card-media"><img loading="lazy" decoding="async"'+ONERR+' alt="'+esc(p.ProductName)+'" src="'+esc(imgUrl(p.ImageURL,500))+'"></div>'
       + (d ? '<span class="tag'+(d>=HOT_PCT?' hot':'')+'">'+(d>=HOT_PCT?'🔥 ':'')+'-'+d+'%</span>' : '')
       + '<div class="sh">'
+      + '<button data-fav="'+esc(fid)+'" data-n="'+esc(p.ProductName)+'" class="fav-btn'+(isFav_(fid)?' on':'')+'" title="บันทึกไว้ดูทีหลัง" aria-label="บันทึกไว้ดูทีหลัง">'+ICON_HEART+'</button>'
       + '<button data-sh="line" data-u="'+esc(link)+'" data-n="'+esc(p.ProductName)+'" title="แชร์ LINE" aria-label="แชร์ LINE">'+ICON_LINE+'</button>'
       + '<button data-sh="fb" data-u="'+esc(link)+'" data-n="'+esc(p.ProductName)+'" title="แชร์ Facebook" aria-label="แชร์ Facebook">'+ICON_FB+'</button>'
       + '</div>'
@@ -1040,14 +1127,22 @@
   }
   function renderGrid(){
     var list=listFor(current);
+    elCount.textContent = '';
     if(current==='__flash'){
       elTitle.innerHTML = '<span class="zap">⚡</span> ดีลรอบนี้ <span class="flash-clock" data-end="'+slotEnd()+'">⚡ 00:00:00</span>';
+    } else if(current==='__favs'){
+      elTitle.textContent = '❤️ รายการโปรด';
+    } else if(current==='__search'){
+      elTitle.textContent = 'ผลค้นหา "'+searchQuery+'"';
+      elCount.textContent = list.length ? list.length+' รายการ' : '';
     } else {
       elTitle.textContent = current==='all' ? 'ทั้งหมด' : current;
     }
-    elCount.textContent = '';
     if(!list.length){
-      elGrid.innerHTML='<div class="msg">หมวดนี้ยังไม่มีสินค้า เลือกหมวดอื่นได้เลย</div>';
+      var emptyMsg = 'หมวดนี้ยังไม่มีสินค้า เลือกหมวดอื่นได้เลย';
+      if(current==='__favs') emptyMsg = 'ยังไม่มีสินค้าที่บันทึกไว้ กดรูปหัวใจ ❤️ บนการ์ดสินค้าเพื่อเก็บไว้ดูทีหลัง';
+      if(current==='__search') emptyMsg = 'ไม่พบสินค้าที่ตรงกับ "'+esc(searchQuery)+'" ลองคำอื่นดูนะครับ';
+      elGrid.innerHTML = '<div class="msg">'+emptyMsg+'</div>';
       elMore.hidden=true; return;
     }
     elGrid.innerHTML=list.slice(0,shown).map(cardHtml).join('');
@@ -1056,6 +1151,11 @@
   }
   function select(c,push){
     current=c; shown=PAGE_SIZE;
+    if(c!=='__search'){
+      searchQuery='';
+      if(elSearch) elSearch.value='';
+      if(elSearchX) elSearchX.hidden=true;
+    }
     if(elBack) elBack.className = (c==='all') ? 'back' : 'back on';
     renderPills(); renderFlashRow(); renderGrid(); renderAlso();
     if(push) history.replaceState(null,'', c==='all'?' ':'#'+slugOf(c));
@@ -1063,6 +1163,27 @@
   }
   elPills.addEventListener('click',function(e){ var b=e.target.closest('.pill'); if(b) select(b.dataset.c,true); });
   elMore.addEventListener('click',function(){ shown+=PAGE_SIZE; renderGrid(); });
+
+  /* ---------- ช่องค้นหา ---------- */
+  var searchTimer=null;
+  if(elSearch) elSearch.addEventListener('input', function(){
+    var v=elSearch.value;
+    if(elSearchX) elSearchX.hidden = !v;
+    clearTimeout(searchTimer);
+    searchTimer=setTimeout(function(){
+      searchQuery=v;
+      current = v.trim() ? '__search' : 'all';
+      shown=PAGE_SIZE;
+      if(elBack) elBack.className = (current==='all') ? 'back' : 'back on';
+      renderPills(); renderGrid();
+      history.replaceState(null,'', current==='__search' ? '#search='+encodeURIComponent(v.trim()) : ' ');
+    }, 220);   // รอพิมพ์นิ่งสั้นๆ กันค้นหาทุกตัวอักษรถี่เกินไป
+  });
+  if(elSearchX) elSearchX.addEventListener('click', function(){
+    elSearch.value=''; elSearch.focus();
+    elSearchX.hidden=true;
+    select('all', true);
+  });
 
   /* ---------- การ์ดสิทธิพิเศษ (กดแล้วเด้งไป Shopee ทันที ไม่มีขั้นตอนคัดลอก) ---------- */
   var elCodes=document.getElementById('codes'), elTkRow=document.getElementById('tk-row');
@@ -1203,6 +1324,13 @@
     var h=decodeURIComponent((location.hash||'').replace('#',''));
     var match=cats.filter(function(c){ return slugOf(c)===h || c===h; })[0];
     if(!match && h==='flash' && all.filter(isFlash).length) match='__flash';
+    if(!match && h==='favorites' && listFor('__favs').length) match='__favs';
+    if(!match && h.indexOf('search=')===0){
+      searchQuery = h.slice(7);
+      if(elSearch) elSearch.value = searchQuery;
+      if(elSearchX) elSearchX.hidden = !searchQuery;
+      if(searchQuery.trim()) match='__search';
+    }
     current=match||'all';
 
     var best=0;
