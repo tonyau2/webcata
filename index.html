@@ -140,7 +140,15 @@
 
   /* ---------- ตารางสินค้า ---------- */
   .wrap{ max-width:1180px; margin:0 auto; padding:24px 16px 10px; }
-  .rule{ display:flex; align-items:center; gap:12px; margin-bottom:13px; }
+  .rule{ display:flex; align-items:center; gap:10px; margin-bottom:13px; }
+  .back{
+    display:none; align-items:center; gap:5px; flex:0 0 auto;
+    border:1px solid var(--hair); background:var(--surface); color:var(--ink);
+    border-radius:8px; padding:6px 12px; cursor:pointer;
+    font-family:'Anuphan',sans-serif; font-size:12.5px; font-weight:600;
+  }
+  .back:hover{ border-color:var(--hair-2); }
+  .back.on{ display:inline-flex; }
   .rule h2{ font-family:'Trirong',serif; font-weight:600; font-size:18px; color:var(--ink); white-space:nowrap; }
   .rule.hot h2{ color:var(--red-2); }
   .rule.hot i{ background:linear-gradient(90deg, rgba(224,27,61,.35), transparent); }
@@ -212,6 +220,17 @@
   }
   .msg{ grid-column:1/-1; text-align:center; color:var(--dim); font-size:14px; padding:44px 12px; }
 
+  /* ดูของหมดหมวดแล้ว -> ต่อด้วยของอื่นเลย ไม่ต้องกดย้อน */
+  #alsorow{ display:none; max-width:1180px; margin:0 auto; padding:8px 16px 0; }
+  .allbtn{
+    display:block; width:100%; margin:16px auto 0;
+    background:linear-gradient(135deg, var(--red), var(--flame)); color:#fff;
+    border:0; border-radius:10px; padding:13px; cursor:pointer;
+    font-family:'Anuphan',sans-serif; font-size:14px; font-weight:700;
+    box-shadow:0 6px 18px rgba(224,27,61,.3);
+  }
+  .allbtn:active{ transform:scale(.985); }
+
   .sk{ background:var(--surface); border:1px solid var(--hair); border-radius:12px; overflow:hidden; }
   .sk-img{ aspect-ratio:1/1; background:#F2EAE4; }
   .sk-line{ height:9px; margin:10px 11px; border-radius:5px;
@@ -236,12 +255,6 @@
   .clip-cap{ padding:9px 12px 11px; font-size:12.5px; color:var(--dim); }
 
   /* ---------- ท้ายเว็บ ---------- */
-  .notice{
-    max-width:1180px; margin:26px auto 0; padding:11px 16px;
-    display:flex; gap:9px; align-items:flex-start;
-    font-size:11px; line-height:1.55; color:var(--dim);
-  }
-  .notice b{ color:var(--red); font-weight:700; flex:0 0 auto; }
   .end{ max-width:1180px; margin:0 auto; padding:20px 16px 44px; text-align:center; }
   .end-title{ font-size:12.5px; color:var(--dim); margin-bottom:10px; }
   .end-btns{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
@@ -504,6 +517,7 @@
 
 <main class="wrap" id="catview">
   <div class="rule">
+    <button class="back" id="back">← ทั้งหมด</button>
     <h2 id="rule-title">ทั้งหมด</h2>
     <i></i>
     <span id="rule-count"></span>
@@ -518,6 +532,8 @@
   <div class="notice">ℹ️ ราคาและส่วนลดอาจมีการเปลี่ยนแปลงตามโปรโมชั่นและแคมเปญของ Shopee โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอปพลิเคชัน</div>
 </main>
 
+<section id="alsorow"></section>
+
 <section id="reel">
   <div class="rule">
     <h2>คลิปรีวิว</h2>
@@ -526,11 +542,6 @@
   </div>
   <div class="reel-row" id="reel-row"></div>
 </section>
-
-<div class="notice">
-  <b>ℹ️</b>
-  <span>ราคาและส่วนลดอาจมีการเปลี่ยนแปลงตามโปรโมชั่นและแคมเปญของ Shopee โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอปพลิเคชัน</span>
-</div>
 
 <div class="end">
   <div class="end-title">ถูกใจดีลไหน ส่งให้เพื่อนได้เลย</div>
@@ -549,10 +560,12 @@
 </div>
 
 
+<script src="config.js"></script>
 <script>
-  /* ====== ใส่ Web app URL ของโปรเจกต์นี้ตรงนี้ ====== */
-  var WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxoO0_UI-WbU8d5cRakn9RXU0ofeBqjbPST1ODfn_oDqJ__wHidzRxCPA-B1A-iq8Q3/exec";
-  var VER = "v18";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
+  var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
+  var WEBAPP_URL = String(CFG.webapp || '');
+  var VER = "v20";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -569,11 +582,7 @@
   var BANNER_MAX  = 6;      // แบนเนอร์โชว์ได้สูงสุดกี่สไลด์ (ติ๊ก Featured เกินนี้ = หมุนเวียนตามรอบ)
 
   /* ====== ข้อความปุ่ม — แก้ตรงนี้ที่เดียว เปลี่ยนทั้งเว็บ ====== */
-  /* ====== โลโก้ ======
-     ค่าเริ่มต้นหาไฟล์ img/logo.png ให้เอง
-     - มีไฟล์  -> ใช้โลโก้รูป และซ่อนชื่อ text ทิ้ง
-     - ไม่มีไฟล์ -> ถอยกลับไปใช้ป้าย % อัตโนมัติ ไม่พัง ไม่ต้องแก้อะไร */
-  var LOGO_URL   = 'logo-trim.png';
+  var LOGO_URL   = String(CFG.logo || '');   /* ตั้งใน config.js */
 
   var CTA_CARD   = 'ดูใน Shopee';        // ปุ่มบนการ์ดสินค้า (พื้นที่แคบ ควรสั้น)
   var CTA_BANNER = 'ดูดีลนี้ที่ Shopee →'; // ข้อความบนแบนเนอร์ (พื้นที่กว้าง ยาวได้)
@@ -583,7 +592,9 @@
       elDots=document.getElementById('dots'), elMore=document.getElementById('more'),
       elTitle=document.getElementById('rule-title'), elCount=document.getElementById('rule-count'),
       elReel=document.getElementById('reel'), elReelRow=document.getElementById('reel-row'),
-      elCatView=document.getElementById('catview');
+      elCatView=document.getElementById('catview'),
+      elBack=document.getElementById('back'),
+      elAlso=document.getElementById('alsorow');
 
   var all=[], cats=[], featured=[], banners=[], current='home', shown=PAGE_SIZE, slide=0, timer=null;
   var ROW_MAX = 10;   // จำนวนสินค้าต่อแถวในหน้าแรก
@@ -656,6 +667,21 @@
     return a.slice(0,n);
   }
   var autoSet = {};
+  /* แบนเนอร์: ตัวที่ติ๊ก Featured = ปักหมุดไว้เสมอ
+     ช่องที่เหลือ = สุ่มหมุนเวียนตามรอบเวลา -> ไม่มีทางเห็นตัวเดิมทุกวันอีก */
+  function buildFeatured(){
+    var pinned = all.filter(function(p){ return isOn(p.Featured); });
+    var rest   = all.filter(function(p){ return !isOn(p.Featured) && pct(p)>0; });
+
+    if(pinned.length >= BANNER_MAX){
+      featured = seededPick(pinned, BANNER_MAX, slotIndex()+777);
+    } else {
+      var need = BANNER_MAX - pinned.length;
+      featured = pinned.concat(seededPick(rest, Math.min(need, rest.length), slotIndex()+777));
+    }
+    if(!featured.length) featured = all.slice(0, BANNER_MAX);
+  }
+
   function buildAutoFlash(){
     autoSet = {};
     if(!AUTO_FLASH) return;
@@ -716,8 +742,9 @@
     }
     /* ถึงรอบใหม่ -> สุ่มชุดใหม่ทันที ไม่ต้องรีเฟรช */
     if(rolled && all.length){
-      buildAutoFlash();
-      renderPills(); renderFlashRow(); renderGrid();
+      buildAutoFlash(); buildFeatured();
+      renderBand(); restart();
+      renderPills(); renderFlashRow(); renderGrid(); renderAlso();
     }
   }, 1000);
 
@@ -863,8 +890,6 @@
     bits.push('💥 ราคา Shopee เปลี่ยนได้ตลอด เจอถูกใจกดเลย');
     bits.push('👆 แตะที่รูปได้เลย ไปหน้าสั่งซื้อทันที');
     bits.push('👍 กดตามเพจ ไม่พลาดดีลใหม่');
-    bits.push('ℹ️ ราคาและส่วนลดอาจเปลี่ยนตามโปรโมชั่นและแคมเปญของ Shopee โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอป');
-    bits.push('ℹ️ ราคาและส่วนลดอาจเปลี่ยนตามแคมเปญของ Shopee — เช็คราคาล่าสุดในแอปอีกครั้ง');
 
     var one=bits.map(function(b){ return '<span>'+esc(b)+'</span>'; }).join('');
     tr.innerHTML = one + one;
@@ -923,6 +948,29 @@
   elFlashRow.addEventListener('click', function(e){
     var b=e.target.closest('.sect-more'); if(b) select(b.dataset.c, true);
   });
+
+  /* ---------- ดูหมวดจบแล้ว ต่อด้วยของอื่น (ไม่ต้องกดย้อนไปย้อนมา) ---------- */
+  function renderAlso(){
+    if(!elAlso) return;
+    if(current==='all'){ elAlso.innerHTML=''; elAlso.style.display='none'; return; }
+
+    var others = all.filter(function(p){ return String(p.Category).trim()!==current; });
+    if(!others.length){ elAlso.innerHTML=''; elAlso.style.display='none'; return; }
+
+    var pick = seededPick(others, Math.min(ROW_MAX, others.length), slotIndex()+31);
+    elAlso.innerHTML =
+      '<section class="sect">'
+      + '<div class="sect-head"><h2>✨ สินค้าอื่นๆ ที่น่าสนใจ</h2><i></i></div>'
+      + '<div class="rowx">'+pick.map(cardHtml).join('')+'</div>'
+      + '<button class="allbtn" id="seeall">ดูสินค้าทั้งหมด '+all.length+' ชิ้น →</button>'
+      + '</section>';
+    elAlso.style.display='block';
+    revealIn(elAlso);
+  }
+  elAlso.addEventListener('click', function(e){
+    if(e.target.closest('#seeall')) select('all', true);
+  });
+  elBack.addEventListener('click', function(){ select('all', true); });
 
   /* ---------- หมวด + ตาราง ---------- */
   function listFor(c){
@@ -987,7 +1035,8 @@
   }
   function select(c,push){
     current=c; shown=PAGE_SIZE;
-    renderPills(); renderFlashRow(); renderGrid();
+    if(elBack) elBack.className = (c==='all') ? 'back' : 'back on';
+    renderPills(); renderFlashRow(); renderGrid(); renderAlso();
     if(push) history.replaceState(null,'', c==='all'?' ':'#'+slugOf(c));
     window.scrollTo({ top:0, behavior:'smooth' });
   }
@@ -1074,7 +1123,10 @@
   /* ---------- ปุ่มท้ายเว็บ ---------- */
   (function(){
     var fb=document.getElementById('fbpage');
-    if(fb && fb.getAttribute('href').indexOf('http')!==0) fb.style.display='none';
+    if(fb){
+      var fu=String(CFG.fbPage||'');
+      if(fu.indexOf('http')===0) fb.href=fu; else fb.style.display='none';
+    }
 
     var url0=location.href;
     var l=document.getElementById('sh-line');
@@ -1130,18 +1182,7 @@
     cats=CAT_ORDER.filter(function(c){ return seen[c]; })
       .concat(Object.keys(seen).filter(function(c){ return CAT_ORDER.indexOf(c)===-1; }));
 
-    var picked=all.filter(function(p){ return isOn(p.Featured); });
-    if(!picked.length) picked=all.filter(function(p){ return pct(p)>0; });
-    if(!picked.length) picked=all.slice();
-
-    /* ติ๊ก Featured เยอะเกิน -> ไม่ยัดลงแบนเนอร์ทีเดียว แต่หมุนเวียนทีละ BANNER_MAX ตามรอบเวลา
-       => ทุกตัวได้ขึ้นแบนเนอร์ครบ แค่คนละรอบ */
-    featured = (picked.length > BANNER_MAX)
-      ? seededPick(picked, BANNER_MAX, slotIndex()+777)
-      : picked.slice(0, BANNER_MAX);
-
-    banners=((data&&data.banners)?data.banners:[]).filter(function(b){ return String(b.ImageURL||'').trim(); });
-    buildAutoFlash();
+    buildFeatured();
 
     var h=decodeURIComponent((location.hash||'').replace('#',''));
     var match=cats.filter(function(c){ return slugOf(c)===h || c===h; })[0];
