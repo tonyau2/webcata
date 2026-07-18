@@ -570,7 +570,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v24";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v25";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -1210,17 +1210,24 @@
     var nFlash=all.filter(isFlash).length;
     var mt=document.getElementById('motto');
     if(mt){
-      if(!all.length){ mt.textContent='กำลังคัดดีลใหม่ กลับมาดูเร็วๆ นี้'; }
+      /* ปัดจำนวนดีลให้ดูกลมๆ น่าเชื่อถือ แทนเลขเป๊ะๆ ที่ดูจุกจิก
+         - น้อยกว่า 15 ชิ้น -> ไม่โชว์ตัวเลข (ยังไม่ถึงจุดที่ควรอวด)
+         - 15-49 ชิ้น       -> โชว์เลขจริง (ยังไม่เยอะพอจะปัดแล้วดูเกินจริง)
+         - 50 ชิ้นขึ้นไป    -> ปัดลงหลักสิบ + เครื่องหมาย + เช่น 104 -> "100+" */
+      var n=all.length, dealLabel=null;
+      if(n>=50) dealLabel = (Math.floor(n/10)*10)+'+';
+      else if(n>=15) dealLabel = String(n);
+
+      if(!n){ mt.textContent='กำลังคัดดีลใหม่ กลับมาดูเร็วๆ นี้'; }
+      else if(!dealLabel){ mt.textContent='คัดมาแล้วว่าคุ้ม อัปเดตทุกชั่วโมง'; }
       else{
-        mt.innerHTML = 'วันนี้ <b id="c1">0</b> ดีล'
+        mt.innerHTML = 'วันนี้ <b id="c1">'+esc(dealLabel)+'</b> ดีล'
           + (best ? ' · ลดสูงสุด <b id="c2">0</b>' : '')
           + (nFlash ? ' · ⚡ ใกล้หมด '+nFlash+' ชิ้น' : '');
         var c1=document.getElementById('c1'), c2=document.getElementById('c2');
         try{
-          if(c1) countUp(c1, all.length, '', 800);
           if(c2) countUp(c2, best, '%', 1000);
         }catch(e){
-          if(c1) c1.textContent=all.length;
           if(c2) c2.textContent=best+'%';
         }
       }
