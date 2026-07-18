@@ -568,7 +568,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v22";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v23";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -634,18 +634,29 @@
   function priceNow(p){ return pct(p)>0 ? p.PromoPrice : p.Price; }
   function baht(v){ return '฿'+Number(num(v)).toLocaleString('th-TH'); }
 
-  /* ยอดขาย: กรอกเลขดิบจาก Shopee ในคอลัมน์ Sold -> แสดงแบบ Shopee (1.2พัน / 1.5หมื่น) */
+  /* ยอดขาย: รับได้ทั้ง 2 แบบในคอลัมน์ Sold แล้วแปลงให้เป็นหน่วยเดียวกันทั้งเว็บ
+       1) เลขดิบล้วนๆ         เช่น 1200, 15000
+       2) ข้อความจาก Shopee   เช่น 20พัน+, 6พัน+, 10หมื่น+, 100พัน+  (ก็อปวางได้เลย ไม่ต้องแปลงเอง)
+     เครื่องหมาย + ถ้ามีในต้นฉบับ จะคงไว้ (แปลว่า "มากกว่า" ไม่ใช่ตัวเลขเป๊ะ) */
+  function parseSold_(raw){
+    var s=String(raw===null||raw===undefined?'':raw).trim();
+    if(!s) return null;
+    var m=s.match(/^([\d,.]+)\s*(พัน|หมื่น|แสน|ล้าน)?\s*(\+)?$/);
+    if(!m) return null;
+    var n=parseFloat(m[1].replace(/,/g,''));
+    if(!isFinite(n)) return null;
+    var mult={ 'พัน':1000, 'หมื่น':10000, 'แสน':100000, 'ล้าน':1000000 }[m[2]] || 1;
+    return { value:n*mult, plus:!!m[3] };
+  }
   function soldText(p){
-    var raw=String(p.Sold===null||p.Sold===undefined?'':p.Sold).trim();
-    if(!raw) return '';
-    var n=num(raw);
-    if(!n) return '';
-    var t;
+    var parsed=parseSold_(p.Sold);
+    if(!parsed || !parsed.value) return '';
+    var n=parsed.value, t;
     if(n>=1000000) t=(n/1000000).toFixed(n%1000000?1:0).replace(/\.0$/,'')+' ล้าน';
     else if(n>=10000) t=(n/10000).toFixed(n%10000?1:0).replace(/\.0$/,'')+' หมื่น';
     else if(n>=1000) t=(n/1000).toFixed(n%1000?1:0).replace(/\.0$/,'')+' พัน';
-    else t=String(n);
-    return 'ขายแล้ว '+t+' ชิ้น';
+    else t=String(Math.round(n));
+    return 'ขายแล้ว '+t+(parsed.plus?'+':'')+' ชิ้น';
   }
   function slugOf(c){
     if(c==='__flash') return 'flash';
