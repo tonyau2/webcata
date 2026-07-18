@@ -570,7 +570,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v23";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v24";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -698,6 +698,10 @@
     if(!featured.length) featured = all.slice(0, BANNER_MAX);
   }
 
+  function reorderAll(){
+    all = seededPick(all, all.length, slotIndex()+501);
+  }
+
   function buildAutoFlash(){
     autoSet = {};
     if(!AUTO_FLASH) return;
@@ -758,6 +762,7 @@
     }
     /* ถึงรอบใหม่ -> สุ่มชุดใหม่ทันที ไม่ต้องรีเฟรช */
     if(rolled && all.length){
+      reorderAll();
       buildAutoFlash(); buildFeatured();
       renderBand(); restart();
       renderPills(); renderFlashRow(); renderGrid(); renderAlso();
@@ -902,7 +907,7 @@
     if(best>=30) bits.push('🔥 ลดสูงสุด '+best+'% วันนี้');
     bits.push('⚡ ดีลรอบนี้สลับของใหม่ทุก '+SLOT_HOURS+' ชั่วโมง — พลาดแล้วพลาดเลย');
     bits.push('✅ คัดมาแล้วว่าลดจริง ไม่ต้องนั่งเทียบราคาเอง');
-    if(codes && codes.length) bits.push('🎟️ แจก Code ส่วนลดสูงสุด 50% ทุกวัน⚡ ');
+    if(codes && codes.length) bits.push('🎟️ แจก Code ส่วนลดสูงสุด 50% ทุกวัน⚡');
     bits.push('💥 ราคา Shopee เปลี่ยนได้ตลอด เจอถูกใจกดเลย');
     bits.push('👆 แตะที่รูปได้เลย ไปหน้าสั่งซื้อทันที');
     bits.push('👍 กดตามเพจ ไม่พลาดดีลใหม่');
@@ -1186,7 +1191,7 @@
   function build(data){
     all=(data&&data.products)?data.products:[];
     all.forEach(function(p,i){ p.__id = 'p'+i; });   // id ประจำแถว ไม่ขึ้นกับชื่อ
-    all.sort(function(a,b){ return pct(b)-pct(a); });
+    reorderAll();   // สลับลำดับสินค้าทุกชั่วโมง (ไม่ยึด % ลดเป็นหลักอีกต่อไป)
 
     var seen={};
     all.forEach(function(p){ var c=String(p.Category).trim(); if(c) seen[c]=1; });
