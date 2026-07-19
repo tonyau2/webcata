@@ -534,6 +534,19 @@
   }
 
   /* ---------- 🍜 กล่องเด้งชวนกินตามเวลา ---------- */
+  /* ---------- ปุ่มลอย LINE OA ---------- */
+  .line-fab{
+    position:fixed; right:12px; bottom:14px; z-index:80;
+    display:flex; align-items:center; gap:6px;
+    background:#06C755; color:#fff; text-decoration:none;
+    border-radius:999px; padding:8px 14px 8px 10px;
+    font-family:'Anuphan',sans-serif; font-size:12.5px; font-weight:700;
+    box-shadow:0 5px 16px rgba(6,199,85,.4);
+    animation:lineFabIn .45s cubic-bezier(.2,1.3,.4,1);
+  }
+  .line-fab svg{ width:20px; height:20px; flex:0 0 auto; }
+  @keyframes lineFabIn{ from{ opacity:0; transform:translateY(14px) scale(.9); } to{ opacity:1; transform:none; } }
+
   .food-nudge{
     position:fixed; left:14px; bottom:16px; z-index:79; width:260px;
     display:none; align-items:center; gap:10px;
@@ -657,6 +670,11 @@
   </div>
 </div>
 
+<a class="line-fab" id="line-fab" href="https://line.me/R/ti/p/@815ulggf" target="_blank" rel="noopener" aria-label="เพิ่มเพื่อน LINE รับดีล">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#fff"/><path fill="#06C755" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>
+  เพิ่มเพื่อน LINE
+</a>
+
 <div class="food-nudge" id="food-nudge">
   <button class="food-nudge-x" id="food-nudge-x" aria-label="ปิด">✕</button>
   <a href="/food/" id="food-nudge-link" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
@@ -674,7 +692,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v30";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v32";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -951,7 +969,11 @@
     if(b){
       e.preventDefault(); e.stopPropagation();
       track('share', b.dataset.n, '');
-      pop(b.dataset.sh==='line' ? lineUrl(b.dataset.u) : fbUrl(b.dataset.u));
+      /* แชร์ลิงก์เว็บเราเสมอ ไม่ใช่ลิงก์ Shopee ตรงๆ -> กัน Facebook ตัดลิงก์ทิ้งจากโพสต์ */
+      var shareUrl = 'https://meepromabok.com/';
+      var shareText = String(b.dataset.n||'') + ' ที่มีโปรมาบอก';
+      if(b.dataset.sh==='line') shareLine_(shareUrl, shareText);
+      else shareFb_(shareUrl, shareText);
       return;
     }
     var a=e.target.closest('a[rel~="sponsored"]');
@@ -962,6 +984,34 @@
   function lineUrl(u){ return 'https://social-plugins.line.me/lineit/share?url='+encodeURIComponent(u); }
   function fbUrl(u){ return 'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(u); }
   function pop(u){ window.open(u,'_blank','noopener,width=600,height=640'); }
+  function isMobile_(){ return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
+
+  /* LINE: บนมือถือเปิดแอปตรงผ่าน URL scheme (line://) ไม่ผ่านเบราว์เซอร์
+     ถ้าไม่ได้ลง LINE ไว้ หรือเปิดจากคอม -> fallback ไปหน้าเว็บแชร์ตามปกติ */
+  function shareLine_(url, text){
+    if(isMobile_()){
+      var appUrl = 'line://msg/text/' + encodeURIComponent((text?text+'\n':'') + url);
+      var fell = false;
+      var fallback = setTimeout(function(){ if(!fell){ fell=true; pop(lineUrl(url)); } }, 1200);
+      window.addEventListener('blur', function onBlur(){
+        fell = true; clearTimeout(fallback);
+        window.removeEventListener('blur', onBlur);
+      });
+      location.href = appUrl;
+    } else {
+      pop(lineUrl(url));
+    }
+  }
+  /* Facebook: ไม่มี URL scheme เปิดแอปตรงแบบ LINE (ปิดช่องทางนี้ไปแล้วด้วยเหตุผลความปลอดภัย)
+     ใช้เมนูแชร์ของเครื่อง (native share) แทน ซึ่งมือถือส่วนใหญ่จะเชื่อมไปแอปที่ล็อกอินอยู่แล้วให้เอง
+     ถ้าเครื่องไม่รองรับ (เช่นเปิดจากคอม) -> fallback ไปหน้าเว็บแชร์ตามปกติ */
+  function shareFb_(url, text){
+    if(navigator.share){
+      navigator.share({ title:text||'', url:url }).catch(function(){});
+    } else {
+      pop(fbUrl(url));
+    }
+  }
 
   var ICON_LINE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#06C755"/><path fill="#fff" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/><g fill="#06C755"><rect x="7.5" y="9.2" width="1" height="3.4" rx=".4"/><rect x="7.5" y="11.6" width="2.3" height="1" rx=".4"/><rect x="10.8" y="9.2" width="1" height="3.4" rx=".4"/><rect x="12.9" y="9.2" width="1" height="3.4" rx=".4"/><rect x="13.6" y="9.2" width="2.2" height="1" rx=".4"/><rect x="13.6" y="11.6" width="2.2" height="1" rx=".4"/><rect x="13.6" y="10.4" width="1.8" height=".9" rx=".4"/></g></svg>';
   var ICON_FB   = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#1877F2"/><path fill="#fff" d="M15.6 12.6l.4-2.5h-2.4V8.5c0-.7.3-1.4 1.4-1.4h1.1V5c0 0-1-.2-1.9-.2-2 0-3.2 1.2-3.2 3.4v1.9H8.8v2.5H11V19h2.6v-6.4h2z"/></svg>';
@@ -1351,6 +1401,9 @@
 
   /* ---------- ปุ่มท้ายเว็บ ---------- */
   (function(){
+    var lf=document.getElementById('line-fab');
+    if(lf) lf.addEventListener('click', function(){ track('line_add','','fab'); });
+
     var fb=document.getElementById('fbpage');
     if(fb){
       var fu=String(CFG.fbPage||'');
@@ -1359,9 +1412,9 @@
 
     var url0=location.href;
     var l=document.getElementById('sh-line');
-    if(l) l.addEventListener('click', function(){ track('share','','page'); pop(lineUrl(url0)); });
+    if(l) l.addEventListener('click', function(){ track('share','','page'); shareLine_(url0,'มีโปรมาบอก'); });
     var f=document.getElementById('sh-fb');
-    if(f) f.addEventListener('click', function(){ track('share','','page'); pop(fbUrl(url0)); });
+    if(f) f.addEventListener('click', function(){ track('share','','page'); shareFb_(url0,'มีโปรมาบอก'); });
 
     var sb=document.getElementById('share');
     if(sb) sb.addEventListener('click', function(){
