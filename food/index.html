@@ -37,19 +37,6 @@
   img{ display:block; max-width:100%; }
   a{ color:inherit; }
 
-  header{
-    background:linear-gradient(105deg, var(--red-2) 0%, var(--red) 55%, var(--flame) 100%);
-    color:#fff; text-align:center; padding:34px 16px 26px;
-  }
-  header .kicker{ font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gold-hi); margin-bottom:8px; }
-  header h1{ font-family:'Trirong',serif; font-weight:600; font-size:clamp(21px,5vw,30px); line-height:1.35; max-width:640px; margin:0 auto; }
-  header p{ font-size:13.5px; color:rgba(255,255,255,.86); max-width:520px; margin:10px auto 0; }
-  .home{
-    display:inline-flex; align-items:center; gap:6px; margin-top:18px;
-    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3);
-    border-radius:999px; padding:8px 18px; font-size:13px; font-weight:600; text-decoration:none;
-  }
-
   main{ max-width:1000px; margin:0 auto; padding:20px 16px 60px; }
   .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
   @media(min-width:620px){ .grid{ grid-template-columns:repeat(3,1fr); gap:14px; } }
@@ -109,15 +96,21 @@
     font-size:11.5px; color:var(--dim); text-align:center; line-height:1.6;
   }
   footer{ text-align:center; padding:10px 16px 44px; }
-  footer a{
-    display:inline-block; background:var(--ink); color:#fff; text-decoration:none;
-    border-radius:10px; padding:13px 28px; font-weight:700; font-size:14px;
+  .notice{
+    max-width:1000px; margin:16px auto 0; padding:10px 14px;
+    background:#FFF9EE; border:1px solid rgba(201,153,47,.35);
+    border-radius:9px; color:#7A6034; font-size:11.5px; line-height:1.55; text-align:center;
   }
-  .note{ text-align:center; font-size:11.5px; color:var(--dim); padding:0 16px 30px; }
 
-  .food-header-img{ display:block; text-decoration:none; }
+  .food-header-img{ display:block; text-decoration:none; max-width:1000px; margin:0 auto; }
   .food-header-img img{ width:100%; aspect-ratio:1.83/1; object-fit:cover; display:block; }
   .food-header-cta{ text-align:center; padding:16px 16px 0; }
+  .back-nav{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--surface); border:1.5px solid var(--ink); color:var(--ink);
+    text-decoration:none; border-radius:999px; padding:9px 20px;
+    font-size:13.5px; font-weight:700;
+  }
 </style>
 </head>
 <body>
@@ -126,10 +119,10 @@
   <img src="food-banner.png" alt="หิวเมื่อไหร่ กดเลย รวมร้านและเมนูเด็ดจาก Shopee Food">
 </a>
 <div class="food-header-cta">
-  <a class="home" href="https://meepromabok.com/">🛍️ ดูดีลสินค้าลดราคาทั้งหมด →</a>
+  <a class="back-nav" href="https://meepromabok.com/">← กลับไปหน้าสินค้าลดราคา</a>
 </div>
 
-<div class="note-area">📍 ร้านเชนใหญ่ระบบเลือกสาขาใกล้คุณให้อัตโนมัติ ส่วนร้านเดี่ยวอาจส่งได้เฉพาะบางพื้นที่ ดูป้ายพื้นที่บนการ์ดก่อนกดสั่ง</div>
+<div class="note-area">📍 หาร้านอร่อยใกล้คุณได้เลย</div>
 
 <main>
   <div class="grid" id="grid">
@@ -141,9 +134,9 @@
 </main>
 
 <footer>
-  <a href="https://meepromabok.com/">เลือกซื้อสินค้าลดราคาทั้งหมด →</a>
+  <a class="back-nav" href="https://meepromabok.com/">← กลับไปหน้าสินค้าลดราคา</a>
 </footer>
-<div class="note">ลิงก์สั่งอาหารเป็นลิงก์ affiliate</div>
+<div class="notice">ℹ️ ราคาและโปรโมชั่นร้านอาหารอาจมีการเปลี่ยนแปลงตามแคมเปญของ Shopee Food โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอปพลิเคชัน</div>
 
 <script src="../config.js"></script>
 <script>
@@ -216,7 +209,7 @@
     try{
       allFoods = ((data && data.foods) ? data.foods : []).filter(function(f){ return isOn(f.Active===undefined?true:f.Active) && f.Link; });
       if(!allFoods.length){
-        elGrid.innerHTML = '<div class="msg">ตอนนี้ยังไม่มีเมนูอาหาร กลับมาดูใหม่เร็วๆ นี้นะครับ<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">ดูดีลสินค้าลดราคาทั้งหมด →</a></div>';
+        elGrid.innerHTML = '<div class="msg">ตอนนี้ยังไม่มีเมนูอาหาร กลับมาดูใหม่เร็วๆ นี้นะครับ<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">← กลับไปหน้าสินค้าลดราคา</a></div>';
       } else {
         renderGrid();
       }
