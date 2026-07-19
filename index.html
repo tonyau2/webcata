@@ -526,6 +526,28 @@
     .rv{ opacity:1 !important; transform:none !important; }
     .ticker-tr{ animation:none !important; }
   }
+
+  /* ---------- 🍜 กล่องเด้งชวนกินตามเวลา ---------- */
+  .food-nudge{
+    position:fixed; left:14px; bottom:16px; z-index:79; max-width:280px;
+    display:none; align-items:center; gap:10px;
+    background:var(--surface); border:1px solid rgba(201,153,47,.4);
+    border-radius:14px; padding:10px 12px; text-decoration:none; color:inherit;
+    box-shadow:0 10px 26px rgba(43,13,19,.18);
+    animation:foodIn .4s cubic-bezier(.2,1.3,.4,1);
+  }
+  .food-nudge.on{ display:flex; }
+  .food-nudge img{ width:52px; height:52px; border-radius:10px; object-fit:cover; flex:0 0 auto; background:#f2eae4; }
+  .food-nudge-txt{ flex:1; min-width:0; }
+  .food-nudge-q{ font-weight:700; font-size:13px; color:var(--ink); line-height:1.35; }
+  .food-nudge-cta{ font-size:11px; font-weight:600; color:var(--red); margin-top:3px; }
+  .food-nudge-x{
+    position:absolute; top:-8px; right:-8px; width:24px; height:24px; border-radius:50%;
+    background:var(--ink); color:#fff; border:2px solid var(--paper); font-size:12px;
+    display:grid; place-items:center; cursor:pointer;
+  }
+  @keyframes foodIn{ from{opacity:0; transform:translateY(14px) scale(.92);} to{opacity:1; transform:none;} }
+  @media(min-width:820px){ .food-nudge{ left:20px; bottom:20px; max-width:300px; } }
 </style>
 </head>
 <body>
@@ -622,6 +644,16 @@
   </div>
 </div>
 
+<div class="food-nudge" id="food-nudge">
+  <button class="food-nudge-x" id="food-nudge-x" aria-label="ปิด">✕</button>
+  <a href="/food/" id="food-nudge-link" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+    <img id="food-nudge-img" src="" alt="อาหาร" loading="lazy">
+    <div class="food-nudge-txt">
+      <div class="food-nudge-q" id="food-nudge-q"></div>
+      <div class="food-nudge-cta">ดูเมนูเลย →</div>
+    </div>
+  </a>
+</div>
 
 <script src="config.js"></script>
 <script>
@@ -1345,6 +1377,63 @@
     }, {passive:true});
   })();
 
+  /* ---------- 🍜 กล่องเด้งชวนกินตามเวลา (สุ่มเมนูให้ตรงมื้อ) ---------- */
+  var MEAL_WINDOWS = [
+    { key:'breakfast', from:6,  to:10, label:'เช้า',   msgs:['กินข้าวเช้าแล้วหรือยัง? 🍳','เช้านี้กินอะไรดี','กินเช้าด้วยกันไหม ☕'] },
+    { key:'lunch',     from:11, to:14, label:'เที่ยง', msgs:['เที่ยงนี้กินอะไรดี? 🍜','คิดเมนูเที่ยงออกหรือยัง','เที่ยงนี้กินไรช่วยคิดหน่อยไหม'] },
+    { key:'dinner',    from:17, to:20, label:'เย็น',   msgs:['เย็นนี้กินอะไรดี? 🍲','มื้อเย็นวันนี้ยังไม่ตัดสินใจใช่ไหม','ดินเนอร์คืนนี้กินไรดีนะ'] },
+    { key:'late',      from:21, to:26, label:'ดึก',    msgs:['ดึกแล้วหิวจัง มีไรกินไหม 🌙','กินดึกกินดี หิวป้ะเนี่ย','ยังไม่นอน สั่งอะไรกินก่อนไหม'] }
+  ];
+  function currentMeal_(){
+    var h = new Date().getHours();
+    for(var i=0;i<MEAL_WINDOWS.length;i++){
+      var w = MEAL_WINDOWS[i], to = w.to>24 ? w.to-24 : w.to;
+      if(w.to>24){ if(h>=w.from || h<to) return w; }
+      else if(h>=w.from && h<w.to) return w;
+    }
+    return null;
+  }
+  function foodDismissKey_(mealKey){
+    var d = new Date();
+    return 'mpb_food_'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'_'+mealKey;
+  }
+  function mealsOfFood_(raw){
+    raw=String(raw||'').trim();
+    if(!raw) return [];
+    return raw.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  }
+  function pickFoodForMeal_(foods, meal){
+    var pool = (foods||[]).filter(function(f){
+      var tags = mealsOfFood_(f.Meal);
+      return !tags.length || tags.indexOf(meal.label)!==-1;
+    });
+    if(!pool.length) pool = foods||[];
+    if(!pool.length) return null;
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+  function initFoodNudge_(foods){
+    var meal = currentMeal_();
+    if(!meal) return;
+    var key = foodDismissKey_(meal.key);
+    try{ if(localStorage.getItem(key)) return; }catch(e){}
+    var box=document.getElementById('food-nudge'); if(!box) return;
+    var msg = meal.msgs[Math.floor(Math.random()*meal.msgs.length)];
+    document.getElementById('food-nudge-q').textContent = msg;
+    var img=document.getElementById('food-nudge-img');
+    var pick = pickFoodForMeal_(foods, meal);
+    img.src = pick ? imgUrl(pick.ImageURL, 120) : IMG_PLACEHOLDER;
+    setTimeout(function(){ box.classList.add('on'); }, 4000);
+    document.getElementById('food-nudge-x').addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      box.classList.remove('on');
+      try{ localStorage.setItem(key,'1'); }catch(err){}
+    });
+    document.getElementById('food-nudge-link').addEventListener('click', function(){
+      try{ localStorage.setItem(key,'1'); }catch(err){}
+      track('food_nudge_click', msg);
+    });
+  }
+
   /* ---------- โหลดข้อมูล ---------- */
   function fail(m){
     /* โชว์ error ตรงที่มองเห็นเสมอ (เมื่อก่อนซ่อนอยู่ใน #grid ที่ถูกปิดไว้) */
@@ -1411,6 +1500,7 @@
     renderCodes((data&&data.codes)?data.codes:[]);
     renderTicker((data&&data.codes)?data.codes:[]);
     renderReel((data&&data.videos)?data.videos:[]);
+    initFoodNudge_((data&&data.foods)?data.foods:[]);
     track('view','','');
   }
 
