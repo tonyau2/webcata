@@ -112,18 +112,6 @@
     font-size:11.5px; color:var(--dim); text-align:center; line-height:1.6;
   }
 
-  .brandsect{
-    max-width:1000px; margin:18px auto 0; padding:14px 16px 4px;
-    background:linear-gradient(180deg, rgba(255,106,43,.12), transparent 80%);
-    border-radius:14px;
-  }
-  .brandsect-head{ display:flex; align-items:center; gap:10px; margin-bottom:11px; }
-  .brandsect-head h2{ font-family:'Trirong',serif; font-weight:600; font-size:16px; color:var(--red-2); white-space:nowrap; }
-  .brandsect-head i{ flex:1; height:1px; background:var(--hair); }
-  .brand-row{ display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:8px; scrollbar-width:none; }
-  .brand-row::-webkit-scrollbar{ display:none; }
-  .brand-row .fcard{ flex:0 0 44%; max-width:190px; scroll-snap-align:start; }
-  @media(min-width:620px){ .brand-row .fcard{ flex:0 0 200px; max-width:200px; } }
   footer{ text-align:center; padding:10px 16px 44px; }
   .notice{
     max-width:1000px; margin:16px auto 0; padding:10px 14px;
@@ -160,8 +148,6 @@
 </div>
 
 <div class="note-area">📍 หาร้านอร่อยใกล้คุณได้เลย</div>
-
-<section id="brandsect"></section>
 
 <main>
   <div class="grid" id="grid">
@@ -262,19 +248,6 @@
     var a=e.target.closest('a.fcard'); if(a) track('food_click', a.dataset.name);
   });
 
-  /* แถบโปรแรงจากแบรนด์ดัง — ดึงเฉพาะร้านที่กรอก Badge ไว้ในชีต */
-  var elBrand = document.getElementById('brandsect');
-  function renderBrandSect(){
-    if(!elBrand) return;
-    var picks = allFoods.filter(function(f){ return String(f.Badge||'').trim(); });
-    if(!picks.length){ elBrand.innerHTML=''; return; }
-    elBrand.innerHTML =
-      '<div class="brandsect">'
-      + '<div class="brandsect-head"><h2>🔥 โปรแรงจากแบรนด์ดัง</h2><i></i></div>'
-      + '<div class="brand-row">'+picks.map(cardHtml).join('')+'</div>'
-      + '</div>';
-  }
-
   function fail(msg){
     elGrid.innerHTML = '<div class="msg">โหลดเมนูไม่สำเร็จ: '+esc(msg)+'<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">ไปที่หน้าหลักแทน →</a></div>';
   }
@@ -288,7 +261,6 @@
         elGrid.innerHTML = '<div class="msg">ตอนนี้ยังไม่มีเมนูอาหาร กลับมาดูใหม่เร็วๆ นี้นะครับ<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">← กลับไปหน้าสินค้าลดราคา</a></div>';
       } else {
         buildHotPicks_();
-        renderBrandSect();
         renderGrid();
       }
       track('view_food','');
