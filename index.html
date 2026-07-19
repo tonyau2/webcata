@@ -389,6 +389,12 @@
   .card{ will-change:transform; }
   .card:active{ transform:scale(.985); }
 
+  /* ---------- 🔥 กรอบไฟการ์ดดีลรอบนี้ (จับคู่กับป้ายลดหนัก) ---------- */
+  .card.hotpick{ border-color:#FF6A00; animation:cardHotGlow 1.3s ease-in-out infinite; }
+  @keyframes cardHotGlow{
+    0%,100%{ box-shadow:0 0 0 0 rgba(255,80,0,.85), 0 0 16px 3px rgba(255,106,0,.9); }
+    50%{ box-shadow:0 0 0 7px rgba(255,80,0,0), 0 0 34px 9px rgba(255,140,0,1); }
+  }
   /* ---------- แบนเนอร์รูปจริง ---------- */
   .imgband{ display:block; position:relative; }
   .imgband img{ width:100%; aspect-ratio:2/1; object-fit:cover; display:block; }
@@ -1191,7 +1197,8 @@
   function cardHtml(p){
     var d=pct(p), link=String(p.AffiliateLink||'');
     var fid=favId_(p);
-    return '<article class="card">'
+    var hot=isFlash(p);
+    return '<article class="card'+(hot?' hotpick':'')+'">'
       + '<a class="card-hit" href="'+esc(link)+'" target="_blank" rel="noopener sponsored"'
       + ' data-name="'+esc(p.ProductName||link)+'" data-cat="'+esc(p.Category||'')+'" aria-label="'+esc(p.ProductName||'ดูสินค้า')+'"></a>'
       + '<div class="card-media"><img loading="lazy" decoding="async"'+ONERR+' alt="'+esc(p.ProductName)+'" src="'+esc(imgUrl(p.ImageURL,500))+'"></div>'
@@ -1423,7 +1430,7 @@
     var meal = currentMeal_();
     if(!meal) return;
     var key = foodDismissKey_(meal.key);
-    try{ if(localStorage.getItem(key)) return; }catch(e){}
+    try{ if(localStorage.getItem(key)) return; }catch(e){}   // กด X ปิดไปแล้วในมื้อนี้ = ไม่เด้งอีกจนขึ้นมื้อใหม่
     var box=document.getElementById('food-nudge'); if(!box) return;
     var msg = meal.msgs[Math.floor(Math.random()*meal.msgs.length)];
     document.getElementById('food-nudge-q').textContent = msg;
@@ -1431,13 +1438,14 @@
     var pick = pickFoodForMeal_(foods, meal);
     img.src = pick ? imgUrl(pick.ImageURL, 120) : IMG_PLACEHOLDER;
     setTimeout(function(){ box.classList.add('on'); }, 4000);
+    /* กด X = ปิดถาวรเฉพาะมื้อนี้ (เด้งใหม่เมื่อขึ้นมื้อถัดไป) */
     document.getElementById('food-nudge-x').addEventListener('click', function(e){
       e.preventDefault(); e.stopPropagation();
       box.classList.remove('on');
       try{ localStorage.setItem(key,'1'); }catch(err){}
     });
+    /* กดตัวกล่องไปดูเมนู = แค่เก็บสถิติ ไม่ปิดถาวร (เผื่อกลับมาแล้วยังหิวอยู่ ให้เด้งได้อีก) */
     document.getElementById('food-nudge-link').addEventListener('click', function(){
-      try{ localStorage.setItem(key,'1'); }catch(err){}
       track('food_nudge_click', msg);
     });
   }
