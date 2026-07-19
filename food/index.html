@@ -68,6 +68,22 @@
     display:inline-flex; align-items:center; gap:3px;
     font-size:10.5px; color:var(--dim); font-weight:500;
   }
+
+  /* ---------- 🔥 การ์ดสุ่มเด่นประจำชั่วโมง ---------- */
+  a.fcard.hotpick{
+    animation:hotpickGlow 1.6s ease-in-out infinite;
+    border-color:transparent;
+  }
+  @keyframes hotpickGlow{
+    0%,100%{ box-shadow:0 0 0 0 rgba(255,106,43,.6), 0 0 14px 3px rgba(255,140,40,.55); }
+    50%{ box-shadow:0 0 0 6px rgba(255,106,43,0), 0 0 26px 6px rgba(255,170,44,.9); }
+  }
+  .fcard-hotpick-badge{
+    position:absolute; left:0; right:0; bottom:0; z-index:2; pointer-events:none;
+    background:linear-gradient(0deg, rgba(224,27,61,.92), rgba(224,27,61,0));
+    color:#fff; font-size:11px; font-weight:700; text-align:center;
+    padding:14px 6px 6px; text-shadow:0 1px 3px rgba(0,0,0,.35);
+  }
   .fcard-body{ padding:10px 11px 12px; display:flex; flex-direction:column; gap:6px; flex:1; }
   .fcard-name{
     font-size:13.5px; font-weight:600; color:var(--ink); line-height:1.4;
@@ -175,13 +191,32 @@
     }catch(e){}
   }
 
-  function cardHtml(f){
+  /* สุ่มแบบมีเมล็ด: เมล็ดเดียวกัน = ผลเหมือนกันทุกเครื่อง เปลี่ยนทุกชั่วโมงอัตโนมัติ */
+  function slotIndex_(){ return Math.floor(Date.now()/(60*60*1000)); }
+  function hash32_(x){
+    x = x>>>0;
+    x = Math.imul(x ^ (x>>>16), 0x45d9f3b);
+    x = Math.imul(x ^ (x>>>16), 0x45d9f3b);
+    x = (x ^ (x>>>16))>>>0;
+    return x / 4294967296;
+  }
+  var hotPickIds_ = {};
+  function buildHotPicks_(){
+    hotPickIds_ = {};
+    if(allFoods.length < 3) return;   // ของน้อยเกินไป ไม่เด่นก็ได้ ทุกใบเด่นเท่ากันอยู่แล้ว
+    var idx = Math.floor(hash32_(slotIndex_()+919) * allFoods.length);
+    hotPickIds_[idx] = 1;
+  }
+
+  function cardHtml(f, i){
     var link=String(f.Link||''); if(!link) return '';
     var badge=String(f.Badge||'').trim();
     var area=String(f.Area||'').trim();
-    return '<a class="fcard" href="'+esc(link)+'" target="_blank" rel="noopener sponsored" data-name="'+esc(f.FoodName)+'">'
+    var isHot = !!hotPickIds_[i];
+    return '<a class="fcard'+(isHot?' hotpick':'')+'" href="'+esc(link)+'" target="_blank" rel="noopener sponsored" data-name="'+esc(f.FoodName)+'">'
       + '<div class="fcard-media">'
       + (badge ? '<span class="fcard-badge">'+esc(badge)+'</span>' : '')
+      + (isHot ? '<span class="fcard-hotpick-badge">🔥 แนะนำวันนี้</span>' : '')
       + '<img loading="lazy" decoding="async" alt="'+esc(f.FoodName)+'" src="'+esc(imgUrl(f.ImageURL,400))+'"></div>'
       + '<div class="fcard-body">'
       + '<div class="fcard-name">'+esc(f.FoodName)+'</div>'
@@ -194,6 +229,7 @@
       elGrid.innerHTML = '<div class="msg">ยังไม่มีเมนูอาหาร กลับมาดูใหม่เร็วๆ นี้นะครับ</div>';
       return;
     }
+    buildHotPicks_();
     elGrid.innerHTML = allFoods.map(cardHtml).join('');
   }
   elGrid.addEventListener('click', function(e){
