@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="1aoESJBg5cmN-CZtJTlNXETiK2bVROeiczODvSphLuY" />
+
+<title>หิวเมื่อไหร่ กดเลย — เมนูอาหาร Shopee Food | มีโปรมาบอก</title>
+<meta name="description" content="รวมร้านอาหารและเมนูเด็ดจาก Shopee Food เช้า เที่ยง เย็น ดึก มีให้เลือกครบ กดสั่งได้ทันที">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="หิวเมื่อไหร่ กดเลย — เมนูอาหาร Shopee Food | มีโปรมาบอก">
+<meta property="og:description" content="รวมร้านอาหารและเมนูเด็ดจาก Shopee Food กดสั่งได้ทันที">
+<meta property="og:url" content="https://meepromabok.com/food/">
+<meta property="og:site_name" content="มีโปรมาบอก">
+<meta property="og:image" content="https://meepromabok.com/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://meepromabok.com/food/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23C8102E'/%3E%3Ctext x='50' y='71' text-anchor='middle' font-size='60' font-family='Helvetica,Arial,sans-serif' font-weight='700' fill='%23fff'%3E%25%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#FFF3EA">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Trirong:wght@500;600&family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFF3EA; --surface:#FFFFFF; --ink:#2B0D13; --dim:#6E5A52;
+    --red:#E01B3D; --red-2:#A50F2A; --flame:#FF6A2B;
+    --gold:#C9992F; --gold-hi:#F0D488; --cream:#FFF7E8;
+    --hair:rgba(43,13,19,.10); --hair-2:rgba(43,13,19,.20);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--paper); color:var(--ink); font-family:'Anuphan',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  img{ display:block; max-width:100%; }
+  a{ color:inherit; }
+
+  header{
+    background:linear-gradient(105deg, var(--red-2) 0%, var(--red) 55%, var(--flame) 100%);
+    color:#fff; text-align:center; padding:34px 16px 26px;
+  }
+  header .kicker{ font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gold-hi); margin-bottom:8px; }
+  header h1{ font-family:'Trirong',serif; font-weight:600; font-size:clamp(21px,5vw,30px); line-height:1.35; max-width:640px; margin:0 auto; }
+  header p{ font-size:13.5px; color:rgba(255,255,255,.86); max-width:520px; margin:10px auto 0; }
+  header .home{
+    display:inline-flex; align-items:center; gap:6px; margin-top:18px;
+    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3);
+    border-radius:999px; padding:8px 18px; font-size:13px; font-weight:600; text-decoration:none;
+  }
+
+  .pills{
+    max-width:1000px; margin:16px auto 0; padding:0 16px;
+    display:flex; gap:7px; overflow-x:auto; scrollbar-width:none;
+  }
+  .pills::-webkit-scrollbar{ display:none; }
+  .pill{
+    flex:0 0 auto; background:var(--surface); border:1px solid var(--hair); color:var(--ink);
+    font-family:'Anuphan',sans-serif; font-size:13px; font-weight:500;
+    padding:7px 15px; border-radius:999px; cursor:pointer; white-space:nowrap;
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .pill[aria-selected="true"]{ background:var(--ink); color:#fff; border-color:var(--ink); font-weight:600; }
+
+  main{ max-width:1000px; margin:0 auto; padding:20px 16px 60px; }
+  .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  @media(min-width:620px){ .grid{ grid-template-columns:repeat(3,1fr); gap:14px; } }
+  @media(min-width:900px){ .grid{ grid-template-columns:repeat(4,1fr); gap:16px; } }
+
+  a.fcard{
+    display:flex; flex-direction:column; text-decoration:none; color:inherit;
+    background:var(--surface); border:1px solid var(--hair); border-radius:14px; overflow:hidden;
+    transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  a.fcard:hover{ transform:translateY(-2px); border-color:var(--hair-2); box-shadow:0 8px 20px rgba(36,16,20,.08); }
+  a.fcard:active{ transform:scale(.98); }
+  .fcard-media{ position:relative; aspect-ratio:1/1; background:#fff; overflow:hidden; }
+  .fcard-media img{ width:100%; height:100%; object-fit:cover; }
+  .fcard-meals{ position:absolute; top:8px; left:8px; display:flex; gap:4px; flex-wrap:wrap; }
+  .fcard-meal-tag{
+    background:rgba(43,13,19,.62); color:#fff; font-size:10px; font-weight:700;
+    padding:3px 7px; border-radius:999px; backdrop-filter:blur(2px);
+  }
+  .fcard-body{ padding:10px 11px 12px; display:flex; flex-direction:column; gap:6px; flex:1; }
+  .fcard-name{
+    font-size:13.5px; font-weight:600; color:var(--ink); line-height:1.4;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .fcard-cta{
+    margin-top:auto; display:inline-flex; align-items:center; gap:4px;
+    font-size:12px; font-weight:700; color:#fff;
+    background:linear-gradient(180deg, var(--red), var(--red-2));
+    border-radius:8px; padding:7px 10px; justify-content:center;
+    box-shadow:0 3px 9px rgba(224,27,61,.32);
+  }
+  .fcard-cta::after{ content:'→'; }
+
+  .msg{ grid-column:1/-1; text-align:center; color:var(--dim); font-size:14px; padding:50px 12px; }
+  .sk{ background:var(--surface); border:1px solid var(--hair); border-radius:14px; overflow:hidden; }
+  .sk-img{ aspect-ratio:1/1; background:#F2EAE4; }
+  .sk-line{ height:9px; margin:10px 11px; border-radius:5px;
+    background:linear-gradient(90deg, rgba(36,16,20,.05) 25%, rgba(36,16,20,.11) 37%, rgba(36,16,20,.05) 63%);
+    background-size:400% 100%; animation:shim 1.4s ease infinite; }
+  .sk-line.short{ width:52%; }
+  @keyframes shim{ from{ background-position:100% 0; } to{ background-position:-100% 0; } }
+
+  footer{ text-align:center; padding:10px 16px 44px; }
+  footer a{
+    display:inline-block; background:var(--ink); color:#fff; text-decoration:none;
+    border-radius:10px; padding:13px 28px; font-weight:700; font-size:14px;
+  }
+  .note{ text-align:center; font-size:11.5px; color:var(--dim); padding:0 16px 30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">อัปเดตอัตโนมัติทุกวัน</div>
+  <h1>หิวเมื่อไหร่ กดเลย 🍜</h1>
+  <p>รวมร้านและเมนูเด็ดจาก Shopee Food เลือกตามมื้อที่ต้องการ กดแล้วสั่งได้ทันที</p>
+  <a class="home" href="https://meepromabok.com/">🛍️ ดูดีลสินค้าลดราคาทั้งหมด →</a>
+</header>
+
+<div class="pills" id="pills" role="tablist"></div>
+
+<main>
+  <div class="grid" id="grid">
+    <div class="sk"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
+    <div class="sk"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
+    <div class="sk"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
+    <div class="sk"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
+  </div>
+</main>
+
+<footer>
+  <a href="https://meepromabok.com/">เลือกซื้อสินค้าลดราคาทั้งหมด →</a>
+</footer>
+<div class="note">ลิงก์สั่งอาหารเป็นลิงก์ affiliate</div>
+
+<script src="../config.js"></script>
+<script>
+  var CFG = (typeof window.CATA==='object' && window.CATA) ? window.CATA : {};
+  var WEBAPP_URL = String(CFG.webapp||'');
+  var elGrid = document.getElementById('grid');
+  var elPills = document.getElementById('pills');
+
+  var MEALS = [
+    { key:'all',     label:'ทั้งหมด' },
+    { key:'เช้า',    label:'🌅 เช้า' },
+    { key:'เที่ยง',  label:'☀️ เที่ยง' },
+    { key:'เย็น',    label:'🌆 เย็น' },
+    { key:'ดึก',     label:'🌙 ดึก' }
+  ];
+  var current = 'all';
+  var allFoods = [];
+
+  function esc(s){
+    return String(s===null||s===undefined?'':s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  var IMG_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22%3E%3Crect%20width=%22100%22%20height=%22100%22%20fill=%22%23F6EEE8%22/%3E%3Ctext%20x=%2250%22%20y=%2258%22%20text-anchor=%22middle%22%20font-size=%2232%22%3E%F0%9F%8D%9C%3C/text%3E%3C/svg%3E";
+  function imgUrl(raw,w){
+    var s=String(raw===null||raw===undefined?'':raw).trim();
+    if(!s) return IMG_PLACEHOLDER;
+    var m=s.match(/\/d\/([-\w]{25,})/)||s.match(/[?&]id=([-\w]{25,})/)||s.match(/^([-\w]{25,})$/);
+    if(m) return 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||500);
+    if(!/^https?:/i.test(s) && s.indexOf('/')===-1) return '../img/'+s;
+    return s;
+  }
+  document.addEventListener('error', function(e){
+    var t=e.target;
+    if(t && t.tagName==='IMG' && !t.dataset.fb){ t.dataset.fb='1'; t.src=IMG_PLACEHOLDER; }
+  }, true);
+  function isOn(v){ return v===true || String(v).trim().toUpperCase()==='TRUE'; }
+  function mealsOf(f){
+    var raw=String(f.Meal||'').trim();
+    if(!raw) return [];
+    return raw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  }
+
+  function track(type,name){
+    try{
+      if(WEBAPP_URL.indexOf('http')!==0) return;
+      new Image().src = WEBAPP_URL+'?log=1&type='+encodeURIComponent(type)
+        +'&name='+encodeURIComponent(String(name||'').slice(0,100))+'&cat=food&t='+Date.now();
+    }catch(e){}
+  }
+
+  function renderPills(){
+    elPills.innerHTML = MEALS.map(function(m){
+      return '<button class="pill" role="tab" data-k="'+m.key+'"'
+        + (current===m.key?' aria-selected="true"':'') + '>'+esc(m.label)+'</button>';
+    }).join('');
+  }
+  elPills.addEventListener('click', function(e){
+    var b=e.target.closest('.pill'); if(!b) return;
+    current=b.dataset.k; renderPills(); renderGrid();
+  });
+
+  function cardHtml(f){
+    var link=String(f.Link||''); if(!link) return '';
+    var meals=mealsOf(f);
+    return '<a class="fcard" href="'+esc(link)+'" target="_blank" rel="noopener sponsored" data-name="'+esc(f.FoodName)+'">'
+      + '<div class="fcard-media">'
+      + (meals.length ? '<div class="fcard-meals">'+meals.map(function(m){ return '<span class="fcard-meal-tag">'+esc(m)+'</span>'; }).join('')+'</div>' : '')
+      + '<img loading="lazy" decoding="async" alt="'+esc(f.FoodName)+'" src="'+esc(imgUrl(f.ImageURL,400))+'"></div>'
+      + '<div class="fcard-body">'
+      + '<div class="fcard-name">'+esc(f.FoodName)+'</div>'
+      + '<span class="fcard-cta">สั่งเลย</span>'
+      + '</div></a>';
+  }
+  function renderGrid(){
+    var list = allFoods.filter(function(f){
+      if(current==='all') return true;
+      var meals=mealsOf(f);
+      return !meals.length || meals.indexOf(current)!==-1;
+    });
+    if(!list.length){
+      elGrid.innerHTML = '<div class="msg">ยังไม่มีเมนูในหมวดนี้ ลองเลือกมื้ออื่นดูนะครับ</div>';
+      return;
+    }
+    elGrid.innerHTML = list.map(cardHtml).join('');
+  }
+  elGrid.addEventListener('click', function(e){
+    var a=e.target.closest('a.fcard'); if(a) track('food_click', a.dataset.name);
+  });
+
+  function fail(msg){
+    elGrid.innerHTML = '<div class="msg">โหลดเมนูไม่สำเร็จ: '+esc(msg)+'<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">ไปที่หน้าหลักแทน →</a></div>';
+  }
+
+  var loaded=false;
+  window.__foodPage = function(data){
+    loaded=true;
+    try{
+      allFoods = ((data && data.foods) ? data.foods : []).filter(function(f){ return isOn(f.Active===undefined?true:f.Active) && f.Link; });
+      renderPills();
+      if(!allFoods.length){
+        elGrid.innerHTML = '<div class="msg">ตอนนี้ยังไม่มีเมนูอาหาร กลับมาดูใหม่เร็วๆ นี้นะครับ<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">ดูดีลสินค้าลดราคาทั้งหมด →</a></div>';
+      } else {
+        renderGrid();
+      }
+      track('view_food','');
+    }catch(e){ fail('แสดงผลไม่สำเร็จ'); }
+  };
+  (function(){
+    if(WEBAPP_URL.indexOf('http')!==0){ fail('ยังไม่ได้ตั้งค่า WEBAPP_URL ใน config.js'); return; }
+    var s=document.createElement('script');
+    s.src=WEBAPP_URL+'?callback=__foodPage&t='+Date.now();
+    s.onerror=function(){ fail('เชื่อมต่อ Backend ไม่ได้'); };
+    document.body.appendChild(s);
+    setTimeout(function(){ if(!loaded) fail('หมดเวลารอข้อมูล'); }, 15000);
+  })();
+</script>
+
+</body>
+</html>
