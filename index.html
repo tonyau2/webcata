@@ -674,7 +674,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v29";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v30";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -1463,6 +1463,7 @@
     all=(data&&data.products)?data.products:[];
     all.forEach(function(p,i){ p.__id = 'p'+i; });   // id ประจำแถว ไม่ขึ้นกับชื่อ
     reorderAll();   // สลับลำดับสินค้าทุกชั่วโมง (ไม่ยึด % ลดเป็นหลักอีกต่อไป)
+    buildAutoFlash();   // สุ่มเลือกดีลรอบนี้ตั้งแต่โหลดหน้าแรก (ไม่งั้นกรอบไฟ+แถวดีลรอบนี้จะว่างจนกว่าจะครบชั่วโมง)
 
     var seen={};
     all.forEach(function(p){ var c=String(p.Category).trim(); if(c) seen[c]=1; });
