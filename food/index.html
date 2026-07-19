@@ -111,6 +111,19 @@
     max-width:1000px; margin:14px auto 0; padding:0 16px;
     font-size:11.5px; color:var(--dim); text-align:center; line-height:1.6;
   }
+
+  .brandsect{
+    max-width:1000px; margin:18px auto 0; padding:14px 16px 4px;
+    background:linear-gradient(180deg, rgba(255,106,43,.12), transparent 80%);
+    border-radius:14px;
+  }
+  .brandsect-head{ display:flex; align-items:center; gap:10px; margin-bottom:11px; }
+  .brandsect-head h2{ font-family:'Trirong',serif; font-weight:600; font-size:16px; color:var(--red-2); white-space:nowrap; }
+  .brandsect-head i{ flex:1; height:1px; background:var(--hair); }
+  .brand-row{ display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:8px; scrollbar-width:none; }
+  .brand-row::-webkit-scrollbar{ display:none; }
+  .brand-row .fcard{ flex:0 0 44%; max-width:190px; scroll-snap-align:start; }
+  @media(min-width:620px){ .brand-row .fcard{ flex:0 0 200px; max-width:200px; } }
   footer{ text-align:center; padding:10px 16px 44px; }
   .notice{
     max-width:1000px; margin:16px auto 0; padding:10px 14px;
@@ -128,17 +141,13 @@
     text-decoration:none; border-radius:999px; padding:9px 20px;
     font-size:13.5px; font-weight:700;
   }
-  .line-fab{
-    position:fixed; right:12px; bottom:14px; z-index:80;
-    display:flex; align-items:center; gap:6px;
+  .line-btn{
+    display:inline-flex; align-items:center; gap:6px;
     background:#06C755; color:#fff; text-decoration:none;
-    border-radius:999px; padding:8px 14px 8px 10px;
-    font-family:'Anuphan',sans-serif; font-size:12.5px; font-weight:700;
-    box-shadow:0 5px 16px rgba(6,199,85,.4);
-    animation:lineFabIn .45s cubic-bezier(.2,1.3,.4,1);
+    border-radius:999px; padding:9px 20px;
+    font-size:13.5px; font-weight:700;
   }
-  .line-fab svg{ width:20px; height:20px; flex:0 0 auto; }
-  @keyframes lineFabIn{ from{ opacity:0; transform:translateY(14px) scale(.9); } to{ opacity:1; transform:none; } }
+  .line-btn svg{ width:16px; height:16px; flex:0 0 auto; }
 </style>
 </head>
 <body>
@@ -152,6 +161,8 @@
 
 <div class="note-area">📍 หาร้านอร่อยใกล้คุณได้เลย</div>
 
+<section id="brandsect"></section>
+
 <main>
   <div class="grid" id="grid">
     <div class="sk"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
@@ -163,6 +174,10 @@
 
 <footer>
   <a class="back-nav" href="https://meepromabok.com/">← กลับไปหน้าสินค้าลดราคา</a>
+  <a class="line-btn" href="https://line.me/R/ti/p/@815ulggf" target="_blank" rel="noopener" style="margin-left:8px;">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#fff"/><path fill="#06C755" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>
+    เพิ่มเพื่อน LINE
+  </a>
 </footer>
 <div class="notice">ℹ️ ราคาและโปรโมชั่นร้านอาหารอาจมีการเปลี่ยนแปลงตามแคมเปญของ Shopee Food โปรดตรวจสอบราคาล่าสุดอีกครั้งที่หน้าแอปพลิเคชัน</div>
 
@@ -247,6 +262,19 @@
     var a=e.target.closest('a.fcard'); if(a) track('food_click', a.dataset.name);
   });
 
+  /* แถบโปรแรงจากแบรนด์ดัง — ดึงเฉพาะร้านที่กรอก Badge ไว้ในชีต */
+  var elBrand = document.getElementById('brandsect');
+  function renderBrandSect(){
+    if(!elBrand) return;
+    var picks = allFoods.filter(function(f){ return String(f.Badge||'').trim(); });
+    if(!picks.length){ elBrand.innerHTML=''; return; }
+    elBrand.innerHTML =
+      '<div class="brandsect">'
+      + '<div class="brandsect-head"><h2>🔥 โปรแรงจากแบรนด์ดัง</h2><i></i></div>'
+      + '<div class="brand-row">'+picks.map(cardHtml).join('')+'</div>'
+      + '</div>';
+  }
+
   function fail(msg){
     elGrid.innerHTML = '<div class="msg">โหลดเมนูไม่สำเร็จ: '+esc(msg)+'<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">ไปที่หน้าหลักแทน →</a></div>';
   }
@@ -259,6 +287,8 @@
       if(!allFoods.length){
         elGrid.innerHTML = '<div class="msg">ตอนนี้ยังไม่มีเมนูอาหาร กลับมาดูใหม่เร็วๆ นี้นะครับ<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">← กลับไปหน้าสินค้าลดราคา</a></div>';
       } else {
+        buildHotPicks_();
+        renderBrandSect();
         renderGrid();
       }
       track('view_food','');
@@ -273,11 +303,6 @@
     setTimeout(function(){ if(!loaded) fail('หมดเวลารอข้อมูล'); }, 15000);
   })();
 </script>
-
-<a class="line-fab" href="https://line.me/R/ti/p/@815ulggf" target="_blank" rel="noopener" aria-label="เพิ่มเพื่อน LINE">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#fff"/><path fill="#06C755" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>
-  เพิ่มเพื่อน LINE
-</a>
 
 </body>
 </html>
