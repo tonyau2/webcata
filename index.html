@@ -529,25 +529,32 @@
 
   /* ---------- 🍜 กล่องเด้งชวนกินตามเวลา ---------- */
   .food-nudge{
-    position:fixed; left:14px; bottom:16px; z-index:79; max-width:280px;
+    position:fixed; left:14px; bottom:16px; z-index:79; width:260px;
     display:none; align-items:center; gap:10px;
-    background:var(--surface); border:1px solid rgba(201,153,47,.4);
-    border-radius:14px; padding:10px 12px; text-decoration:none; color:inherit;
-    box-shadow:0 10px 26px rgba(43,13,19,.18);
-    animation:foodIn .4s cubic-bezier(.2,1.3,.4,1);
+    background:linear-gradient(105deg, var(--red-2) 0%, var(--red) 55%, var(--flame) 100%);
+    border:1px solid rgba(227,199,126,.45);
+    border-radius:16px; padding:11px 13px; text-decoration:none; color:#fff;
+    box-shadow:0 12px 30px rgba(165,15,42,.4);
+    animation:foodIn .4s cubic-bezier(.2,1.3,.4,1), foodPulse 2.6s ease-in-out infinite 1s;
   }
   .food-nudge.on{ display:flex; }
-  .food-nudge img{ width:52px; height:52px; border-radius:10px; object-fit:cover; flex:0 0 auto; background:#f2eae4; }
+  .food-nudge img{ width:62px; height:62px; border-radius:12px; object-fit:cover; flex:0 0 auto; background:#fff; padding:3px; box-shadow:0 4px 12px rgba(0,0,0,.25); }
   .food-nudge-txt{ flex:1; min-width:0; }
-  .food-nudge-q{ font-weight:700; font-size:13px; color:var(--ink); line-height:1.35; }
-  .food-nudge-cta{ font-size:11px; font-weight:600; color:var(--red); margin-top:3px; }
+  .food-nudge-kicker{ font-size:9.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-hi); margin-bottom:2px; }
+  .food-nudge-q{ font-weight:700; font-size:13.5px; color:#fff; line-height:1.3; }
+  .food-nudge-cta{ display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; color:var(--red-2); background:#fff; padding:3px 9px; border-radius:999px; margin-top:6px; }
+  .food-nudge-cta::after{ content:'→'; }
   .food-nudge-x{
     position:absolute; top:-8px; right:-8px; width:24px; height:24px; border-radius:50%;
     background:var(--ink); color:#fff; border:2px solid var(--paper); font-size:12px;
-    display:grid; place-items:center; cursor:pointer;
+    display:grid; place-items:center; cursor:pointer; z-index:2;
   }
-  @keyframes foodIn{ from{opacity:0; transform:translateY(14px) scale(.92);} to{opacity:1; transform:none;} }
-  @media(min-width:820px){ .food-nudge{ left:20px; bottom:20px; max-width:300px; } }
+  @keyframes foodIn{ from{opacity:0; transform:translateY(14px) scale(.9);} to{opacity:1; transform:none;} }
+  @keyframes foodPulse{
+    0%,100%{ box-shadow:0 12px 30px rgba(165,15,42,.4), 0 0 0 0 rgba(255,106,43,.5); }
+    50%{ box-shadow:0 12px 30px rgba(165,15,42,.4), 0 0 0 8px rgba(255,106,43,0); }
+  }
+  @media(min-width:820px){ .food-nudge{ left:20px; bottom:20px; width:290px; } }
 </style>
 </head>
 <body>
@@ -649,8 +656,9 @@
   <a href="/food/" id="food-nudge-link" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
     <img id="food-nudge-img" src="" alt="อาหาร" loading="lazy">
     <div class="food-nudge-txt">
+      <div class="food-nudge-kicker">🍜 หิวไหม</div>
       <div class="food-nudge-q" id="food-nudge-q"></div>
-      <div class="food-nudge-cta">ดูเมนูเลย →</div>
+      <span class="food-nudge-cta">ดูเมนู</span>
     </div>
   </a>
 </div>
