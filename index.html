@@ -49,8 +49,8 @@
 
   /* ---------- แบนเนอร์แนะนำแบรนด์ (บนสุด ใต้ masthead) ---------- */
   .brand-header{ max-width:1180px; margin:12px auto 0; padding:0 16px; }
-  .brand-header img{ width:100%; aspect-ratio:1.78/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 8px 22px rgba(142,11,32,.22); }
-  @media(min-width:820px){ .brand-header{ max-width:760px; } }
+  .brand-header img{ width:100%; aspect-ratio:2/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 8px 22px rgba(142,11,32,.22); }
+  @media(min-width:820px){ .brand-header img{ aspect-ratio:2.6/1; } }
   .crest{ display:flex; align-items:center; gap:10px; max-width:1180px; margin:0 auto; padding:10px 16px 7px; }
   .crest-txt{ flex:1; min-width:0; }
 
@@ -688,7 +688,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v35";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v36";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
@@ -1445,7 +1445,7 @@
   var MEAL_WINDOWS = [
     { key:'breakfast', from:6,  to:10, label:'เช้า',   msgs:['กินข้าวเช้าแล้วหรือยัง? 🍳','เช้านี้กินอะไรดี','กินเช้าด้วยกันไหม ☕'] },
     { key:'lunch',     from:11, to:14, label:'เที่ยง', msgs:['เที่ยงนี้กินอะไรดี? 🍜','คิดเมนูเที่ยงออกหรือยัง','เที่ยงนี้กินไรช่วยคิดหน่อยไหม'] },
-    { key:'dinner',    from:17, to:20, label:'เย็น',   msgs:['เย็นนี้กินอะไรดี? 🍲','มื้อเย็นวันนี้ยังไม่ตัดสินใจใช่ไหม','ดินเนอร์คืนนี้กินไรดีนะ'] },
+    { key:'dinner',    from:17, to:21, label:'เย็น',   msgs:['เย็นนี้กินอะไรดี? 🍲','มื้อเย็นวันนี้ยังไม่ตัดสินใจใช่ไหม','ดินเนอร์คืนนี้กินไรดีนะ'] },
     { key:'late',      from:21, to:26, label:'ดึก',    msgs:['ดึกแล้วหิวจัง มีไรกินไหม 🌙','กินดึกกินดี หิวป้ะเนี่ย','ยังไม่นอน สั่งอะไรกินก่อนไหม'] }
   ];
   function currentMeal_(){
