@@ -60,10 +60,10 @@
 
   /* สีเสื้อมงคล */
   .today-line{ font-size:12.5px; color:var(--dim); margin-bottom:10px; }
-  .color-chip{ display:flex; align-items:center; gap:14px; }
-  .color-dot{ width:52px; height:52px; border-radius:50%; flex:0 0 auto; box-shadow:0 3px 10px rgba(0,0,0,.35), 0 0 0 4px rgba(212,165,55,.25) inset; }
-  .color-name{ font-size:16px; font-weight:700; color:var(--ink); }
-  .color-desc{ font-size:12.5px; color:var(--dim); margin-top:2px; }
+  .color-chip{ display:flex; align-items:center; gap:10px; }
+  .color-dot{ width:34px; height:34px; border-radius:50%; flex:0 0 auto; box-shadow:0 3px 8px rgba(0,0,0,.35), 0 0 0 3px rgba(212,165,55,.25) inset; }
+  .color-name{ font-size:13.5px; font-weight:700; color:var(--ink); }
+  .color-desc{ font-size:11px; color:var(--dim); margin-top:1px; }
 
   /* ปุ่มเลือกวันเกิด */
   .date-pick{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
@@ -75,9 +75,19 @@
     background:linear-gradient(180deg, var(--gold-hi), var(--gold)); color:#2b0d0d; border:0; border-radius:10px;
     padding:9px 18px; font-family:'Anuphan',sans-serif; font-size:13px; font-weight:700; cursor:pointer;
   }
-  .zodiac-chip{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
-  .zodiac-tag{ background:var(--cream); border:1px solid var(--hair); border-radius:999px; padding:5px 13px; font-size:12.5px; font-weight:700; color:var(--gold-hi); }
-  .fortune-box{ margin-top:14px; padding:14px; background:rgba(0,0,0,.22); border:1px solid var(--hair); border-radius:12px; display:none; }
+  .zodiac-chip{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .zodiac-tag{
+    display:flex; align-items:center; gap:8px;
+    background:linear-gradient(160deg, rgba(212,165,55,.22), rgba(212,165,55,.06));
+    border:1.5px solid var(--gold); border-radius:14px; padding:8px 14px;
+    animation:zodiacPop .4s cubic-bezier(.2,1.3,.4,1);
+  }
+  .zodiac-tag .z-icon{ font-size:24px; }
+  .zodiac-tag .z-text{ display:flex; flex-direction:column; }
+  .zodiac-tag .z-label{ font-size:9.5px; color:var(--dim); letter-spacing:.06em; }
+  .zodiac-tag .z-name{ font-size:14px; font-weight:700; color:var(--gold-hi); }
+  @keyframes zodiacPop{ 0%{opacity:0; transform:scale(.85) translateY(6px);} 100%{opacity:1; transform:none;} }
+  .fortune-box{ margin-top:14px; padding:14px; background:rgba(0,0,0,.22); border:1px solid var(--hair); border-radius:12px; display:none; animation:zodiacPop .35s ease; }
   .fortune-box.on{ display:block; }
   .fortune-row{ display:flex; gap:8px; font-size:13.5px; line-height:1.6; margin-bottom:6px; color:var(--ink); }
   .fortune-row:last-child{ margin-bottom:0; }
@@ -86,18 +96,24 @@
 
   /* จั่วไพ่ */
   .deck-wrap{ text-align:center; padding:6px 0 4px; }
+  .draw-modes{ display:flex; gap:8px; justify-content:center; margin-bottom:16px; }
+  .mode-btn{
+    background:rgba(0,0,0,.25); border:1.5px solid var(--hair); color:var(--dim);
+    border-radius:999px; padding:7px 16px; font-family:'Anuphan',sans-serif; font-size:12.5px; font-weight:600; cursor:pointer;
+  }
+  .mode-btn[aria-selected="true"]{ background:linear-gradient(180deg, var(--gold-hi), var(--gold)); color:#2b0d0d; border-color:var(--gold); }
   .deck-card{
-    width:130px; height:184px; margin:0 auto; border-radius:12px; cursor:pointer;
+    width:180px; height:255px; margin:0 auto; border-radius:14px; cursor:pointer;
     background:linear-gradient(135deg, var(--red-2), var(--red) 55%, var(--flame));
     border:2px solid var(--gold-hi); display:flex; align-items:center; justify-content:center;
-    box-shadow:0 10px 26px rgba(0,0,0,.5), 0 0 22px rgba(255,106,43,.35); transition:transform .15s ease;
-    font-size:40px;
+    box-shadow:0 12px 30px rgba(0,0,0,.5), 0 0 26px rgba(255,106,43,.35); transition:transform .15s ease;
+    font-size:52px;
   }
   .deck-card:active{ transform:scale(.96); }
   .deck-hint{ font-size:12px; color:var(--dim); margin-top:10px; }
   .result-card{ display:none; text-align:center; padding:8px 4px 4px; }
   .result-card.on{ display:block; }
-  .result-card-img{ width:190px; margin:0 auto 10px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.5), 0 0 24px rgba(255,106,43,.3); }
+  .result-card-img{ width:250px; margin:0 auto 10px; border-radius:14px; box-shadow:0 12px 34px rgba(0,0,0,.5), 0 0 28px rgba(255,106,43,.3); }
   .result-name{ font-family:'Trirong',serif; font-weight:600; font-size:19px; color:var(--gold-hi); margin:4px 0 8px; }
   .result-icon{ font-size:44px; }
   .result-text{ font-size:13.5px; line-height:1.7; color:var(--ink); max-width:480px; margin:0 auto; }
@@ -106,6 +122,16 @@
     border:0; border-radius:999px; padding:9px 22px; font-size:13px; font-weight:700; cursor:pointer;
     font-family:'Anuphan',sans-serif;
   }
+
+  .spread-result{ display:none; }
+  .spread-result.on{ display:grid; grid-template-columns:1fr; gap:14px; text-align:center; }
+  @media(min-width:560px){ .spread-result.on{ grid-template-columns:repeat(3,1fr); } }
+  .spread-card{ background:rgba(0,0,0,.2); border:1px solid var(--hair); border-radius:12px; padding:12px 10px; }
+  .spread-label{ font-size:12.5px; font-weight:700; color:var(--gold-hi); margin-bottom:8px; }
+  .spread-img{ width:135px; margin:0 auto 8px; border-radius:11px; box-shadow:0 8px 20px rgba(0,0,0,.4); }
+  .spread-icon{ font-size:34px; margin-bottom:6px; }
+  .spread-name{ font-family:'Trirong',serif; font-weight:600; font-size:14.5px; color:var(--ink); margin-bottom:6px; }
+  .spread-text{ font-size:12px; line-height:1.55; color:var(--dim); }
 
   footer{ text-align:center; padding:10px 16px 44px; }
   .back-nav{
@@ -195,7 +221,11 @@
 
   <div class="card">
     <div class="card-title">🃏 จั่วไพ่ทำนายดวง</div>
-    <div class="today-line">แตะไพ่เพื่อจั่ว 1 ใบ ดูคำทำนายวันนี้</div>
+    <div class="today-line" id="deck-hint-line">เลือกจั่ว 1 ใบ หรือ 3 ใบดูครบทุกด้าน</div>
+    <div class="draw-modes">
+      <button class="mode-btn" id="mode-1" data-mode="1" aria-selected="true">จั่ว 1 ใบ</button>
+      <button class="mode-btn" id="mode-3" data-mode="3">จั่ว 3 ใบ (เงิน-รัก-งาน)</button>
+    </div>
     <div class="deck-wrap">
       <div class="deck-card" id="deck-card">🔥</div>
       <div class="deck-hint">แตะที่ไพ่</div>
@@ -206,6 +236,7 @@
         <div class="result-text" id="result-text"></div>
         <button class="redraw" id="redraw">จั่วใหม่</button>
       </div>
+      <div class="spread-result" id="spread-result"></div>
     </div>
   </div>
 
@@ -360,27 +391,31 @@
   ];
 
   var ZODIAC = [
-    { name:'ราศีมังกร', from:[12,22], to:[1,19] },
-    { name:'ราศีกุมภ์', from:[1,20], to:[2,18] },
-    { name:'ราศีมีน',   from:[2,19], to:[3,20] },
-    { name:'ราศีเมษ',   from:[3,21], to:[4,19] },
-    { name:'ราศีพฤษภ',  from:[4,20], to:[5,20] },
-    { name:'ราศีเมถุน', from:[5,21], to:[6,20] },
-    { name:'ราศีกรกฎ',  from:[6,21], to:[7,22] },
-    { name:'ราศีสิงห์', from:[7,23], to:[8,22] },
-    { name:'ราศีกันย์', from:[8,23], to:[9,22] },
-    { name:'ราศีตุลย์', from:[9,23], to:[10,22] },
-    { name:'ราศีพิจิก', from:[10,23], to:[11,21] },
-    { name:'ราศีธนู',   from:[11,22], to:[12,21] }
+    { name:'ราศีมังกร', icon:'🐐', from:[12,22], to:[1,19] },
+    { name:'ราศีกุมภ์', icon:'🏺', from:[1,20], to:[2,18] },
+    { name:'ราศีมีน',   icon:'🐟', from:[2,19], to:[3,20] },
+    { name:'ราศีเมษ',   icon:'🐏', from:[3,21], to:[4,19] },
+    { name:'ราศีพฤษภ',  icon:'🐂', from:[4,20], to:[5,20] },
+    { name:'ราศีเมถุน', icon:'👯', from:[5,21], to:[6,20] },
+    { name:'ราศีกรกฎ',  icon:'🦀', from:[6,21], to:[7,22] },
+    { name:'ราศีสิงห์', icon:'🦁', from:[7,23], to:[8,22] },
+    { name:'ราศีกันย์', icon:'🌾', from:[8,23], to:[9,22] },
+    { name:'ราศีตุลย์', icon:'⚖️', from:[9,23], to:[10,22] },
+    { name:'ราศีพิจิก', icon:'🦂', from:[10,23], to:[11,21] },
+    { name:'ราศีธนู',   icon:'🏹', from:[11,22], to:[12,21] }
   ];
   function getZodiac_(month, day){
     for(var i=0;i<ZODIAC.length;i++){
       var z=ZODIAC[i], fm=z.from[0], fd=z.from[1], tm=z.to[0], td=z.to[1];
-      if((month===fm && day>=fd) || (month===tm && day<=td)) return z.name;
+      if((month===fm && day>=fd) || (month===tm && day<=td)) return z;
     }
-    return ZODIAC[0].name;
+    return ZODIAC[0];
   }
-  var CHINESE_ZODIAC = ['ปีชวด (หนู)','ปีฉลู (วัว)','ปีขาล (เสือ)','ปีเถาะ (กระต่าย)','ปีมะโรง (มังกร)','ปีมะเส็ง (งูเล็ก)','ปีมะเมีย (ม้า)','ปีมะแม (แพะ)','ปีวอก (ลิง)','ปีระกา (ไก่)','ปีจอ (หมา)','ปีกุน (หมู)'];
+  var CHINESE_ZODIAC = [
+    {name:'ปีชวด (หนู)', icon:'🐀'}, {name:'ปีฉลู (วัว)', icon:'🐂'}, {name:'ปีขาล (เสือ)', icon:'🐯'}, {name:'ปีเถาะ (กระต่าย)', icon:'🐰'},
+    {name:'ปีมะโรง (มังกร)', icon:'🐉'}, {name:'ปีมะเส็ง (งูเล็ก)', icon:'🐍'}, {name:'ปีมะเมีย (ม้า)', icon:'🐴'}, {name:'ปีมะแม (แพะ)', icon:'🐐'},
+    {name:'ปีวอก (ลิง)', icon:'🐒'}, {name:'ปีระกา (ไก่)', icon:'🐓'}, {name:'ปีจอ (หมา)', icon:'🐶'}, {name:'ปีกุน (หมู)', icon:'🐷'}
+  ];
   function getChineseZodiac_(year){
     var idx = ((year - 2020) % 12 + 12) % 12;
     return CHINESE_ZODIAC[idx];
@@ -404,8 +439,10 @@
     var parts = dateStr.split('-');
     var y=Number(parts[0]), m=Number(parts[1]), d=Number(parts[2]);
     if(!y||!m||!d) return;
-    document.getElementById('zodiac-western').textContent = '♈ ' + getZodiac_(m,d);
-    document.getElementById('zodiac-chinese').textContent = '🐲 ' + getChineseZodiac_(y);
+    var w = getZodiac_(m,d);
+    var c = getChineseZodiac_(y);
+    document.getElementById('zodiac-western').innerHTML = '<span class="z-icon">'+w.icon+'</span><span class="z-text"><span class="z-label">ราศี</span><span class="z-name">'+esc(w.name.replace('ราศี',''))+'</span></span>';
+    document.getElementById('zodiac-chinese').innerHTML = '<span class="z-icon">'+c.icon+'</span><span class="z-text"><span class="z-label">ปีนักษัตร</span><span class="z-name">'+esc(c.name.replace(/^ปี/,'').replace(/\s*\(.*\)/,''))+'</span></span>';
     var seed = todaySeed_() + dateSeed_(dateStr);
     document.getElementById('f-money').textContent = pickSeeded_(FORTUNE_MONEY, seed+1);
     document.getElementById('f-love').textContent  = pickSeeded_(FORTUNE_LOVE, seed+2);
@@ -445,12 +482,41 @@
   ];
   var elDeck = document.getElementById('deck-card');
   var elResult = document.getElementById('result-card');
+  var elSpread = document.getElementById('spread-result');
+  var elHintLine = document.getElementById('deck-hint-line');
   var DRAW_KEY_PREFIX = 'mpb_card_';
+  var SPREAD_LABELS = [ {icon:'💰', name:'การเงิน'}, {icon:'💕', name:'ความรัก'}, {icon:'💼', name:'การงาน'} ];
+  var currentMode = 1;
 
   function drawKeyToday_(){
     var d = new Date();
-    return DRAW_KEY_PREFIX + d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+    return DRAW_KEY_PREFIX + currentMode + '_' + d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
   }
+  function pickDistinct_(n, total){
+    var pool=[]; for(var i=0;i<total;i++) pool.push(i);
+    for(var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+    return pool.slice(0,n);
+  }
+  function cardFaceHtml_(card){
+    if(card.img){
+      return '<img class="spread-img" src="'+esc(card.img)+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';">'
+        + '<div class="spread-icon" style="display:none;">'+esc(card.icon)+'</div>';
+    }
+    return '<div class="spread-icon">'+esc(card.icon)+'</div>';
+  }
+
+  function setMode_(m){
+    currentMode = m;
+    document.getElementById('mode-1').setAttribute('aria-selected', m===1?'true':'false');
+    document.getElementById('mode-3').setAttribute('aria-selected', m===3?'true':'false');
+    elHintLine.textContent = m===1 ? 'แตะไพ่เพื่อจั่ว 1 ใบ ดูคำทำนายวันนี้' : 'แตะไพ่เพื่อจั่ว 3 ใบ ดูครบทั้งเงิน รัก งาน';
+    elResult.classList.remove('on');
+    elSpread.classList.remove('on');
+    elDeck.style.display = 'flex';
+  }
+  document.getElementById('mode-1').addEventListener('click', function(){ setMode_(1); });
+  document.getElementById('mode-3').addEventListener('click', function(){ setMode_(3); });
+
   function showCard(card){
     var imgEl = document.getElementById('result-img');
     var iconEl = document.getElementById('result-icon');
@@ -476,22 +542,47 @@
     elResult.classList.add('on');
     elDeck.style.display = 'none';
   }
+  function showSpread(indices){
+    var html = indices.map(function(idx, i){
+      var card = CARDS[idx], lab = SPREAD_LABELS[i];
+      return '<div class="spread-card">'
+        + '<div class="spread-label">'+esc(lab.icon)+' '+esc(lab.name)+'</div>'
+        + cardFaceHtml_(card)
+        + '<div class="spread-name">'+esc(card.name)+'</div>'
+        + '<div class="spread-text">'+esc(card.text)+'</div>'
+        + '</div>';
+    }).join('') + '<button class="redraw" id="redraw-spread" style="grid-column:1/-1;">จั่วใหม่</button>';
+    elSpread.innerHTML = html;
+    elSpread.classList.add('on');
+    elDeck.style.display = 'none';
+    document.getElementById('redraw-spread').addEventListener('click', function(){
+      elSpread.classList.remove('on');
+      elDeck.style.display = 'flex';
+    });
+  }
   function drawRandom_(){
-    var idx = Math.floor(Math.random()*CARDS.length);
-    try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
-    showCard(CARDS[idx]);
+    if(currentMode===1){
+      var idx = Math.floor(Math.random()*CARDS.length);
+      try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
+      showCard(CARDS[idx]);
+    } else {
+      var idxs = pickDistinct_(3, CARDS.length);
+      try{ localStorage.setItem(drawKeyToday_(), idxs.join(',')); }catch(e){}
+      showSpread(idxs);
+    }
   }
   elDeck.addEventListener('click', drawRandom_);
   document.getElementById('redraw').addEventListener('click', function(){
     elResult.classList.remove('on');
     elDeck.style.display = 'flex';
   });
-  /* ถ้าวันนี้เคยจั่วไปแล้ว โชว์ใบเดิมให้เลย (จั่วใหม่ได้ ไม่บังคับ) */
+  /* ถ้าวันนี้เคยจั่วไปแล้ว (ในโหมดที่เลือกอยู่) โชว์ใบเดิมให้เลย */
   (function(){
     var saved = null;
     try{ saved = localStorage.getItem(drawKeyToday_()); }catch(e){}
-    if(saved!==null && saved!==undefined && saved!==''){
-      showCard(CARDS[Number(saved)]);
+    if(saved){
+      if(currentMode===1) showCard(CARDS[Number(saved)]);
+      else showSpread(saved.split(',').map(Number));
     }
   })();
 </script>
