@@ -48,9 +48,15 @@
   .masthead{ position:sticky; top:0; z-index:60; background:rgba(251,246,242,.92); backdrop-filter:blur(14px); border-bottom:1px solid var(--hair); }
 
   /* ---------- แบนเนอร์แนะนำแบรนด์ (บนสุด ใต้ masthead) ---------- */
-  /* เต็มความกว้างจอ (full-bleed) รูปเต็มใบไม่แหว่ง */
-  .brand-header{ width:100%; margin:0; padding:0; }
-  .brand-header img{ width:100%; height:auto; display:block; }
+  /* เต็มความกว้างจอจริง (100vw) + พื้นหลังแดงเข้มไล่โทนกับรูป = ไม่มีขอบครีม/แถบดำโผล่ */
+  .brand-header{
+    width:100vw; margin-left:calc(50% - 50vw); margin-top:0; padding:0;
+    background:#6f0000; line-height:0;
+  }
+  .brand-header img{ width:100%; height:auto; display:block; margin:0 auto; }
+  @media(min-width:1400px){
+    .brand-header img{ max-width:1400px; }
+  }
   .crest{ display:flex; align-items:center; gap:10px; max-width:1180px; margin:0 auto; padding:10px 16px 7px; }
   .crest-txt{ flex:1; min-width:0; }
 
@@ -689,7 +695,7 @@
   /* ค่าทั้งหมดอ่านจากไฟล์ config.js — ไม่ต้องแก้ในไฟล์นี้อีกแล้ว */
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
   var WEBAPP_URL = String(CFG.webapp || '');
-  var VER = "v40";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
+  var VER = "v41";   /* เลขเวอร์ชันไฟล์ ไว้เช็คว่าเบราว์เซอร์โหลดตัวใหม่จริงไหม */
 
   var CAT_ORDER = ['ของใช้ในบ้าน','บำรุงผิว','บำรุงเส้นผม','เครื่องสำอาง','เสื้อผ้า'];
   var CAT_SLUG  = {'ของใช้ในบ้าน':'home','บำรุงผิว':'skincare','บำรุงเส้นผม':'haircare','เครื่องสำอาง':'makeup','เสื้อผ้า':'fashion'};
