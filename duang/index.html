@@ -58,22 +58,31 @@
   }
   .card-title{ display:flex; align-items:center; gap:8px; font-family:'Trirong',serif; font-weight:600; font-size:17px; color:var(--gold-hi); margin-bottom:12px; }
 
-  /* สีเสื้อมงคล */
+  /* สีเสื้อมงคล (แบบกะทัดรัด) */
   .today-line{ font-size:12.5px; color:var(--dim); margin-bottom:10px; }
-  .color-chip{ display:flex; align-items:center; gap:10px; }
-  .color-dot{ width:34px; height:34px; border-radius:50%; flex:0 0 auto; box-shadow:0 3px 8px rgba(0,0,0,.35), 0 0 0 3px rgba(212,165,55,.25) inset; }
-  .color-name{ font-size:13.5px; font-weight:700; color:var(--ink); }
-  .color-desc{ font-size:11px; color:var(--dim); margin-top:1px; }
+  .color-card-compact{ padding:12px 16px; }
+  .compact-row{ display:flex; align-items:center; gap:10px; }
+  .color-dot{ width:26px; height:26px; border-radius:50%; flex:0 0 auto; box-shadow:0 2px 6px rgba(0,0,0,.35), 0 0 0 2px rgba(212,165,55,.25) inset; }
+  .compact-text{ font-size:12.5px; color:var(--dim); display:flex; flex-wrap:wrap; gap:5px; align-items:baseline; }
+  .compact-label{ color:var(--gold-hi); font-weight:600; }
+  .color-name{ font-size:13px; font-weight:700; color:var(--ink); }
+  .color-desc{ font-size:11px; color:var(--dim); }
 
   /* ปุ่มเลือกวันเกิด */
-  .date-pick{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-  .date-pick input[type="date"]{
-    flex:1; min-width:160px; background:#1a0808; border:1.5px solid var(--hair); border-radius:10px;
-    padding:9px 10px; font-family:'Anuphan',sans-serif; font-size:13.5px; color:var(--ink); color-scheme:dark;
+  .date-pick{ display:flex; gap:7px; align-items:center; flex-wrap:wrap; }
+  .date-pick select{
+    -webkit-appearance:none; appearance:none;
+    background:#1a0808 url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22%3E%3Cpath d=%22M0 0l5 6 5-6z%22 fill=%22%23D4A537%22/%3E%3C/svg%3E') no-repeat right 10px center;
+    border:1.5px solid var(--hair); border-radius:10px;
+    padding:9px 24px 9px 10px; font-family:'Anuphan',sans-serif; font-size:13.5px; color:var(--ink); cursor:pointer;
   }
+  #bday-day{ flex:0 0 64px; }
+  #bday-month{ flex:1 1 90px; }
+  #bday-year{ flex:0 0 84px; }
   .date-pick button{
     background:linear-gradient(180deg, var(--gold-hi), var(--gold)); color:#2b0d0d; border:0; border-radius:10px;
     padding:9px 18px; font-family:'Anuphan',sans-serif; font-size:13px; font-weight:700; cursor:pointer;
+    box-shadow:0 4px 14px rgba(212,165,55,.35);
   }
   .zodiac-chip{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
   .zodiac-tag{
@@ -102,15 +111,40 @@
     border-radius:999px; padding:7px 16px; font-family:'Anuphan',sans-serif; font-size:12.5px; font-weight:600; cursor:pointer;
   }
   .mode-btn[aria-selected="true"]{ background:linear-gradient(180deg, var(--gold-hi), var(--gold)); color:#2b0d0d; border-color:var(--gold); }
-  .deck-card{
-    width:180px; height:255px; margin:0 auto; border-radius:14px; cursor:pointer;
-    background:linear-gradient(135deg, var(--red-2), var(--red) 55%, var(--flame));
-    border:2px solid var(--gold-hi); display:flex; align-items:center; justify-content:center;
+
+  /* หลังไพ่ทรงเดียวกันทุกที่ (ยังไม่มีรูปหลังไพ่จริง เลยวาดด้วย CSS ให้ดูมีมนต์ขลัง) */
+  .deck-card, .desk-card{
+    border-radius:14px; cursor:pointer; position:relative;
+    background:
+      radial-gradient(circle 4px at 16px 16px, var(--gold-hi) 96%, transparent 98%),
+      radial-gradient(circle 4px at calc(100% - 16px) 16px, var(--gold-hi) 96%, transparent 98%),
+      radial-gradient(circle 4px at 16px calc(100% - 16px), var(--gold-hi) 96%, transparent 98%),
+      radial-gradient(circle 4px at calc(100% - 16px) calc(100% - 16px), var(--gold-hi) 96%, transparent 98%),
+      linear-gradient(135deg, var(--red-2), var(--red) 55%, var(--flame));
+    border:3px double var(--gold-hi);
+    display:flex; align-items:center; justify-content:center;
     box-shadow:0 12px 30px rgba(0,0,0,.5), 0 0 26px rgba(255,106,43,.35); transition:transform .15s ease;
-    font-size:52px;
+  }
+  .deck-card::after, .desk-card:not(.picked)::after{
+    content:'∞'; font-size:44px; color:var(--gold-hi); text-shadow:0 0 16px rgba(255,190,90,.55);
+    font-family:'Trirong',serif;
+  }
+  .deck-card{ width:180px; height:255px; margin:0 auto;
   }
   .deck-card:active{ transform:scale(.96); }
   .deck-hint{ font-size:12px; color:var(--dim); margin-top:10px; }
+
+  .desk-hint{ font-size:12.5px; color:var(--dim); margin-bottom:12px; }
+  .desk-row{ display:flex; gap:14px; overflow-x:auto; padding:4px 4px 12px; scroll-snap-type:x mandatory; }
+  .desk-row::-webkit-scrollbar{ display:none; }
+  .desk-item{ flex:0 0 auto; scroll-snap-align:start; text-align:center; }
+  .desk-card{ width:180px; height:255px; }
+  .desk-card:active:not(.picked){ transform:scale(.96); }
+  .desk-card.picked{ cursor:default; border-color:var(--gold); padding:0; overflow:hidden; }
+  .desk-card.picked::after{ display:none; }
+  .desk-card-img{ width:100%; height:100%; object-fit:cover; border-radius:11px; }
+  .desk-card-icon{ font-size:38px; }
+  .desk-label{ font-size:11px; font-weight:700; color:var(--gold-hi); margin-top:7px; min-height:15px; }
   .result-card{ display:none; text-align:center; padding:8px 4px 4px; }
   .result-card.on{ display:block; }
   .result-card-img{ width:250px; margin:0 auto 10px; border-radius:14px; box-shadow:0 12px 34px rgba(0,0,0,.5), 0 0 28px rgba(255,106,43,.3); }
@@ -189,23 +223,39 @@
 <main>
 
   <div class="card">
-    <div class="card-title">🎨 สีเสื้อมงคลวันนี้</div>
-    <div class="today-line" id="today-line"></div>
-    <div class="color-chip">
-      <div class="color-dot" id="color-dot"></div>
-      <div>
-        <div class="color-name" id="color-name"></div>
-        <div class="color-desc" id="color-desc"></div>
+    <div class="card-title">🃏 จั่วไพ่ทำนายดวง</div>
+    <div class="today-line" id="deck-hint-line">เลือกจั่ว 1 ใบ หรือ 3 ใบดูครบทุกด้าน</div>
+    <div class="draw-modes">
+      <button class="mode-btn" id="mode-1" data-mode="1" aria-selected="true">จั่ว 1 ใบ</button>
+      <button class="mode-btn" id="mode-3" data-mode="3">จั่ว 3 ใบ (เงิน-รัก-งาน)</button>
+    </div>
+    <div class="deck-wrap" id="deck-wrap-single">
+      <div class="deck-card" id="deck-card"></div>
+      <div class="deck-hint">แตะที่ไพ่</div>
+      <div class="result-card" id="result-card">
+        <img class="result-card-img" id="result-img" style="display:none;" alt="ไพ่ทำนายดวง">
+        <div class="result-icon" id="result-icon"></div>
+        <div class="result-name" id="result-name"></div>
+        <div class="result-text" id="result-text"></div>
+        <button class="redraw" id="redraw">จั่วใหม่</button>
       </div>
+    </div>
+    <div class="desk-wrap" id="desk-wrap" style="display:none;">
+      <div class="desk-hint" id="desk-hint">แตะเลือกไพ่ 3 ใบจากกองด้านล่าง ทีละใบ (เงิน → รัก → งาน)</div>
+      <div class="desk-row" id="desk-row"></div>
+      <div class="spread-result" id="spread-result"></div>
+      <button class="redraw" id="redraw-desk" style="display:none;">จั่วใหม่</button>
     </div>
   </div>
 
   <div class="card">
     <div class="card-title">✨ ดวงตามวันเกิด</div>
-    <div class="today-line">กรอกวันเดือนปีเกิดของคุณ (จำไว้ให้ ไม่ต้องกรอกซ้ำ)</div>
+    <div class="today-line">เลือกวันเดือนปีเกิดของคุณ (จำไว้ให้ ไม่ต้องกรอกซ้ำ)</div>
     <div class="date-pick">
-      <input type="date" id="bday-input" min="1920-01-01" max="">
-      <button id="bday-go">ดูดวง</button>
+      <select id="bday-day"></select>
+      <select id="bday-month"></select>
+      <select id="bday-year"></select>
+      <button id="bday-go">✨ ดูดวง</button>
     </div>
     <div class="fortune-box" id="fortune-box">
       <div class="zodiac-chip">
@@ -219,25 +269,16 @@
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">🃏 จั่วไพ่ทำนายดวง</div>
-    <div class="today-line" id="deck-hint-line">เลือกจั่ว 1 ใบ หรือ 3 ใบดูครบทุกด้าน</div>
-    <div class="draw-modes">
-      <button class="mode-btn" id="mode-1" data-mode="1" aria-selected="true">จั่ว 1 ใบ</button>
-      <button class="mode-btn" id="mode-3" data-mode="3">จั่ว 3 ใบ (เงิน-รัก-งาน)</button>
-    </div>
-    <div class="deck-wrap">
-      <div class="deck-card" id="deck-card">🔥</div>
-      <div class="deck-hint">แตะที่ไพ่</div>
-      <div class="result-card" id="result-card">
-        <img class="result-card-img" id="result-img" style="display:none;" alt="ไพ่ทำนายดวง">
-        <div class="result-icon" id="result-icon"></div>
-        <div class="result-name" id="result-name"></div>
-        <div class="result-text" id="result-text"></div>
-        <button class="redraw" id="redraw">จั่วใหม่</button>
+  <div class="card color-card-compact">
+    <div class="compact-row">
+      <div class="color-dot" id="color-dot"></div>
+      <div class="compact-text">
+        <span class="compact-label">🎨 สีเสื้อมงคลวันนี้:</span>
+        <span class="color-name" id="color-name"></span>
+        <span class="color-desc" id="color-desc"></span>
       </div>
-      <div class="spread-result" id="spread-result"></div>
     </div>
+    <div class="today-line" id="today-line" style="margin-top:6px;"></div>
   </div>
 
 </main>
@@ -426,13 +467,24 @@
     return n;
   }
 
-  var elDateInput = document.getElementById('bday-input');
+  var elDay = document.getElementById('bday-day');
+  var elMonth = document.getElementById('bday-month');
+  var elYear = document.getElementById('bday-year');
   var elBox = document.getElementById('fortune-box');
   var BDAY_KEY = 'mpb_bday_full';
+  var THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 
   (function(){
-    var today = new Date();
-    elDateInput.max = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    var d='<option value="">วัน</option>';
+    for(var i=1;i<=31;i++) d += '<option value="'+i+'">'+i+'</option>';
+    elDay.innerHTML = d;
+    var m='<option value="">เดือน</option>';
+    for(var i=0;i<12;i++) m += '<option value="'+(i+1)+'">'+THAI_MONTHS[i]+'</option>';
+    elMonth.innerHTML = m;
+    var thisYear = new Date().getFullYear();
+    var y='<option value="">ปี (พ.ศ.)</option>';
+    for(var yr=thisYear;yr>=1920;yr--) y += '<option value="'+yr+'">'+(yr+543)+'</option>';
+    elYear.innerHTML = y;
   })();
 
   function showFortune(dateStr){
@@ -448,12 +500,13 @@
     document.getElementById('f-love').textContent  = pickSeeded_(FORTUNE_LOVE, seed+2);
     document.getElementById('f-work').textContent  = pickSeeded_(FORTUNE_WORK, seed+3);
     elBox.classList.add('on');
-    elDateInput.value = dateStr;
+    elDay.value = String(d); elMonth.value = String(m); elYear.value = String(y);
   }
   document.getElementById('bday-go').addEventListener('click', function(){
-    if(!elDateInput.value) return;
-    try{ localStorage.setItem(BDAY_KEY, elDateInput.value); }catch(err){}
-    showFortune(elDateInput.value);
+    if(!elDay.value || !elMonth.value || !elYear.value) return;
+    var dateStr = elYear.value+'-'+String(elMonth.value).padStart(2,'0')+'-'+String(elDay.value).padStart(2,'0');
+    try{ localStorage.setItem(BDAY_KEY, dateStr); }catch(err){}
+    showFortune(dateStr);
   });
   document.getElementById('change-day').addEventListener('click', function(){
     elBox.classList.remove('on');
@@ -484,9 +537,17 @@
   var elResult = document.getElementById('result-card');
   var elSpread = document.getElementById('spread-result');
   var elHintLine = document.getElementById('deck-hint-line');
+  var elWrapSingle = document.getElementById('deck-wrap-single');
+  var elWrapDesk = document.getElementById('desk-wrap');
+  var elDeskRow = document.getElementById('desk-row');
+  var elDeskHint = document.getElementById('desk-hint');
+  var elRedrawDesk = document.getElementById('redraw-desk');
   var DRAW_KEY_PREFIX = 'mpb_card_';
+  var DESK_SIZE = 9;
   var SPREAD_LABELS = [ {icon:'💰', name:'การเงิน'}, {icon:'💕', name:'ความรัก'}, {icon:'💼', name:'การงาน'} ];
   var currentMode = 1;
+  var deskAssignment = [];
+  var deskPicked = [];
 
   function drawKeyToday_(){
     var d = new Date();
@@ -509,14 +570,22 @@
     currentMode = m;
     document.getElementById('mode-1').setAttribute('aria-selected', m===1?'true':'false');
     document.getElementById('mode-3').setAttribute('aria-selected', m===3?'true':'false');
-    elHintLine.textContent = m===1 ? 'แตะไพ่เพื่อจั่ว 1 ใบ ดูคำทำนายวันนี้' : 'แตะไพ่เพื่อจั่ว 3 ใบ ดูครบทั้งเงิน รัก งาน';
+    elHintLine.textContent = m===1 ? 'แตะไพ่เพื่อจั่ว 1 ใบ ดูคำทำนายวันนี้' : 'เลือกไพ่ 3 ใบจากกองไพ่ด้านล่างด้วยตัวเอง';
     elResult.classList.remove('on');
     elSpread.classList.remove('on');
-    elDeck.style.display = 'flex';
+    if(m===1){
+      elWrapSingle.style.display='block'; elWrapDesk.style.display='none';
+      elDeck.style.display = 'flex';
+      checkTodaySingle_();
+    } else {
+      elWrapSingle.style.display='none'; elWrapDesk.style.display='block';
+      checkTodayDesk_();
+    }
   }
   document.getElementById('mode-1').addEventListener('click', function(){ setMode_(1); });
   document.getElementById('mode-3').addEventListener('click', function(){ setMode_(3); });
 
+  /* ---- โหมดจั่ว 1 ใบ ---- */
   function showCard(card){
     var imgEl = document.getElementById('result-img');
     var iconEl = document.getElementById('result-icon');
@@ -542,6 +611,22 @@
     elResult.classList.add('on');
     elDeck.style.display = 'none';
   }
+  elDeck.addEventListener('click', function(){
+    var idx = Math.floor(Math.random()*CARDS.length);
+    try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
+    showCard(CARDS[idx]);
+  });
+  document.getElementById('redraw').addEventListener('click', function(){
+    elResult.classList.remove('on');
+    elDeck.style.display = 'flex';
+  });
+  function checkTodaySingle_(){
+    var saved=null;
+    try{ saved = localStorage.getItem(drawKeyToday_()); }catch(e){}
+    if(saved) showCard(CARDS[Number(saved)]);
+  }
+
+  /* ---- โหมดจั่ว 3 ใบ แบบเลือกเอง (โต๊ะไพ่) ---- */
   function showSpread(indices){
     var html = indices.map(function(idx, i){
       var card = CARDS[idx], lab = SPREAD_LABELS[i];
@@ -551,40 +636,59 @@
         + '<div class="spread-name">'+esc(card.name)+'</div>'
         + '<div class="spread-text">'+esc(card.text)+'</div>'
         + '</div>';
-    }).join('') + '<button class="redraw" id="redraw-spread" style="grid-column:1/-1;">จั่วใหม่</button>';
+    }).join('');
     elSpread.innerHTML = html;
     elSpread.classList.add('on');
-    elDeck.style.display = 'none';
-    document.getElementById('redraw-spread').addEventListener('click', function(){
-      elSpread.classList.remove('on');
-      elDeck.style.display = 'flex';
-    });
+    elRedrawDesk.style.display = 'inline-block';
   }
-  function drawRandom_(){
-    if(currentMode===1){
-      var idx = Math.floor(Math.random()*CARDS.length);
-      try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
-      showCard(CARDS[idx]);
-    } else {
-      var idxs = pickDistinct_(3, CARDS.length);
+  function renderDesk_(){
+    elDeskRow.innerHTML = deskAssignment.map(function(cardIdx, pos){
+      var pickedAt = deskPicked.indexOf(pos);
+      if(pickedAt>-1){
+        var card = CARDS[cardIdx], lab = SPREAD_LABELS[pickedAt];
+        var faceImg = card.img ? '<img class="desk-card-img" src="'+esc(card.img)+'" onerror="this.style.display=\'none\'">' : '<div class="desk-card-icon">'+esc(card.icon)+'</div>';
+        return '<div class="desk-item"><div class="desk-card picked">'+faceImg+'</div><div class="desk-label">'+esc(lab.icon)+' '+esc(lab.name)+'</div></div>';
+      }
+      return '<div class="desk-item"><div class="desk-card" data-pos="'+pos+'"></div><div class="desk-label"></div></div>';
+    }).join('');
+  }
+  function buildDesk_(){
+    deskAssignment = pickDistinct_(DESK_SIZE, CARDS.length);
+    deskPicked = [];
+    elSpread.classList.remove('on');
+    elSpread.innerHTML = '';
+    elRedrawDesk.style.display = 'none';
+    elDeskHint.textContent = 'เลือกไพ่ 3 ใบจากกองไพ่ด้านล่างด้วยตัวเอง (เงิน → รัก → งาน)';
+    renderDesk_();
+  }
+  elDeskRow.addEventListener('click', function(e){
+    var el = e.target.closest('.desk-card:not(.picked)');
+    if(!el || deskPicked.length>=3) return;
+    deskPicked.push(Number(el.dataset.pos));
+    renderDesk_();
+    if(deskPicked.length===3){
+      var idxs = deskPicked.map(function(p){ return deskAssignment[p]; });
       try{ localStorage.setItem(drawKeyToday_(), idxs.join(',')); }catch(e){}
+      elDeskHint.textContent = 'ครบแล้ว! 🔮 นี่คือดวงของคุณวันนี้';
       showSpread(idxs);
     }
-  }
-  elDeck.addEventListener('click', drawRandom_);
-  document.getElementById('redraw').addEventListener('click', function(){
-    elResult.classList.remove('on');
-    elDeck.style.display = 'flex';
   });
-  /* ถ้าวันนี้เคยจั่วไปแล้ว (ในโหมดที่เลือกอยู่) โชว์ใบเดิมให้เลย */
-  (function(){
-    var saved = null;
+  elRedrawDesk.addEventListener('click', buildDesk_);
+  function checkTodayDesk_(){
+    var saved=null;
     try{ saved = localStorage.getItem(drawKeyToday_()); }catch(e){}
     if(saved){
-      if(currentMode===1) showCard(CARDS[Number(saved)]);
-      else showSpread(saved.split(',').map(Number));
+      var idxs = saved.split(',').map(Number);
+      deskAssignment = idxs.slice();
+      deskPicked = [0,1,2];
+      elDeskHint.textContent = 'วันนี้คุณจั่วไพ่ไปแล้ว 🔮 นี่คือดวงของคุณวันนี้';
+      renderDesk_();
+      showSpread(idxs);
+    } else {
+      buildDesk_();
     }
-  })();
+  }
+  checkTodaySingle_();
 </script>
 
 </body>
