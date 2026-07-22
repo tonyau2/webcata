@@ -129,7 +129,7 @@
     content:'∞'; font-size:44px; color:var(--gold-hi); text-shadow:0 0 16px rgba(255,190,90,.55);
     font-family:'Trirong',serif;
   }
-  .deck-card{ width:180px; height:255px; margin:0 auto;
+  .deck-card{ width:230px; height:325px; margin:0 auto;
   }
   .deck-card:active{ transform:scale(.96); }
   .deck-hint{ font-size:12px; color:var(--dim); margin-top:10px; }
@@ -138,16 +138,17 @@
   .desk-row{ display:flex; gap:14px; overflow-x:auto; padding:4px 4px 12px; scroll-snap-type:x mandatory; }
   .desk-row::-webkit-scrollbar{ display:none; }
   .desk-item{ flex:0 0 auto; scroll-snap-align:start; text-align:center; }
-  .desk-card{ width:180px; height:255px; }
+  .desk-card{ width:230px; height:325px; }
   .desk-card:active:not(.picked){ transform:scale(.96); }
-  .desk-card.picked{ cursor:default; border-color:var(--gold); padding:0; overflow:hidden; }
+  .desk-card.picked{ cursor:default; border:3px solid #FFE9AE; padding:0; overflow:hidden; }
+  .desk-card-img{ width:100%; height:100%; object-fit:cover; border-radius:11px; animation:goldGlow 1.7s ease-in-out infinite; }
   .desk-card.picked::after{ display:none; }
-  .desk-card-img{ width:100%; height:100%; object-fit:cover; border-radius:11px; }
+  .desk-card-img{ width:100%; height:100%; object-fit:cover; border-radius:11px; animation:goldGlow 1.7s ease-in-out infinite; }
   .desk-card-icon{ font-size:38px; }
   .desk-label{ font-size:11px; font-weight:700; color:var(--gold-hi); margin-top:7px; min-height:15px; }
   .result-card{ display:none; text-align:center; padding:8px 4px 4px; }
   .result-card.on{ display:block; }
-  .result-card-img{ width:250px; margin:0 auto 10px; border-radius:14px; box-shadow:0 12px 34px rgba(0,0,0,.5), 0 0 28px rgba(255,106,43,.3); }
+  .result-card-img{ width:280px; margin:0 auto 10px; border-radius:14px; border:3px solid #FFE9AE; animation:goldGlow 1.7s ease-in-out infinite; }
   .result-name{ font-family:'Trirong',serif; font-weight:600; font-size:19px; color:var(--gold-hi); margin:4px 0 8px; }
   .result-icon{ font-size:44px; }
   .result-text{ font-size:13.5px; line-height:1.7; color:var(--ink); max-width:480px; margin:0 auto; }
@@ -162,7 +163,11 @@
   @media(min-width:560px){ .spread-result.on{ grid-template-columns:repeat(3,1fr); } }
   .spread-card{ background:rgba(0,0,0,.2); border:1px solid var(--hair); border-radius:12px; padding:12px 10px; }
   .spread-label{ font-size:12.5px; font-weight:700; color:var(--gold-hi); margin-bottom:8px; }
-  .spread-img{ width:135px; margin:0 auto 8px; border-radius:11px; box-shadow:0 8px 20px rgba(0,0,0,.4); }
+  @keyframes goldGlow{
+    0%,100%{ box-shadow:0 0 14px 3px rgba(255,220,130,.75), 0 10px 26px rgba(0,0,0,.45); }
+    50%{ box-shadow:0 0 26px 7px rgba(255,230,150,1), 0 10px 26px rgba(0,0,0,.45); }
+  }
+  .spread-img{ width:100%; max-width:165px; margin:0 auto 8px; border-radius:11px; display:block; border:3px solid #FFE9AE; animation:goldGlow 1.7s ease-in-out infinite; }
   .spread-icon{ font-size:34px; margin-bottom:6px; }
   .spread-name{ font-family:'Trirong',serif; font-weight:600; font-size:14.5px; color:var(--ink); margin-bottom:6px; }
   .spread-text{ font-size:12px; line-height:1.55; color:var(--dim); }
@@ -181,6 +186,16 @@
     font-size:13.5px; font-weight:700;
   }
   .line-btn svg{ width:16px; height:16px; flex:0 0 auto; }
+  .share-row{ max-width:640px; margin:20px auto 0; padding:0 16px; text-align:center; }
+  .share-label{ font-size:12.5px; color:var(--dim); margin-bottom:10px; }
+  .share-btns{ display:flex; gap:8px; justify-content:center; }
+  .share-btn{
+    display:inline-flex; align-items:center; gap:7px;
+    border:1.5px solid var(--hair); border-radius:999px; padding:9px 16px;
+    cursor:pointer; background:rgba(0,0,0,.25); color:var(--ink);
+    font-family:'Anuphan',sans-serif; font-size:13px; font-weight:600;
+  }
+  .share-btn svg{ width:16px; height:16px; }
   .notice{
     max-width:640px; margin:0 auto 16px; padding:10px 14px;
     background:rgba(212,165,55,.1); border:1px solid var(--hair);
@@ -283,6 +298,20 @@
 
 </main>
 
+<div class="share-row">
+  <div class="share-label">ถูกใจดวงวันนี้ แชร์ให้เพื่อนดูด้วยกัน</div>
+  <div class="share-btns">
+    <button class="share-btn" id="sh-line-duang">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#06C755"/><path fill="#fff" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>
+      แชร์ LINE
+    </button>
+    <button class="share-btn" id="sh-fb-duang">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#1877F2"/><path fill="#fff" d="M15.6 12.6l.4-2.5h-2.4V8.5c0-.7.3-1.4 1.4-1.4h1.1V5c0 0-1-.2-1.9-.2-2 0-3.2 1.2-3.2 3.4v1.9H8.8v2.5H11V19h2.6v-6.4h2z"/></svg>
+      แชร์ Facebook
+    </button>
+  </div>
+</div>
+
 <div class="notice">🔮 หน้านี้จัดทำขึ้นเพื่อความบันเทิงเท่านั้น ไม่ได้มีเจตนาให้ใช้ตัดสินใจเรื่องสำคัญในชีวิตจริง</div>
 
 <footer>
@@ -312,6 +341,32 @@
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
+
+  /* ---------- แชร์หน้าดวง (ดึงคนเข้ามาเว็บมากขึ้น) ---------- */
+  function isMobile_(){ return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
+  function lineUrl_(u){ return 'https://social-plugins.line.me/lineit/share?url='+encodeURIComponent(u); }
+  function fbUrl_(u){ return 'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(u); }
+  function pop_(u){ window.open(u,'_blank','noopener,width=600,height=640'); }
+  function shareLine_(url, text){
+    if(isMobile_()){
+      var appUrl = 'line://msg/text/' + encodeURIComponent((text?text+'\n':'') + url);
+      var fell = false;
+      var fallback = setTimeout(function(){ if(!fell){ fell=true; pop_(lineUrl_(url)); } }, 1200);
+      window.addEventListener('blur', function onBlur(){ fell=true; clearTimeout(fallback); window.removeEventListener('blur', onBlur); });
+      location.href = appUrl;
+    } else { pop_(lineUrl_(url)); }
+  }
+  function shareFb_(url, text){
+    if(navigator.share){ navigator.share({ title:text||'', url:url }).catch(function(){}); }
+    else { pop_(fbUrl_(url)); }
+  }
+  var lastShareCaption_ = 'ดูดวงประจำวันของฉันวันนี้ที่มีโปรมาบอก 🔮';
+  var DUANG_URL = 'https://meepromabok.com/duang/';
+  var lineShareBtn_ = document.getElementById('sh-line-duang');
+  var fbShareBtn_ = document.getElementById('sh-fb-duang');
+  if(lineShareBtn_) lineShareBtn_.addEventListener('click', function(){ shareLine_(DUANG_URL, lastShareCaption_); });
+  if(fbShareBtn_) fbShareBtn_.addEventListener('click', function(){ shareFb_(DUANG_URL, lastShareCaption_); });
+
   var IMG_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22%3E%3Crect%20width=%22100%22%20height=%22100%22%20fill=%22%23F6EEE8%22/%3E%3Ctext%20x=%2250%22%20y=%2258%22%20text-anchor=%22middle%22%20font-size=%2232%22%3E%F0%9F%9B%8D%EF%B8%8F%3C/text%3E%3C/svg%3E";
   function imgUrl_(raw,w){
     var s=String(raw===null||raw===undefined?'':raw).trim();
@@ -608,22 +663,30 @@
       nameEl.textContent = card.name;
     }
     document.getElementById('result-text').textContent = card.text;
+    lastShareCaption_ = 'ฉันจั่วได้ "'+card.name+'" จากมีโปรมาบอก 🔮 ลองดูดวงของคุณดูสิ';
     elResult.classList.add('on');
     elDeck.style.display = 'none';
   }
   elDeck.addEventListener('click', function(){
-    var idx = Math.floor(Math.random()*CARDS.length);
-    try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
+    var saved=null;
+    try{ saved = localStorage.getItem(drawKeyToday_()); }catch(e){}
+    var idx;
+    if(saved!==null && saved!==undefined && saved!==''){
+      idx = Number(saved);
+    } else {
+      idx = Math.floor(Math.random()*CARDS.length);
+      try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
+    }
     showCard(CARDS[idx]);
   });
   document.getElementById('redraw').addEventListener('click', function(){
     elResult.classList.remove('on');
     elDeck.style.display = 'flex';
   });
+  /* ไพ่คว่ำเสมอตอนเข้าเว็บ/สลับโหมด ต้องแตะถึงจะเห็นผล (ผลของวันนี้จะเหมือนเดิมถ้าเคยแตะไปแล้ว) */
   function checkTodaySingle_(){
-    var saved=null;
-    try{ saved = localStorage.getItem(drawKeyToday_()); }catch(e){}
-    if(saved) showCard(CARDS[Number(saved)]);
+    elResult.classList.remove('on');
+    elDeck.style.display = 'flex';
   }
 
   /* ---- โหมดจั่ว 3 ใบ แบบเลือกเอง (โต๊ะไพ่) ---- */
@@ -638,6 +701,7 @@
         + '</div>';
     }).join('');
     elSpread.innerHTML = html;
+    lastShareCaption_ = 'ฉันเพิ่งดูดวงเงิน-รัก-งานที่มีโปรมาบอก 🔮 ลองดูดวงของคุณดูสิ';
     elSpread.classList.add('on');
     elRedrawDesk.style.display = 'inline-block';
   }
@@ -645,20 +709,27 @@
     elDeskRow.innerHTML = deskAssignment.map(function(cardIdx, pos){
       var pickedAt = deskPicked.indexOf(pos);
       if(pickedAt>-1){
-        var card = CARDS[cardIdx], lab = SPREAD_LABELS[pickedAt];
+        var realIdx = deskRevealSource ? deskRevealSource[pickedAt] : cardIdx;
+        var card = CARDS[realIdx], lab = SPREAD_LABELS[pickedAt];
         var faceImg = card.img ? '<img class="desk-card-img" src="'+esc(card.img)+'" onerror="this.style.display=\'none\'">' : '<div class="desk-card-icon">'+esc(card.icon)+'</div>';
         return '<div class="desk-item"><div class="desk-card picked">'+faceImg+'</div><div class="desk-label">'+esc(lab.icon)+' '+esc(lab.name)+'</div></div>';
       }
       return '<div class="desk-item"><div class="desk-card" data-pos="'+pos+'"></div><div class="desk-label"></div></div>';
     }).join('');
   }
+  var deskRevealSource = null;
   function buildDesk_(){
     deskAssignment = pickDistinct_(DESK_SIZE, CARDS.length);
     deskPicked = [];
+    var saved=null;
+    try{ saved = localStorage.getItem(drawKeyToday_()); }catch(e){}
+    deskRevealSource = saved ? saved.split(',').map(Number) : null;
     elSpread.classList.remove('on');
     elSpread.innerHTML = '';
     elRedrawDesk.style.display = 'none';
-    elDeskHint.textContent = 'เลือกไพ่ 3 ใบจากกองไพ่ด้านล่างด้วยตัวเอง (เงิน → รัก → งาน)';
+    elDeskHint.textContent = deskRevealSource
+      ? 'แตะไพ่ 3 ใบเพื่อดูดวงที่จั่วไว้วันนี้อีกครั้ง'
+      : 'เลือกไพ่ 3 ใบจากกองไพ่ด้านล่างด้วยตัวเอง (เงิน → รัก → งาน)';
     renderDesk_();
   }
   elDeskRow.addEventListener('click', function(e){
@@ -667,26 +738,20 @@
     deskPicked.push(Number(el.dataset.pos));
     renderDesk_();
     if(deskPicked.length===3){
-      var idxs = deskPicked.map(function(p){ return deskAssignment[p]; });
-      try{ localStorage.setItem(drawKeyToday_(), idxs.join(',')); }catch(e){}
+      var idxs;
+      if(deskRevealSource){
+        idxs = deskRevealSource;
+      } else {
+        idxs = deskPicked.map(function(p){ return deskAssignment[p]; });
+        try{ localStorage.setItem(drawKeyToday_(), idxs.join(',')); }catch(e){}
+      }
       elDeskHint.textContent = 'ครบแล้ว! 🔮 นี่คือดวงของคุณวันนี้';
       showSpread(idxs);
     }
   });
   elRedrawDesk.addEventListener('click', buildDesk_);
   function checkTodayDesk_(){
-    var saved=null;
-    try{ saved = localStorage.getItem(drawKeyToday_()); }catch(e){}
-    if(saved){
-      var idxs = saved.split(',').map(Number);
-      deskAssignment = idxs.slice();
-      deskPicked = [0,1,2];
-      elDeskHint.textContent = 'วันนี้คุณจั่วไพ่ไปแล้ว 🔮 นี่คือดวงของคุณวันนี้';
-      renderDesk_();
-      showSpread(idxs);
-    } else {
-      buildDesk_();
-    }
+    buildDesk_();
   }
   checkTodaySingle_();
 </script>
