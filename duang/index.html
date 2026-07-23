@@ -48,7 +48,7 @@
   header h1{ font-family:'Trirong',serif; font-weight:600; font-size:clamp(22px,5vw,30px); line-height:1.35; max-width:640px; margin:0 auto; text-shadow:0 2px 8px rgba(0,0,0,.35); }
   header p{ font-size:13px; color:rgba(255,255,255,.88); max-width:480px; margin:10px auto 0; }
 
-  main{ max-width:640px; margin:0 auto; padding:20px 16px 20px; }
+  main{ max-width:900px; margin:0 auto; padding:20px 16px 20px; }
 
   .card{
     background:linear-gradient(160deg, #331010, #200a0a);
@@ -135,10 +135,10 @@
   .deck-hint{ font-size:12px; color:var(--dim); margin-top:10px; }
 
   .desk-hint{ font-size:12.5px; color:var(--dim); margin-bottom:12px; }
-  .desk-row{ display:flex; gap:14px; overflow-x:auto; padding:4px 4px 12px; scroll-snap-type:x mandatory; }
+  .desk-row{ display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:16px; padding:4px 4px 12px; justify-items:center; }
   .desk-row::-webkit-scrollbar{ display:none; }
-  .desk-item{ flex:0 0 auto; scroll-snap-align:start; text-align:center; }
-  .desk-card{ width:230px; height:325px; }
+  .desk-item{ text-align:center; }
+  .desk-card{ width:100%; max-width:230px; height:auto; aspect-ratio:230/325; }
   .desk-card:active:not(.picked){ transform:scale(.96); }
   .desk-card.picked{ cursor:default; border:3px solid #FFE9AE; padding:0; overflow:hidden; }
   .desk-card-img{ width:100%; height:100%; object-fit:cover; border-radius:11px; animation:goldGlow 1.7s ease-in-out infinite; }
@@ -186,7 +186,7 @@
     font-size:13.5px; font-weight:700;
   }
   .line-btn svg{ width:16px; height:16px; flex:0 0 auto; }
-  .share-row{ max-width:640px; margin:20px auto 0; padding:0 16px; text-align:center; }
+  .share-row{ max-width:900px; margin:20px auto 0; padding:0 16px; text-align:center; }
   .share-label{ font-size:12.5px; color:var(--dim); margin-bottom:10px; }
   .share-btns{ display:flex; gap:8px; justify-content:center; }
   .share-btn{
@@ -196,8 +196,11 @@
     font-family:'Anuphan',sans-serif; font-size:13px; font-weight:600;
   }
   .share-btn svg{ width:16px; height:16px; }
+  .share-btn.copy{ padding:9px 14px; }
+  .share-row-inline{ margin-top:16px; text-align:center; }
+  .share-row-inline .share-label{ font-size:12px; font-weight:700; color:var(--gold-hi); margin-bottom:8px; }
   .notice{
-    max-width:640px; margin:0 auto 16px; padding:10px 14px;
+    max-width:900px; margin:0 auto 16px; padding:10px 14px;
     background:rgba(212,165,55,.1); border:1px solid var(--hair);
     border-radius:9px; color:var(--dim); font-size:11.5px; line-height:1.55; text-align:center;
   }
@@ -253,6 +256,14 @@
         <div class="result-name" id="result-name"></div>
         <div class="result-text" id="result-text"></div>
         <button class="redraw" id="redraw">จั่วใหม่</button>
+        <div class="share-row-inline" id="share-inline-single" style="display:none;">
+          <div class="share-label">✨ แชร์ดวงของคุณเลย!</div>
+          <div class="share-btns">
+            <button class="share-btn" id="sh-line-1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#06C755"/><path fill="#fff" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>LINE</button>
+            <button class="share-btn" id="sh-fb-1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#1877F2"/><path fill="#fff" d="M15.6 12.6l.4-2.5h-2.4V8.5c0-.7.3-1.4 1.4-1.4h1.1V5c0 0-1-.2-1.9-.2-2 0-3.2 1.2-3.2 3.4v1.9H8.8v2.5H11V19h2.6v-6.4h2z"/></svg>Facebook</button>
+            <button class="share-btn copy" id="sh-copy-1" aria-label="คัดลอกลิงก์">🔗</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="desk-wrap" id="desk-wrap" style="display:none;">
@@ -260,6 +271,14 @@
       <div class="desk-row" id="desk-row"></div>
       <div class="spread-result" id="spread-result"></div>
       <button class="redraw" id="redraw-desk" style="display:none;">จั่วใหม่</button>
+      <div class="share-row-inline" id="share-inline-desk" style="display:none;">
+        <div class="share-label">✨ แชร์ดวงของคุณเลย!</div>
+        <div class="share-btns">
+          <button class="share-btn" id="sh-line-3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#06C755"/><path fill="#fff" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>LINE</button>
+          <button class="share-btn" id="sh-fb-3"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#1877F2"/><path fill="#fff" d="M15.6 12.6l.4-2.5h-2.4V8.5c0-.7.3-1.4 1.4-1.4h1.1V5c0 0-1-.2-1.9-.2-2 0-3.2 1.2-3.2 3.4v1.9H8.8v2.5H11V19h2.6v-6.4h2z"/></svg>Facebook</button>
+          <button class="share-btn copy" id="sh-copy-3" aria-label="คัดลอกลิงก์">🔗</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -299,7 +318,7 @@
 </main>
 
 <div class="share-row">
-  <div class="share-label">ถูกใจดวงวันนี้ แชร์ให้เพื่อนดูด้วยกัน</div>
+  <div class="share-label">ชวนเพื่อนมาดูดวงด้วยกัน ✨</div>
   <div class="share-btns">
     <button class="share-btn" id="sh-line-duang">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#06C755"/><path fill="#fff" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>
@@ -315,8 +334,8 @@
 <div class="notice">🔮 หน้านี้จัดทำขึ้นเพื่อความบันเทิงเท่านั้น ไม่ได้มีเจตนาให้ใช้ตัดสินใจเรื่องสำคัญในชีวิตจริง</div>
 
 <footer>
-  <a class="back-nav" href="https://meepromabok.com/">← กลับไปหน้าสินค้าลดราคา</a>
-  <a class="line-btn" href="https://line.me/R/ti/p/@815ulggf" target="_blank" rel="noopener" style="margin-left:8px;">
+  <a class="back-nav" id="back-nav-duang" href="https://meepromabok.com/">← กลับไปหน้าสินค้าลดราคา</a>
+  <a class="line-btn" id="line-btn-duang" href="https://line.me/R/ti/p/@815ulggf" target="_blank" rel="noopener" style="margin-left:8px;">
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#fff"/><path fill="#06C755" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>
     ทันทุกดีล Add Line เลย 🔥
   </a>
@@ -336,6 +355,17 @@
 
 <script src="../config.js"></script>
 <script>
+  var CFG = (typeof window.CATA==='object' && window.CATA) ? window.CATA : {};
+  var WEBAPP_URL = String(CFG.webapp||'');
+  function track(type,name){
+    try{
+      if(WEBAPP_URL.indexOf('http')!==0) return;
+      new Image().src = WEBAPP_URL+'?log=1&type='+encodeURIComponent(type)
+        +'&name='+encodeURIComponent(String(name||'').slice(0,100))+'&cat=duang&t='+Date.now();
+    }catch(e){}
+  }
+  track('view_duang','');
+
   function esc(s){
     return String(s===null||s===undefined?'':s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -360,12 +390,29 @@
     if(navigator.share){ navigator.share({ title:text||'', url:url }).catch(function(){}); }
     else { pop_(fbUrl_(url)); }
   }
-  var lastShareCaption_ = 'ดูดวงประจำวันของฉันวันนี้ที่มีโปรมาบอก 🔮';
+  function copyLink_(url, btn){
+    var done = function(){ var old=btn.textContent; btn.textContent='✅'; setTimeout(function(){ btn.textContent=old; }, 1500); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(done).catch(function(){ prompt('คัดลอกลิงก์นี้ได้เลย:', url); });
+    } else {
+      prompt('คัดลอกลิงก์นี้ได้เลย:', url);
+    }
+  }
+  var lastShareCaption_ = 'ดวงวันนี้ดีจัง อยากบอกต่อ! 🔮 ลองดูดวงของคุณได้ที่มีโปรมาบอก';
   var DUANG_URL = 'https://meepromabok.com/duang/';
-  var lineShareBtn_ = document.getElementById('sh-line-duang');
-  var fbShareBtn_ = document.getElementById('sh-fb-duang');
-  if(lineShareBtn_) lineShareBtn_.addEventListener('click', function(){ shareLine_(DUANG_URL, lastShareCaption_); });
-  if(fbShareBtn_) fbShareBtn_.addEventListener('click', function(){ shareFb_(DUANG_URL, lastShareCaption_); });
+  function wireShareGroup_(lineId, fbId, copyId){
+    var l=document.getElementById(lineId), f=document.getElementById(fbId), c=document.getElementById(copyId);
+    if(l) l.addEventListener('click', function(){ track('share_line','duang'); shareLine_(DUANG_URL, lastShareCaption_); });
+    if(f) f.addEventListener('click', function(){ track('share_fb','duang'); shareFb_(DUANG_URL, lastShareCaption_); });
+    if(c) c.addEventListener('click', function(){ track('share_copy','duang'); copyLink_(DUANG_URL, c); });
+  }
+  wireShareGroup_('sh-line-duang','sh-fb-duang', null);
+  wireShareGroup_('sh-line-1','sh-fb-1','sh-copy-1');
+  wireShareGroup_('sh-line-3','sh-fb-3','sh-copy-3');
+  var backNavEl_ = document.getElementById('back-nav-duang');
+  if(backNavEl_) backNavEl_.addEventListener('click', function(){ track('back_to_shop','duang'); });
+  var lineBtnEl_ = document.getElementById('line-btn-duang');
+  if(lineBtnEl_) lineBtnEl_.addEventListener('click', function(){ track('line_add','duang'); });
 
   var IMG_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22%3E%3Crect%20width=%22100%22%20height=%22100%22%20fill=%22%23F6EEE8%22/%3E%3Ctext%20x=%2250%22%20y=%2258%22%20text-anchor=%22middle%22%20font-size=%2232%22%3E%F0%9F%9B%8D%EF%B8%8F%3C/text%3E%3C/svg%3E";
   function imgUrl_(raw,w){
@@ -396,6 +443,9 @@
       qEl.textContent = '🔥 โปรไฟไหม้วันนี้!';
     }
     setTimeout(function(){ box.classList.add('on'); }, 4000);
+    document.getElementById('shop-nudge-link').addEventListener('click', function(){
+      track('shop_nudge_click','');
+    });
     document.getElementById('shop-nudge-x').addEventListener('click', function(e){
       e.preventDefault(); e.stopPropagation();
       box.classList.remove('on');
@@ -403,8 +453,6 @@
     });
   }
   (function(){
-    var CFG = (typeof window.CATA==='object' && window.CATA) ? window.CATA : {};
-    var WEBAPP_URL = String(CFG.webapp||'');
     if(WEBAPP_URL.indexOf('http')!==0){ initShopNudge_([]); return; }
     var loaded=false;
     window.__duangShop = function(data){
@@ -561,6 +609,7 @@
     if(!elDay.value || !elMonth.value || !elYear.value) return;
     var dateStr = elYear.value+'-'+String(elMonth.value).padStart(2,'0')+'-'+String(elDay.value).padStart(2,'0');
     try{ localStorage.setItem(BDAY_KEY, dateStr); }catch(err){}
+    track('bday_check','');
     showFortune(dateStr);
   });
   document.getElementById('change-day').addEventListener('click', function(){
@@ -598,7 +647,7 @@
   var elDeskHint = document.getElementById('desk-hint');
   var elRedrawDesk = document.getElementById('redraw-desk');
   var DRAW_KEY_PREFIX = 'mpb_card_';
-  var DESK_SIZE = 9;
+  var DESK_SIZE = 12;
   var SPREAD_LABELS = [ {icon:'💰', name:'การเงิน'}, {icon:'💕', name:'ความรัก'}, {icon:'💼', name:'การงาน'} ];
   var currentMode = 1;
   var deskAssignment = [];
@@ -637,8 +686,8 @@
       checkTodayDesk_();
     }
   }
-  document.getElementById('mode-1').addEventListener('click', function(){ setMode_(1); });
-  document.getElementById('mode-3').addEventListener('click', function(){ setMode_(3); });
+  document.getElementById('mode-1').addEventListener('click', function(){ track('mode_switch','single'); setMode_(1); });
+  document.getElementById('mode-3').addEventListener('click', function(){ track('mode_switch','spread'); setMode_(3); });
 
   /* ---- โหมดจั่ว 1 ใบ ---- */
   function showCard(card){
@@ -666,6 +715,7 @@
     lastShareCaption_ = 'ฉันจั่วได้ "'+card.name+'" จากมีโปรมาบอก 🔮 ลองดูดวงของคุณดูสิ';
     elResult.classList.add('on');
     elDeck.style.display = 'none';
+    document.getElementById('share-inline-single').style.display = 'block';
   }
   elDeck.addEventListener('click', function(){
     var saved=null;
@@ -677,16 +727,21 @@
       idx = Math.floor(Math.random()*CARDS.length);
       try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
     }
+    track('draw_single', CARDS[idx].name);
     showCard(CARDS[idx]);
   });
   document.getElementById('redraw').addEventListener('click', function(){
-    elResult.classList.remove('on');
-    elDeck.style.display = 'flex';
+    var idx = Math.floor(Math.random()*CARDS.length);
+    try{ localStorage.setItem(drawKeyToday_(), String(idx)); }catch(e){}
+    track('redraw_single', CARDS[idx].name);
+    showCard(CARDS[idx]);
   });
   /* ไพ่คว่ำเสมอตอนเข้าเว็บ/สลับโหมด ต้องแตะถึงจะเห็นผล (ผลของวันนี้จะเหมือนเดิมถ้าเคยแตะไปแล้ว) */
   function checkTodaySingle_(){
     elResult.classList.remove('on');
     elDeck.style.display = 'flex';
+    var si = document.getElementById('share-inline-single');
+    if(si) si.style.display = 'none';
   }
 
   /* ---- โหมดจั่ว 3 ใบ แบบเลือกเอง (โต๊ะไพ่) ---- */
@@ -704,6 +759,7 @@
     lastShareCaption_ = 'ฉันเพิ่งดูดวงเงิน-รัก-งานที่มีโปรมาบอก 🔮 ลองดูดวงของคุณดูสิ';
     elSpread.classList.add('on');
     elRedrawDesk.style.display = 'inline-block';
+    document.getElementById('share-inline-desk').style.display = 'block';
   }
   function renderDesk_(){
     elDeskRow.innerHTML = deskAssignment.map(function(cardIdx, pos){
@@ -727,6 +783,7 @@
     elSpread.classList.remove('on');
     elSpread.innerHTML = '';
     elRedrawDesk.style.display = 'none';
+    document.getElementById('share-inline-desk').style.display = 'none';
     elDeskHint.textContent = deskRevealSource
       ? 'แตะไพ่ 3 ใบเพื่อดูดวงที่จั่วไว้วันนี้อีกครั้ง'
       : 'เลือกไพ่ 3 ใบจากกองไพ่ด้านล่างด้วยตัวเอง (เงิน → รัก → งาน)';
@@ -746,10 +803,15 @@
         try{ localStorage.setItem(drawKeyToday_(), idxs.join(',')); }catch(e){}
       }
       elDeskHint.textContent = 'ครบแล้ว! 🔮 นี่คือดวงของคุณวันนี้';
+      track('draw_spread', idxs.map(function(i){ return CARDS[i].name; }).join(','));
       showSpread(idxs);
     }
   });
-  elRedrawDesk.addEventListener('click', buildDesk_);
+  elRedrawDesk.addEventListener('click', function(){
+    try{ localStorage.removeItem(drawKeyToday_()); }catch(e){}
+    track('redraw_spread','');
+    buildDesk_();
+  });
   function checkTodayDesk_(){
     buildDesk_();
   }
