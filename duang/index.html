@@ -892,10 +892,18 @@
       }
     }
 
-    /* กด LINE/Facebook ตรงนี้: ลองแชร์ทั้งรูปผลลัพธ์+แคปชั่นพร้อมกันผ่านเมนูแชร์ของเครื่อง (รองรับมือถือเป็นหลัก)
-       ถ้าเครื่อง/เบราว์เซอร์ไม่รองรับการแชร์ไฟล์ (ส่วนใหญ่คือคอม) จะ fallback เป็นแชร์ลิงก์+ข้อความแบบเดิมแทน
-       หมายเหตุ: Facebook ไม่รองรับให้เว็บใส่แคปชั่นเองผ่านหน้าต่างแชร์ลิงก์ (ข้อจำกัดของ Facebook เอง แก้จากฝั่งเว็บไม่ได้) แคปชั่นจะติดไปได้ชัวร์เฉพาะตอนแชร์ผ่านเมนูแชร์รูปของเครื่องเท่านั้น */
+    /* กด LINE/Facebook ตรงนี้: เช็คก่อนทันที (แบบ sync ไม่รอ) ว่าเครื่องรองรับแชร์ไฟล์รูปไหม
+       - รองรับ (ส่วนใหญ่คือมือถือ Safari/Chrome ล่าสุด) -> ค่อยสร้างรูป แล้วเปิดเมนูแชร์ของเครื่อง (ได้ทั้งรูป+แคปชั่น)
+       - ไม่รองรับ (คอมส่วนใหญ่ หรือเบราว์เซอร์ในแอปอย่าง webview ของ Facebook/LINE) -> แชร์ลิงก์+ข้อความแบบเดิมทันที ไม่ต้องรอสร้างรูปก่อน
+         (สำคัญ: ถ้าไปรอสร้างรูปก่อนค่อยลองเปิดป๊อปอัป เบราว์เซอร์จะไม่นับว่าเป็นการกดปุ่มของผู้ใช้แล้ว แล้วจะบล็อกป๊อปอัปเงียบๆ โดยไม่มีอะไรขึ้นเลย)
+       หมายเหตุ: พรีวิวรูป+คำอธิบายตอนแชร์ลิงก์ (ไม่ใช่แชร์ไฟล์) มาจาก og:image/og:description ของหน้านี้เอง
+       ถ้า Facebook เพิ่งเคยแคชหน้านี้ครั้งแรกอาจต้องกด Force Scrape ใน Sharing Debugger ก่อนพรีวิวจะขึ้นถูกต้อง */
     function shareCompatSmart_(platform){
+      var canFileShare = !!(window.navigator && navigator.share && navigator.canShare);
+      if(!canFileShare){
+        if(platform==='line') shareLine_(DUANG_URL, lastShareCaption_); else shareFb_(DUANG_URL, lastShareCaption_);
+        return;
+      }
       drawCompatCanvas_(function(canvas){
         if(!canvas){
           if(platform==='line') shareLine_(DUANG_URL, lastShareCaption_); else shareFb_(DUANG_URL, lastShareCaption_);
@@ -907,7 +915,7 @@
             return;
           }
           var file = new File([blob], 'duang-compat.png', {type:'image/png'});
-          if(navigator.canShare && navigator.canShare({files:[file]})){
+          if(navigator.canShare({files:[file]})){
             navigator.share({ files:[file], title:'เช็คดวงความรัก', text:lastShareCaption_+'\n'+DUANG_URL }).catch(function(){});
           } else if(platform==='line'){
             shareLine_(DUANG_URL, lastShareCaption_);
