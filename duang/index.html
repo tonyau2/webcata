@@ -503,8 +503,9 @@
     } else { pop_(lineUrl_(url)); }
   }
   function shareFb_(url, text){
-    if(navigator.share){ navigator.share({ title:text||'', url:url }).catch(function(){}); }
-    else { pop_(fbUrl_(url)); }
+    if(navigator.share){
+      navigator.share({ title:'มีโปรมาบอก', text:(text?text+'\n':'')+url, url:url }).catch(function(){});
+    } else { pop_(fbUrl_(url)); }
   }
   function copyLink_(url, btn){
     var done = function(){ var old=btn.textContent; btn.textContent='✅'; setTimeout(function(){ btn.textContent=old; }, 1500); };
