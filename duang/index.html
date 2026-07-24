@@ -43,16 +43,11 @@
 
   header{
     position:relative; aspect-ratio:1600/500;
-    background:
-      linear-gradient(180deg, rgba(20,4,4,.5), rgba(20,4,4,.5)),
-      url('header-duang.png') center/cover no-repeat;
-    color:#fff; text-align:center; padding:16px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:url('header-duang.png') center/cover no-repeat;
     border-bottom:2px solid var(--gold);
     box-shadow:0 4px 24px rgba(0,0,0,.4);
   }
-  header h1{ font-family:'Trirong',serif; font-weight:600; font-size:clamp(22px,5vw,30px); line-height:1.35; max-width:640px; margin:0 auto; text-shadow:0 2px 8px rgba(0,0,0,.35); }
-  header p{ font-size:13px; color:rgba(255,255,255,.88); max-width:480px; margin:10px auto 0; }
+  header h1, header p{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
 
   main{ max-width:900px; margin:0 auto; padding:20px 16px 20px; }
 
