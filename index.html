@@ -1011,7 +1011,7 @@
      ถ้าเครื่องไม่รองรับ (เช่นเปิดจากคอม) -> fallback ไปหน้าเว็บแชร์ตามปกติ */
   function shareFb_(url, text){
     if(navigator.share){
-      navigator.share({ title:text||'', url:url }).catch(function(){});
+      navigator.share({ title:'มีโปรมาบอก', text:(text?text+'\n':'')+url, url:url }).catch(function(){});
     } else {
       pop(fbUrl(url));
     }
