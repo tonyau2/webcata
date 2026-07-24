@@ -302,7 +302,7 @@
     <div class="today-line" id="deck-hint-line">เลือกจั่ว 1 ใบ หรือ 3 ใบดูครบทุกด้าน</div>
     <div class="draw-modes">
       <button class="mode-btn" id="mode-1" data-mode="1" aria-selected="true">จั่ว 1 ใบ</button>
-      <button class="mode-btn" id="mode-3" data-mode="3">จั่ว 3 ใบ (เงิน-รัก-งาน)</button>
+      <button class="mode-btn" id="mode-3" data-mode="3">จั่ว 3 ใบ</button>
     </div>
     <div class="deck-wrap" id="deck-wrap-single">
       <div class="deck-card" id="deck-card"></div>
@@ -324,7 +324,7 @@
       </div>
     </div>
     <div class="desk-wrap" id="desk-wrap" style="display:none;">
-      <div class="desk-hint" id="desk-hint">แตะเลือกไพ่ 3 ใบจากกองด้านล่าง ทีละใบ (เงิน → รัก → งาน)</div>
+      <div class="desk-hint" id="desk-hint">แตะเลือกไพ่ 3 ใบจากกองด้านล่าง ทีละใบ</div>
       <div class="desk-row" id="desk-row"></div>
       <div class="spread-result" id="spread-result"></div>
       <button class="redraw" id="redraw-desk" style="display:none;">จั่วใหม่</button>
@@ -956,7 +956,6 @@
   var elRedrawDesk = document.getElementById('redraw-desk');
   var DRAW_KEY_PREFIX = 'mpb_card_';
   var DESK_SIZE = 12;
-  var SPREAD_LABELS = [ {icon:'💰', name:'การเงิน'}, {icon:'💕', name:'ความรัก'}, {icon:'💼', name:'การงาน'} ];
   var currentMode = 1;
   var deskAssignment = [];
   var deskPicked = [];
@@ -1020,7 +1019,7 @@
       nameEl.textContent = card.name;
     }
     document.getElementById('result-text').textContent = card.text;
-    lastShareCaption_ = 'ฉันจั่วได้ "'+card.name+'" จากมีโปรมาบอก 🔮 ลองดูดวงของคุณดูสิ';
+    lastShareCaption_ = 'จั่วไพ่ได้ "'+card.name+'" 🔮 '+card.text+' ลองจั่วดวงของคุณดูสิที่มีโปรมาบอก';
     elResult.classList.add('on');
     elDeck.style.display = 'none';
     document.getElementById('share-inline-single').style.display = 'block';
@@ -1055,16 +1054,17 @@
   /* ---- โหมดจั่ว 3 ใบ แบบเลือกเอง (โต๊ะไพ่) ---- */
   function showSpread(indices){
     var html = indices.map(function(idx, i){
-      var card = CARDS[idx], lab = SPREAD_LABELS[i];
+      var card = CARDS[idx];
       return '<div class="spread-card">'
-        + '<div class="spread-label">'+esc(lab.icon)+' '+esc(lab.name)+'</div>'
+        + '<div class="spread-label">ใบที่ '+(i+1)+'</div>'
         + cardFaceHtml_(card)
         + '<div class="spread-name">'+esc(card.name)+'</div>'
         + '<div class="spread-text">'+esc(card.text)+'</div>'
         + '</div>';
     }).join('');
     elSpread.innerHTML = html;
-    lastShareCaption_ = 'ฉันเพิ่งดูดวงเงิน-รัก-งานที่มีโปรมาบอก 🔮 ลองดูดวงของคุณดูสิ';
+    var names = indices.map(function(idx){ return CARDS[idx].name; });
+    lastShareCaption_ = 'จั่วไพ่ได้ '+names.join(' + ')+' 🔮 ลองจั่วดวงของคุณดูสิที่มีโปรมาบอก';
     elSpread.classList.add('on');
     elRedrawDesk.style.display = 'inline-block';
     document.getElementById('share-inline-desk').style.display = 'block';
@@ -1074,9 +1074,9 @@
       var pickedAt = deskPicked.indexOf(pos);
       if(pickedAt>-1){
         var realIdx = deskRevealSource ? deskRevealSource[pickedAt] : cardIdx;
-        var card = CARDS[realIdx], lab = SPREAD_LABELS[pickedAt];
+        var card = CARDS[realIdx];
         var faceImg = card.img ? '<img class="desk-card-img" src="'+esc(card.img)+'" onerror="this.style.display=\'none\'">' : '<div class="desk-card-icon">'+esc(card.icon)+'</div>';
-        return '<div class="desk-item"><div class="desk-card picked">'+faceImg+'</div><div class="desk-label">'+esc(lab.icon)+' '+esc(lab.name)+'</div></div>';
+        return '<div class="desk-item"><div class="desk-card picked">'+faceImg+'</div><div class="desk-label">'+esc(card.name)+'</div></div>';
       }
       return '<div class="desk-item"><div class="desk-card" data-pos="'+pos+'"></div><div class="desk-label"></div></div>';
     }).join('');
@@ -1094,7 +1094,7 @@
     document.getElementById('share-inline-desk').style.display = 'none';
     elDeskHint.textContent = deskRevealSource
       ? 'แตะไพ่ 3 ใบเพื่อดูดวงที่จั่วไว้วันนี้อีกครั้ง'
-      : 'เลือกไพ่ 3 ใบจากกองไพ่ด้านล่างด้วยตัวเอง (เงิน → รัก → งาน)';
+      : 'เลือกไพ่ 3 ใบจากกองไพ่ด้านล่างด้วยตัวเอง';
     renderDesk_();
   }
   elDeskRow.addEventListener('click', function(e){
