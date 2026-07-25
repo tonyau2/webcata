@@ -9,13 +9,8 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ข่าววันนี้ บันเทิง บ้านเมือง อัปเดตทุกชั่วโมง | มีโปรมาบอก">
 <meta property="og:description" content="รวมข่าวบันเทิง ข่าวบ้านเมือง อัปเดตทุกชั่วโมง อ่านง่าย สรุปสั้น พร้อมลิงก์ไปอ่านฉบับเต็มจากต้นฉบับ">
-<meta property="og:url" content="https://meepromabok.com/news.html">
 <meta property="og:site_name" content="มีโปรมาบอก">
-<meta property="og:image" content="https://meepromabok.com/img/news-og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="มีโปรมาบอก - ข่าววันนี้">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://meepromabok.com/img/ogpic.jpg">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23C8102E'/><text x='50' y='71' text-anchor='middle' font-size='60' font-family='Helvetica,Arial,sans-serif' font-weight='700' fill='%23fff'>%25</text></svg>">
 <meta name="theme-color" content="#FFF3EA">
@@ -56,6 +51,13 @@
     font-size:12.5px; font-weight:600;
   }
   .home-link:hover{ border-color:var(--hair-2); }
+  .share-link{
+    flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--hair); background:#06C755; color:#fff;
+    border-radius:8px; padding:8px; text-decoration:none; cursor:pointer;
+    font-size:12.5px; font-weight:600; font-family:'Anuphan',sans-serif;
+    width:32px; height:32px;
+  }
 
   .pills{ display:flex; gap:7px; max-width:1180px; margin:0 auto; padding:0 16px 12px; overflow-x:auto; scrollbar-width:none; }
   .pills::-webkit-scrollbar{ display:none; }
@@ -152,6 +154,12 @@
       <div class="motto" id="motto">ข่าววันนี้ อัปเดตทุกชั่วโมง</div>
     </div>
     <a class="home-link" href="index.html">🏠 หน้าโปรโมชั่น</a>
+    <button class="share-link" id="share-news-line" aria-label="แชร์ผ่าน LINE" style="background:#06C755;">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="#fff" d="M12 5c-4 0-7.2 2.6-7.2 5.8 0 2.9 2.5 5.3 6 5.7.6.1.8.3.7.9l-.2 1c-.1.4.2.6.6.4 1.7-.8 5-3 6.3-4.9.7-.9 1-1.9 1-3.1C19.2 7.6 16 5 12 5z"/></svg>
+    </button>
+    <button class="share-link" id="share-news-fb" aria-label="แชร์ผ่าน Facebook" style="background:#1877F2;">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="#fff" d="M15.6 12.6l.4-2.5h-2.4V8.5c0-.7.3-1.4 1.4-1.4h1.1V5c0 0-1-.2-1.9-.2-2 0-3.2 1.2-3.2 3.4v1.9H8.8v2.5H11V19h2.6v-6.4h2z"/></svg>
+    </button>
   </div>
   <div class="pills" id="pills" role="tablist"></div>
 </header>
@@ -199,6 +207,29 @@
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
+
+  /* ---------- แชร์หน้าข่าว — แชร์ลิงก์เว็บเราเสมอ ไม่ใช่ลิงก์ข่าวต้นทาง ---------- */
+  var NEWS_URL = 'https://meepromabok.com/news.html';
+  var NEWS_SHARE_TEXT = '📰 ข่าววันนี้ อัปเดตทุกชั่วโมง บันเทิง บ้านเมือง ครบจบที่เดียว ที่มีโปรมาบอก';
+  function isMobile_(){ return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
+  function pop_(u){ window.open(u,'_blank','noopener,width=600,height=640'); }
+  function lineUrl_(u){ return 'https://social-plugins.line.me/lineit/share?url='+encodeURIComponent(u); }
+  function fbUrl_(u){ return 'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(u); }
+  function shareLine_(url, text){
+    if(isMobile_()){
+      var appUrl = 'line://msg/text/' + encodeURIComponent((text?text+'\n':'') + url);
+      var fell = false;
+      var fallback = setTimeout(function(){ if(!fell){ fell=true; pop_(lineUrl_(url)); } }, 1200);
+      window.addEventListener('blur', function onBlur(){ fell=true; clearTimeout(fallback); window.removeEventListener('blur', onBlur); });
+      location.href = appUrl;
+    } else { pop_(lineUrl_(url)); }
+  }
+  function shareFb_(url){ pop_(fbUrl_(url)); }
+  var shLineBtn = document.getElementById('share-news-line');
+  var shFbBtn = document.getElementById('share-news-fb');
+  if(shLineBtn) shLineBtn.addEventListener('click', function(){ track('share_line','news_page'); shareLine_(NEWS_URL, NEWS_SHARE_TEXT); });
+  if(shFbBtn) shFbBtn.addEventListener('click', function(){ track('share_fb','news_page'); shareFb_(NEWS_URL); });
+
   var IMG_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%2062%22%3E%3Crect%20width=%22100%22%20height=%2262%22%20fill=%22%23F2EAE4%22/%3E%3Ctext%20x=%2250%22%20y=%2235%22%20text-anchor=%22middle%22%20font-size=%2210%22%20font-family=%22sans-serif%22%20fill=%22%23C9A98F%22%3Eไม่มีรูป%3C/text%3E%3C/svg%3E";
   document.addEventListener('error', function(e){
     var t=e.target;
