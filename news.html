@@ -146,6 +146,31 @@
     html{ scroll-behavior:auto; }
     .rv{ opacity:1 !important; transform:none !important; }
   }
+
+  /* ---------- 🛍️ กล่องเด้งชวนไปดูดีลสินค้า ---------- */
+  .shop-nudge{
+    position:fixed; left:14px; bottom:16px; z-index:79; width:230px;
+    display:none; align-items:center; gap:10px;
+    background:linear-gradient(105deg, var(--red-2) 0%, var(--red) 55%, var(--flame) 100%);
+    border:1px solid rgba(227,199,126,.45);
+    border-radius:16px; padding:11px 13px; text-decoration:none; color:#fff;
+    box-shadow:0 12px 30px rgba(36,16,20,.35);
+    animation:shopIn .4s cubic-bezier(.2,1.3,.4,1);
+  }
+  .shop-nudge.on{ display:flex; }
+  .shop-nudge img{ width:52px; height:52px; border-radius:10px; object-fit:contain; flex:0 0 auto; background:#fff; padding:4px; }
+  .shop-nudge-txt{ flex:1; min-width:0; }
+  .shop-nudge-kicker{ font-size:9.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-hi); margin-bottom:2px; }
+  .shop-nudge-q{ font-weight:700; font-size:12.5px; color:#fff; line-height:1.3; }
+  .shop-nudge-cta{ display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; color:var(--red-2); background:#fff; padding:3px 9px; border-radius:999px; margin-top:6px; }
+  .shop-nudge-cta::after{ content:'→'; }
+  .shop-nudge-x{
+    position:absolute; top:-8px; right:-8px; width:24px; height:24px; border-radius:50%;
+    background:var(--ink); color:#fff; border:2px solid var(--paper); font-size:12px;
+    display:grid; place-items:center; cursor:pointer; z-index:2;
+  }
+  @keyframes shopIn{ from{opacity:0; transform:translateY(14px) scale(.9);} to{opacity:1; transform:none;} }
+  @media(min-width:820px){ .shop-nudge{ left:20px; bottom:20px; width:260px; } }
 </style>
 </head>
 <body>
@@ -186,6 +211,18 @@
   <div class="notice">ℹ️ ข่าวทั้งหมดดึงมาจากสำนักข่าวต้นทางอัตโนมัติ กดที่ข่าวเพื่ออ่านฉบับเต็มจากเว็บต้นฉบับโดยตรง</div>
 </main>
 
+<div class="shop-nudge" id="shop-nudge">
+  <button class="shop-nudge-x" id="shop-nudge-x" aria-label="ปิด">✕</button>
+  <a href="https://meepromabok.com/" id="shop-nudge-link" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+    <img id="shop-nudge-img" src="" alt="สินค้าลดราคา" loading="lazy">
+    <div class="shop-nudge-txt">
+      <div class="shop-nudge-kicker">🛍️ ระหว่างอ่านข่าว</div>
+      <div class="shop-nudge-q" id="shop-nudge-q"></div>
+      <span class="shop-nudge-cta">ดูดีลเลย</span>
+    </div>
+  </a>
+</div>
+
 <script src="config.js"></script>
 <script>
   var CFG        = (typeof window.CATA === 'object' && window.CATA) ? window.CATA : {};
@@ -212,6 +249,43 @@
     return String(s===null||s===undefined?'':s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  /* ---------- 🛍️ กล่องเด้งชวนไปดูดีลสินค้า — ใช้ข้อมูล products ที่ได้มาพร้อมกับข่าวอยู่แล้ว ไม่ต้องยิงเรียกซ้ำ ---------- */
+  var PRODUCT_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22%3E%3Crect%20width=%22100%22%20height=%22100%22%20fill=%22%23F2EAE4%22/%3E%3Ctext%20x=%2250%22%20y=%2258%22%20text-anchor=%22middle%22%20font-size=%2232%22%3E%F0%9F%9B%8D%EF%B8%8F%3C/text%3E%3C/svg%3E";
+  function prodImgUrl_(raw,w){
+    var s=String(raw===null||raw===undefined?'':raw).trim();
+    if(!s) return PRODUCT_PLACEHOLDER;
+    var m=s.match(/\/d\/([-\w]{25,})/)||s.match(/[?&]id=([-\w]{25,})/)||s.match(/^([-\w]{25,})$/);
+    if(m) return 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||500);
+    return s;
+  }
+  function num_(v){ var n=Number(String(v).replace(/[^\d.]/g,'')); return isFinite(n)?n:0; }
+  function pct_(p){ var f=num_(p.Price), s=num_(p.PromoPrice); return (f>0&&s>0&&s<f)?Math.round((1-s/f)*100):0; }
+  var SHOP_NUDGE_KEY = 'mpb_news_shopnudge';
+  function initShopNudge_(products){
+    try{ if(sessionStorage.getItem(SHOP_NUDGE_KEY)) return; }catch(e){}
+    var box = document.getElementById('shop-nudge'); if(!box) return;
+    var img = document.getElementById('shop-nudge-img');
+    var qEl = document.getElementById('shop-nudge-q');
+    var pool = (products||[]).filter(function(p){ return pct_(p)>0; });
+    if(pool.length){
+      var p = pool[Math.floor(Math.random()*pool.length)];
+      img.src = prodImgUrl_(p.ImageURL, 120);
+      qEl.textContent = '🔥 ลดสูงสุด '+pct_(p)+'% วันนี้!';
+    } else {
+      img.src = PRODUCT_PLACEHOLDER;
+      qEl.textContent = '🔥 โปรไฟไหม้วันนี้!';
+    }
+    setTimeout(function(){ box.classList.add('on'); }, 4000);
+    document.getElementById('shop-nudge-link').addEventListener('click', function(){
+      track('shop_nudge_click','');
+    });
+    document.getElementById('shop-nudge-x').addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      box.classList.remove('on');
+      try{ sessionStorage.setItem(SHOP_NUDGE_KEY,'1'); }catch(err){}
+    });
   }
 
   /* ---------- แชร์หน้าข่าว — แชร์ลิงก์เว็บเราเสมอ ไม่ใช่ลิงก์ข่าวต้นทาง ---------- */
@@ -466,6 +540,7 @@
   window.__news=function(data){
     loaded=true;
     try{ build(data); }catch(err){ fail('แสดงผลไม่สำเร็จ — '+err.message); }
+    try{ initShopNudge_((data&&data.products)?data.products:[]); }catch(err){}
   };
   window.onerror=function(msg){ if(!loaded) fail(msg); };
 
