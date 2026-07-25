@@ -96,6 +96,12 @@
     font-size:11px; font-weight:700; padding:3px 9px; border-radius:7px;
     box-shadow:0 3px 10px rgba(224,27,61,.35);
   }
+  .card-share{
+    position:absolute; top:8px; right:8px; z-index:2;
+    width:28px; height:28px; border-radius:50%; border:0; cursor:pointer;
+    background:rgba(20,4,4,.55); backdrop-filter:blur(4px); color:#fff;
+    font-size:13px; display:grid; place-items:center;
+  }
   .card-body{ padding:10px 12px 12px; display:flex; flex-direction:column; gap:6px; flex:1; }
   .card-title{
     font-size:13.5px; font-weight:600; line-height:1.45; color:var(--ink);
@@ -230,6 +236,91 @@
   if(shLineBtn) shLineBtn.addEventListener('click', function(){ track('share_line','news_page'); shareLine_(NEWS_URL, NEWS_SHARE_TEXT); });
   if(shFbBtn) shFbBtn.addEventListener('click', function(){ track('share_fb','news_page'); shareFb_(NEWS_URL); });
 
+  /* ---------- แชร์ข่าวแต่ละชิ้น: สร้างรูป (หัวข้อ+รูปข่าวถ้าดึงได้+ลิงก์เว็บเรา) แล้วแชร์ผ่านเมนูเครื่อง ---------- */
+  function newsCategoryUrl_(cat){
+    return NEWS_URL + (cat ? ('?cat='+encodeURIComponent(cat)) : '');
+  }
+  function drawNewsCanvas_(newsItem, callback){
+    var canvas = document.createElement('canvas');
+    canvas.width = 800; canvas.height = 800;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFF3EA'; ctx.fillRect(0,0,800,800);
+    ctx.strokeStyle = '#E01B3D'; ctx.lineWidth = 8;
+    ctx.strokeRect(20,20,760,760);
+
+    function drawTextBlock_(photoDrawn){
+      var top = photoDrawn ? 470 : 220;
+      if(newsItem.Category){
+        ctx.font = 'bold 24px Arial,sans-serif';
+        var catW = ctx.measureText(newsItem.Category).width + 40;
+        ctx.fillStyle = '#E01B3D';
+        ctx.fillRect(60, top, catW, 40);
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'left';
+        ctx.fillText(newsItem.Category, 80, top+27);
+      }
+      ctx.fillStyle = '#2B0D13';
+      ctx.font = 'bold 34px Arial,sans-serif';
+      ctx.textAlign = 'left';
+      var words = String(newsItem.Title||'').split(' ');
+      var lines = [], line = '';
+      for(var i=0;i<words.length;i++){
+        var test = line + words[i] + ' ';
+        if(ctx.measureText(test).width > 660 && line){ lines.push(line); line = words[i]+' '; }
+        else line = test;
+      }
+      if(line) lines.push(line);
+      lines = lines.slice(0,5);
+      var ty = top + 90;
+      lines.forEach(function(l){ ctx.fillText(l.trim(), 60, ty); ty += 46; });
+
+      ctx.fillStyle = '#A50F2A'; ctx.font = 'bold 24px Arial,sans-serif';
+      ctx.fillText('📰 อ่านต่อที่มีโปรมาบอก', 60, 700);
+      ctx.fillStyle = '#C9992F'; ctx.font = 'bold 22px Arial,sans-serif';
+      ctx.fillText('มีโปรมาบอก · meepromabok.com/news.html', 60, 745);
+      callback(canvas);
+    }
+
+    if(newsItem.ImageURL){
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function(){
+        try{
+          ctx.drawImage(img, 60, 60, 680, 380);
+          drawTextBlock_(true);
+        }catch(e){ drawTextBlock_(false); } // เว็บต้นข่าวไม่อนุญาตให้วาดรูปต่อ -> ทำเป็นการ์ดข้อความแทน
+      };
+      img.onerror = function(){ drawTextBlock_(false); };
+      img.src = newsItem.ImageURL;
+    } else {
+      drawTextBlock_(false);
+    }
+  }
+  function shareNewsItem_(newsItem){
+    var shareUrl = newsCategoryUrl_(newsItem.Category);
+    var caption = String(newsItem.Title||'') + ' 📰 อ่านต่อที่มีโปรมาบอก';
+    track('share_news_item', newsItem.Link, newsItem.Category);
+    drawNewsCanvas_(newsItem, function(canvas){
+      canvas.toBlob(function(blob){
+        if(!blob){ shareLine_(shareUrl, caption); return; }
+        var file = new File([blob], 'news-share.png', {type:'image/png'});
+        if(navigator.canShare && navigator.canShare({files:[file]})){
+          navigator.share({ files:[file], title:'มีโปรมาบอก', text:caption+'\n'+shareUrl }).catch(function(){});
+        } else {
+          shareLine_(shareUrl, caption);
+        }
+      }, 'image/png');
+    });
+  }
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.card-share');
+    if(!b) return;
+    e.preventDefault(); e.stopPropagation();
+    var link = b.dataset.shareLink;
+    var item = all.filter(function(n){ return String(n.Link)===link; })[0];
+    if(item) shareNewsItem_(item);
+  });
+
   var IMG_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%2062%22%3E%3Crect%20width=%22100%22%20height=%2262%22%20fill=%22%23F2EAE4%22/%3E%3Ctext%20x=%2250%22%20y=%2235%22%20text-anchor=%22middle%22%20font-size=%2210%22%20font-family=%22sans-serif%22%20fill=%22%23C9A98F%22%3Eไม่มีรูป%3C/text%3E%3C/svg%3E";
   document.addEventListener('error', function(e){
     var t=e.target;
@@ -305,6 +396,7 @@
     return '<a class="card" href="'+esc(link)+'" target="_blank" rel="noopener" data-news="1" data-link="'+esc(link)+'" data-cat="'+esc(n.Category||'')+'">'
       + '<div class="card-media"><img loading="lazy" decoding="async" alt="'+esc(n.Title)+'" src="'+esc(img)+'">'
       + (n.Category ? '<span class="card-cat">'+esc(n.Category)+'</span>' : '')
+      + '<button class="card-share" data-share-link="'+esc(link)+'" aria-label="แชร์ข่าวนี้">📤</button>'
       + '</div>'
       + '<div class="card-body">'
       + '<div class="card-title">'+esc(n.Title)+'</div>'
@@ -352,7 +444,8 @@
     var mt=document.getElementById('motto');
     if(mt) mt.textContent = all.length ? ('อัปเดตล่าสุด '+timeAgo(all[0].PubDate)) : 'กำลังรวบรวมข่าว กลับมาดูเร็วๆ นี้';
 
-    select('all');
+    var wantCat = new URLSearchParams(location.search).get('cat');
+    select(wantCat && cats.indexOf(wantCat)>-1 ? wantCat : 'all');
   }
 
   (function(){
