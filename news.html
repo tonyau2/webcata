@@ -258,6 +258,7 @@
     if(!s) return PRODUCT_PLACEHOLDER;
     var m=s.match(/\/d\/([-\w]{25,})/)||s.match(/[?&]id=([-\w]{25,})/)||s.match(/^([-\w]{25,})$/);
     if(m) return 'https://lh3.googleusercontent.com/d/'+m[1]+'=w'+(w||500);
+    if(!/^https?:/i.test(s) && s.indexOf('/')===-1) return 'img/'+s;
     return s;
   }
   function num_(v){ var n=Number(String(v).replace(/[^\d.]/g,'')); return isFinite(n)?n:0; }
