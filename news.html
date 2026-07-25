@@ -99,7 +99,7 @@
   .card-share{
     position:absolute; top:8px; right:8px; z-index:2;
     width:28px; height:28px; border-radius:50%; border:0; cursor:pointer;
-    background:rgba(20,4,4,.55); backdrop-filter:blur(4px); color:#fff;
+    background:#1877F2; box-shadow:0 3px 10px rgba(24,119,242,.4); color:#fff;
     font-size:13px; display:grid; place-items:center;
   }
   .card-body{ padding:10px 12px 12px; display:flex; flex-direction:column; gap:6px; flex:1; }
@@ -299,15 +299,15 @@
   function shareNewsItem_(newsItem){
     var shareUrl = newsCategoryUrl_(newsItem.Category);
     var caption = String(newsItem.Title||'') + ' 📰 อ่านต่อที่มีโปรมาบอก';
-    track('share_news_item', newsItem.Link, newsItem.Category);
+    track('share_fb_news_item', newsItem.Link, newsItem.Category);
     drawNewsCanvas_(newsItem, function(canvas){
       canvas.toBlob(function(blob){
-        if(!blob){ shareLine_(shareUrl, caption); return; }
+        if(!blob){ shareFb_(shareUrl); return; }
         var file = new File([blob], 'news-share.png', {type:'image/png'});
         if(navigator.canShare && navigator.canShare({files:[file]})){
           navigator.share({ files:[file], title:'มีโปรมาบอก', text:caption+'\n'+shareUrl }).catch(function(){});
         } else {
-          shareLine_(shareUrl, caption);
+          shareFb_(shareUrl);
         }
       }, 'image/png');
     });
@@ -396,7 +396,7 @@
     return '<a class="card" href="'+esc(link)+'" target="_blank" rel="noopener" data-news="1" data-link="'+esc(link)+'" data-cat="'+esc(n.Category||'')+'">'
       + '<div class="card-media"><img loading="lazy" decoding="async" alt="'+esc(n.Title)+'" src="'+esc(img)+'">'
       + (n.Category ? '<span class="card-cat">'+esc(n.Category)+'</span>' : '')
-      + '<button class="card-share" data-share-link="'+esc(link)+'" aria-label="แชร์ข่าวนี้">📤</button>'
+      + '<button class="card-share" data-share-link="'+esc(link)+'" aria-label="แชร์ไป Facebook"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="#fff" d="M15.6 12.6l.4-2.5h-2.4V8.5c0-.7.3-1.4 1.4-1.4h1.1V5c0 0-1-.2-1.9-.2-2 0-3.2 1.2-3.2 3.4v1.9H8.8v2.5H11V19h2.6v-6.4h2z"/></svg></button>'
       + '</div>'
       + '<div class="card-body">'
       + '<div class="card-title">'+esc(n.Title)+'</div>'
