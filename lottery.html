@@ -308,6 +308,30 @@
     }
     return s;
   }
+  /* แปลงวันที่ (ไม่ว่าจะมาในรูปแบบไหน) เป็นตัวเลขเทียบลำดับได้ ใช้เรียงงวดจริงๆ
+     ไม่พึ่งลำดับแถวในชีตเลย กันพลาดกรณีหลังบ้านใส่ข้อมูลไม่เรียงตามวันที่ */
+  function drawDateSortValue_(raw){
+    var s = String(raw||'').trim();
+    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if(m){
+      var y = Number(m[1]); if(y > 2400) y -= 543;
+      return new Date(y, Number(m[2])-1, Number(m[3])).getTime();
+    }
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if(m){
+      var y2 = Number(m[3]); if(y2 > 2400) y2 -= 543;
+      return new Date(y2, Number(m[2])-1, Number(m[1])).getTime();
+    }
+    for(var i=0;i<THAI_MONTHS_FULL_.length;i++){
+      if(s.indexOf(THAI_MONTHS_FULL_[i])>-1){
+        var parts = s.trim().split(/\s+/);
+        var d3 = Number(parts[0]);
+        var y3 = Number(parts[parts.length-1]); if(y3 > 2400) y3 -= 543;
+        return new Date(y3, i, d3).getTime();
+      }
+    }
+    return 0;   // แปลงไม่ได้ -> ให้ค่าต่ำสุด ไปอยู่ท้ายสุดของลิสต์ ไม่กระทบงวดอื่น
+  }
 
   var LOTTERY_URL = 'https://meepromabok.com/lottery.html';
   var current = null;
@@ -472,7 +496,9 @@
     try{
       var rows = (data && data.lottery) ? data.lottery : [];
       if(!rows.length){ fail('ยังไม่มีข้อมูลผลหวย'); return; }
-      var newestFirst = rows.slice().reverse();   // ชีตเก็บเก่า->ใหม่ตามลำดับ กลับด้านให้งวดล่าสุดขึ้นก่อน
+      var newestFirst = rows.slice().sort(function(a,b){
+        return drawDateSortValue_(b.DrawDate) - drawDateSortValue_(a.DrawDate);
+      });
 
       if(newestFirst.length > 1){
         var selCard = document.getElementById('draw-select-card');
