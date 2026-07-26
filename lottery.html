@@ -53,6 +53,12 @@
 
   /* เช็คเลขของคุณ */
   .check-row{ display:flex; gap:8px; }
+  #draw-select{
+    width:100%; border:1.5px solid var(--hair-2); border-radius:10px; padding:11px 12px;
+    font-size:14px; font-weight:600; font-family:'Anuphan',sans-serif; color:var(--ink);
+    background:var(--surface) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22%3E%3Cpath d=%22M0 0l6 8 6-8z%22 fill=%22%23A50F2A%22/%3E%3C/svg%3E') no-repeat right 14px center;
+    -webkit-appearance:none; appearance:none; cursor:pointer;
+  }
   .check-row input{
     flex:1; border:1.5px solid var(--hair-2); border-radius:10px; padding:12px 14px;
     font-size:18px; font-weight:700; letter-spacing:.08em; text-align:center;
@@ -137,6 +143,11 @@
 </header>
 
 <main id="main-content">
+
+  <div class="card" id="draw-select-card" style="display:none;">
+    <div class="card-title">📅 เลือกดูงวด</div>
+    <select id="draw-select"></select>
+  </div>
 
   <div class="card">
     <div class="card-title">🔍 เช็คเลขของคุณ</div>
@@ -356,16 +367,32 @@
   function fail(msg){
     document.getElementById('main-content').innerHTML = '<div class="msg">โหลดผลหวยไม่สำเร็จ: '+esc(msg)+'<br><a href="https://meepromabok.com/" style="color:var(--red);font-weight:700;">← กลับไปหน้าสินค้าลดราคา</a></div>';
   }
+  function showDraw_(row){
+    current = row;
+    document.getElementById('draw-date').textContent = 'งวดประจำวันที่ '+String(row.DrawDate||'');
+    renderQuick_(row);
+    renderDetail_(row);
+    document.getElementById('check-result').classList.remove('on');   // ล้างผลเช็คเก่า กันสับสนงวด
+  }
   var loaded=false;
   window.__lottery=function(data){
     loaded=true;
     try{
       var rows = (data && data.lottery) ? data.lottery : [];
       if(!rows.length){ fail('ยังไม่มีข้อมูลผลหวย'); return; }
-      current = rows[rows.length-1];   // แถวล่าสุด = งวดล่าสุด
-      document.getElementById('draw-date').textContent = 'งวดประจำวันที่ '+String(current.DrawDate||'');
-      renderQuick_(current);
-      renderDetail_(current);
+      var newestFirst = rows.slice().reverse();   // ชีตเก็บเก่า->ใหม่ตามลำดับ กลับด้านให้งวดล่าสุดขึ้นก่อน
+
+      if(newestFirst.length > 1){
+        var selCard = document.getElementById('draw-select-card');
+        var sel = document.getElementById('draw-select');
+        selCard.style.display = 'block';
+        sel.innerHTML = newestFirst.map(function(r,i){
+          return '<option value="'+i+'">งวด '+esc(r.DrawDate||'')+(i===0?' (ล่าสุด)':'')+'</option>';
+        }).join('');
+        sel.addEventListener('change', function(){ showDraw_(newestFirst[Number(sel.value)]); });
+      }
+
+      showDraw_(newestFirst[0]);   // เริ่มที่งวดล่าสุดเสมอ
     }catch(err){ fail(err.message); }
     try{ initShopNudge_((data&&data.products)?data.products:[]); }catch(err){}
   };
