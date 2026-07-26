@@ -252,6 +252,62 @@
   function splitNums_(s){
     return String(s||'').split(',').map(function(x){ return x.trim(); }).filter(Boolean);
   }
+  function pad_(s, len){
+    s = String(s); while(s.length < len) s = '0' + s; return s;
+  }
+  function padPrize_(s, expectedLen){
+    s = String(s||'').trim();
+    if(!s || s==='-') return s;
+    return pad_(s, expectedLen);
+  }
+
+  var THAI_MONTHS_SHORT_ = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  var THAI_MONTHS_FULL_ = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  function parseDrawDate_(raw){
+    var s = String(raw||'').trim();
+    var m;
+    // เช็คก่อนว่าเป็นรูปแบบไทยอ่านง่ายอยู่แล้วไหม (เช่น "16 กรกฎาคม 2569")
+    for(var i=0;i<THAI_MONTHS_FULL_.length;i++){
+      if(s.indexOf(THAI_MONTHS_FULL_[i])>-1) return s;
+    }
+    // ISO-like: "2026-07-16" หรือ "2569-05-16" หรือ "2569-05-16 00:00"
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if(m){
+      var y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
+      if(y < 2500) y += 543;   // ค.ศ. -> พ.ศ.
+      return d + ' ' + THAI_MONTHS_FULL_[mo-1] + ' ' + y;
+    }
+    // dd/mm/yyyy
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if(m){
+      var y2 = Number(m[3]), mo2 = Number(m[2]), d2 = Number(m[1]);
+      if(y2 < 2500) y2 += 543;
+      return d2 + ' ' + THAI_MONTHS_FULL_[mo2-1] + ' ' + y2;
+    }
+    return s;   // อะไรก็ตามที่แปลงไม่ได้ -> ใช้ตามเดิม
+  }
+  function parseDrawDateShort_(raw){
+    var s = String(raw||'').trim();
+    var m;
+    for(var i=0;i<THAI_MONTHS_FULL_.length;i++){
+      if(s.indexOf(THAI_MONTHS_FULL_[i])>-1){
+        return s.replace(THAI_MONTHS_FULL_[i], THAI_MONTHS_SHORT_[i]);
+      }
+    }
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if(m){
+      var y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
+      if(y < 2500) y += 543;
+      return d + ' ' + THAI_MONTHS_SHORT_[mo-1] + ' ' + y;
+    }
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if(m){
+      var y2 = Number(m[3]), mo2 = Number(m[2]), d2 = Number(m[1]);
+      if(y2 < 2500) y2 += 543;
+      return d2 + ' ' + THAI_MONTHS_SHORT_[mo2-1] + ' ' + y2;
+    }
+    return s;
+  }
 
   var LOTTERY_URL = 'https://meepromabok.com/lottery.html';
   var current = null;
@@ -329,10 +385,10 @@
   ];
 
   function renderQuick_(row){
-    var back2 = splitNums_(row.Back2)[0] || '-';
-    var front3List = splitNums_(row.Front3);
-    var back3List = splitNums_(row.Back3);
-    var first = splitNums_(row.First)[0] || '-';
+    var back2 = padPrize_(splitNums_(row.Back2)[0] || '-', 2);
+    var front3List = splitNums_(row.Front3).map(function(n){ return padPrize_(n,3); });
+    var back3List = splitNums_(row.Back3).map(function(n){ return padPrize_(n,3); });
+    var first = padPrize_(splitNums_(row.First)[0] || '-', 6);
     function chipRow_(list){
       return list.map(function(n){ return '<span style="display:inline-block;margin:2px 4px;">'+esc(n)+'</span>'; }).join('');
     }
@@ -346,7 +402,8 @@
     var html = PRIZE_META.slice(1).map(function(p){
       var nums = splitNums_(row[p.key]);
       if(!nums.length) return '';
-      var chips = nums.map(function(n){ return '<div class="prize-chip">'+esc(n)+'</div>'; }).join('');
+      var padLen = (p.key==='Back2'?2 : (p.key==='Front3'||p.key==='Back3'?3 : 6));
+      var chips = nums.map(function(n){ return '<div class="prize-chip">'+esc(padPrize_(n,padLen))+'</div>'; }).join('');
       return '<details><summary>'+esc(p.label)+' ('+nums.length+' รางวัล ๆ ละ '+p.reward+' บาท)</summary>'
         + '<div class="prize-list">'+chips+'</div></details>';
     }).join('');
@@ -362,11 +419,13 @@
     var front3 = num6.slice(0,3), back3 = num6.slice(3,6), back2 = num6.slice(4,6);
     var wins = [];
     PRIZE_META.forEach(function(p){
-      if(splitNums_(row[p.key]).indexOf(num6)>-1) wins.push({ label:p.label, reward:p.reward, matched:num6 });
+      var padLen = (p.key==='Back2'?2 : (p.key==='Front3'||p.key==='Back3'?3 : 6));
+      if(splitNums_(row[p.key]).map(function(n){return padPrize_(n,padLen);}).indexOf(num6)>-1)
+        wins.push({ label:p.label, reward:p.reward, matched:num6 });
     });
-    if(splitNums_(row.Front3).indexOf(front3)>-1) wins.push({ label:'เลขหน้า 3 ตัว', reward:'4,000', matched:front3 });
-    if(splitNums_(row.Back3).indexOf(back3)>-1) wins.push({ label:'เลขท้าย 3 ตัว', reward:'4,000', matched:back3 });
-    if(splitNums_(row.Back2).indexOf(back2)>-1) wins.push({ label:'เลขท้าย 2 ตัว', reward:'2,000', matched:back2 });
+    if(splitNums_(row.Front3).map(function(n){return padPrize_(n,3);}).indexOf(front3)>-1) wins.push({ label:'เลขหน้า 3 ตัว', reward:'4,000', matched:front3 });
+    if(splitNums_(row.Back3).map(function(n){return padPrize_(n,3);}).indexOf(back3)>-1) wins.push({ label:'เลขท้าย 3 ตัว', reward:'4,000', matched:back3 });
+    if(splitNums_(row.Back2).map(function(n){return padPrize_(n,2);}).indexOf(back2)>-1) wins.push({ label:'เลขท้าย 2 ตัว', reward:'2,000', matched:back2 });
     return wins;
   }
 
@@ -402,10 +461,10 @@
   }
   function showDraw_(row){
     current = row;
-    document.getElementById('draw-date').textContent = 'งวดประจำวันที่ '+String(row.DrawDate||'');
+    document.getElementById('draw-date').textContent = 'งวดประจำวันที่ ' + parseDrawDate_(row.DrawDate);
     renderQuick_(row);
     renderDetail_(row);
-    document.getElementById('check-result').classList.remove('on');   // ล้างผลเช็คเก่า กันสับสนงวด
+    document.getElementById('check-result').classList.remove('on');
   }
   var loaded=false;
   window.__lottery=function(data){
@@ -420,7 +479,7 @@
         var sel = document.getElementById('draw-select');
         selCard.style.display = 'block';
         sel.innerHTML = newestFirst.map(function(r,i){
-          return '<option value="'+i+'">งวด '+esc(r.DrawDate||'')+(i===0?' (ล่าสุด)':'')+'</option>';
+          return '<option value="'+i+'">'+esc(parseDrawDateShort_(r.DrawDate))+(i===0?' (ล่าสุด)':'')+'</option>';
         }).join('');
         sel.addEventListener('change', function(){ showDraw_(newestFirst[Number(sel.value)]); });
       }
