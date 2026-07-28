@@ -96,6 +96,27 @@
   .chong-tag{ font-weight:700; margin-right:4px; }
 
   /* เช็คดวงความรัก */
+  /* ทำนายฝัน + เลขเด็ด */
+  .dream-row{ display:flex; gap:8px; margin-top:6px; }
+  .dream-row input{
+    flex:1; border:1.5px solid rgba(140,120,255,.35); border-radius:10px; background:rgba(0,0,0,.25);
+    color:#fff; padding:11px 13px; font-family:'Anuphan',sans-serif; font-size:14px;
+  }
+  .dream-row input::placeholder{ color:rgba(255,255,255,.4); }
+  .dream-row button{
+    background:linear-gradient(135deg, #6B4FFF, #9C7BFF); color:#fff; border:0;
+    border-radius:10px; padding:0 18px; font-weight:700; font-size:13.5px; cursor:pointer;
+  }
+  .dream-result{ display:none; margin-top:14px; padding:15px; background:rgba(140,120,255,.1); border:1px solid rgba(140,120,255,.3); border-radius:12px; animation:zodiacPop .35s ease; }
+  .dream-result.on{ display:block; }
+  .dream-title{ font-family:'Trirong',serif; font-weight:600; font-size:16px; color:#C9BBFF; margin-bottom:6px; }
+  .dream-text{ font-size:13px; color:var(--ink); line-height:1.7; }
+  .dream-nums{ margin-top:10px; font-size:14px; font-weight:700; color:#B8A8FF; }
+  .dream-lottery-btn{
+    display:inline-block; margin-top:12px; background:linear-gradient(135deg, var(--red-2), var(--red));
+    color:#fff; text-decoration:none; padding:9px 16px; border-radius:999px; font-size:12.5px; font-weight:700;
+  }
+
   .compat-grid{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:6px; }
   @media(min-width:480px){ .compat-grid{ grid-template-columns:1fr 1fr; } }
   .compat-person-label{ font-size:12px; font-weight:700; color:var(--gold-hi); margin-bottom:8px; }
@@ -357,6 +378,21 @@
       <div class="fortune-row"><span class="fortune-tag">💕 ความรัก</span><span id="f-love"></span></div>
       <div class="fortune-row"><span class="fortune-tag">💼 การงาน</span><span id="f-work"></span></div>
       <span class="change-day" id="change-day">เปลี่ยนวันเกิด</span>
+    </div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(160deg, #1a1440, #0d0a24); border:1.5px solid rgba(140,120,255,.4);">
+    <div class="card-title" style="color:#B8A8FF;">🌙 ทำนายฝัน + เลขเด็ด</div>
+    <div class="today-line">พิมพ์คำสำคัญที่ฝันเห็น (เช่น "งู" "ฟันหลุด" "เงินทอง") แล้วกดค้นหา</div>
+    <div class="dream-row">
+      <input type="text" id="dream-input" placeholder="ฝันเห็นอะไร...">
+      <button id="dream-btn">ค้นหา</button>
+    </div>
+    <div class="dream-result" id="dream-result">
+      <div class="dream-title" id="dream-title"></div>
+      <div class="dream-text" id="dream-text"></div>
+      <div class="dream-nums" id="dream-nums"></div>
+      <a class="dream-lottery-btn" id="dream-lottery-btn" href="https://meepromabok.com/lottery.html">📌 จำเลขนี้ไว้ซื้อหวยงวดหน้า · ดูหวยงวดล่าสุดที่นี่ →</a>
     </div>
   </div>
 
@@ -752,6 +788,81 @@
     var saved = null;
     try{ saved = localStorage.getItem(BDAY_KEY); }catch(e){}
     if(saved){ showFortune(saved); }
+  })();
+
+  /* ---------- 🌙 ทำนายฝัน + เลขเด็ด ---------- */
+  (function(){
+    var DREAM_DICT = [
+      { keys:['งู'], title:'ฝันเห็นงู', text:'สื่อถึงคู่ครองหรือคนใกล้ตัวที่มีอิทธิพลต่อชีวิตคุณ ถ้างูมีสีสวยงามมักเป็นเรื่องดี ถ้างูกัดอาจมีคนคิดร้ายลับหลัง', nums:['56','65'] },
+      { keys:['ฟันหลุด','ฟันหัก'], title:'ฝันเห็นฟันหลุดหรือฟันหัก', text:'ตามความเชื่อโบราณ มักเกี่ยวกับญาติผู้ใหญ่หรือคนในครอบครัว ควรดูแลสุขภาพคนที่คุณรักให้ดี', nums:['26','62'] },
+      { keys:['เงินทอง','เงิน','ทอง','ได้เงิน'], title:'ฝันเห็นเงินทอง', text:'มีเกณฑ์จะได้ลาภหรือโชคลาภทางการเงินเข้ามาแบบไม่คาดคิด', nums:['89','98'] },
+      { keys:['ผี','วิญญาณ'], title:'ฝันเห็นผี', text:'จะได้พบเรื่องราวที่ไม่คาดคิดมาก่อน อาจเป็นข่าวเซอร์ไพรส์ทั้งดีและร้าย', nums:['10','01'] },
+      { keys:['น้ำท่วม','น้ำหลาก'], title:'ฝันเห็นน้ำท่วม', text:'สื่อถึงอุปสรรคหรือการเปลี่ยนแปลงครั้งใหญ่ในชีวิต ควรเตรียมใจรับมือกับความเปลี่ยนแปลง', nums:['45','54'] },
+      { keys:['ไฟไหม้','ไฟลุก'], title:'ฝันเห็นไฟไหม้', text:'มีทั้งความหมายเรื่องโชคลาภและความร้อนรนใจ ขึ้นอยู่กับว่าไฟนั้นทำร้ายคุณหรือไม่ในฝัน', nums:['76','67'] },
+      { keys:['ปลา'], title:'ฝันเห็นปลา', text:'เป็นสัญญาณโชคลาภทางการเงินที่กำลังจะเข้ามา ยิ่งปลาตัวใหญ่ยิ่งลาภก้อนใหญ่', nums:['39','93'] },
+      { keys:['แมว'], title:'ฝันเห็นแมว', text:'จะมีคนคอยช่วยเหลือคุณในเรื่องที่กำลังกังวลอยู่ อาจเป็นคนใกล้ตัวที่คุณคาดไม่ถึง', nums:['15','51'] },
+      { keys:['หมา','สุนัข'], title:'ฝันเห็นหมา', text:'สื่อถึงมิตรแท้และความซื่อสัตย์ อาจมีเพื่อนคนสำคัญเข้ามาช่วยเหลือคุณ', nums:['09','90'] },
+      { keys:['ท้อง','ตั้งครรภ์','ท้องแก่'], title:'ฝันเห็นตนเองตั้งครรภ์', text:'สื่อถึงเรื่องใหม่ๆ กำลังจะเข้ามาในชีวิต อาจเป็นโปรเจกต์ใหม่หรือโอกาสใหม่ที่คุณรอคอย', nums:['07','70'] },
+      { keys:['แต่งงาน'], title:'ฝันเห็นงานแต่งงาน', text:'ตามความเชื่อโบราณเรื่องนี้มักตีความกลับด้าน อาจสื่อถึงการพลัดพรากหรือการเปลี่ยนแปลงความสัมพันธ์', nums:['12','21'] },
+      { keys:['ตาย','ความตาย','คนตาย'], title:'ฝันเห็นความตาย', text:'ความเชื่อโบราณว่าเป็นนิมิตเรื่องอายุยืนหรือสิ่งเก่าจบไปสิ่งใหม่กำลังจะเข้ามาแทนที่', nums:['65','56'] },
+      { keys:['บ้าน','บ้านหลังใหญ่'], title:'ฝันเห็นบ้าน', text:'สื่อถึงความมั่นคงในชีวิต บ้านที่สวยงามมักหมายถึงฐานะการเงินที่กำลังจะดีขึ้น', nums:['48','84'] },
+      { keys:['รถ','รถยนต์'], title:'ฝันเห็นรถ', text:'สื่อถึงการเดินทางหรือความก้าวหน้าในหน้าที่การงานที่กำลังจะมาถึง', nums:['23','32'] },
+      { keys:['เลือด'], title:'ฝันเห็นเลือด', text:'มักเกี่ยวข้องกับญาติพี่น้องหรือคนในครอบครัว บางความเชื่อก็ตีความเป็นโชคลาภเข้ามา', nums:['25','52'] },
+      { keys:['พระ','พระสงฆ์','วัด'], title:'ฝันเห็นพระหรือวัด', text:'เป็นนิมิตดี สื่อถึงบุญบารมีและสิ่งศักดิ์สิทธิ์คุ้มครองคุณอยู่', nums:['91','19'] },
+      { keys:['เด็ก','ทารก','เด็กทารก'], title:'ฝันเห็นเด็กทารก', text:'จะได้ข่าวดีเข้ามาในเร็ววันนี้ อาจเป็นข่าวดีจากคนใกล้ตัว', nums:['06','60'] },
+      { keys:['ดอกไม้'], title:'ฝันเห็นดอกไม้', text:'สื่อถึงความสุขและความรักที่กำลังเบ่งบานในชีวิตคุณ', nums:['35','53'] },
+      { keys:['ต้นไม้','ป่า'], title:'ฝันเห็นต้นไม้หรือป่า', text:'สื่อถึงความเจริญงอกงามในหน้าที่การงานและชีวิตส่วนตัว', nums:['48','84'] },
+      { keys:['งานศพ'], title:'ฝันเห็นงานศพ', text:'ความเชื่อโบราณมักตีความเป็นเรื่องดี สื่อถึงการปลดปล่อยจากเรื่องที่กังวลใจมานาน', nums:['08','80'] },
+      { keys:['ไข่'], title:'ฝันเห็นไข่', text:'สื่อถึงจุดเริ่มต้นใหม่หรือโอกาสใหม่ที่กำลังฟักตัวรอคุณอยู่', nums:['04','40'] },
+      { keys:['ข้าว','ข้าวสาร'], title:'ฝันเห็นข้าวหรือข้าวสาร', text:'สื่อถึงความอุดมสมบูรณ์ ฐานะการเงินมีเกณฑ์มั่นคงขึ้น', nums:['29','92'] },
+      { keys:['แหวน','เพชร'], title:'ฝันเห็นแหวนหรือเพชร', text:'สื่อถึงพันธะสัญญาสำคัญหรือความสัมพันธ์ที่กำลังจะแน่นแฟ้นขึ้น', nums:['77','16'] },
+      { keys:['ฝนตก','ฝน'], title:'ฝันเห็นฝนตก', text:'สื่อถึงความชุ่มชื่นในชีวิต ปัญหาที่ค้างคาใจมีเกณฑ์คลี่คลายลง', nums:['33','88'] },
+      { keys:['ทะเล','คลื่น'], title:'ฝันเห็นทะเลหรือคลื่น', text:'สื่อถึงอารมณ์และความรู้สึกที่กำลังปั่นป่วน หรือการเดินทางไกลที่กำลังจะมาถึง', nums:['59','95'] },
+      { keys:['ภูเขา'], title:'ฝันเห็นภูเขา', text:'สื่อถึงอุปสรรคที่ต้องฝ่าฟัน แต่ถ้าปีนขึ้นถึงยอดได้สำเร็จ หมายถึงความสำเร็จที่รออยู่', nums:['18','81'] },
+      { keys:['นก'], title:'ฝันเห็นนก', text:'สื่อถึงข่าวสารหรือโอกาสใหม่ที่กำลังบินเข้ามาหาคุณ', nums:['02','20'] },
+      { keys:['เต่า'], title:'ฝันเห็นเต่า', text:'สื่อถึงอายุยืนและความมั่นคง ทุกอย่างในชีวิตค่อยเป็นค่อยไปแต่มั่นคง', nums:['03','30'] },
+      { keys:['หนู'], title:'ฝันเห็นหนู', text:'ควรระวังเรื่องการถูกเอาเปรียบหรือคนใกล้ตัวที่ไม่จริงใจ', nums:['13','31'] },
+      { keys:['เสือ','สิงโต'], title:'ฝันเห็นเสือหรือสิงโต', text:'สื่อถึงอำนาจบารมีและความกล้าหาญที่กำลังปรากฏในตัวคุณ', nums:['72','27'] },
+    ];
+
+    function findDream_(input){
+      var s = String(input||'').trim();
+      if(!s) return null;
+      for(var i=0;i<DREAM_DICT.length;i++){
+        var entry = DREAM_DICT[i];
+        for(var j=0;j<entry.keys.length;j++){
+          if(s.indexOf(entry.keys[j])>-1) return entry;
+        }
+      }
+      return null;
+    }
+
+    document.getElementById('dream-btn').addEventListener('click', function(){
+      var val = document.getElementById('dream-input').value;
+      var entry = findDream_(val);
+      var box = document.getElementById('dream-result');
+      var titleEl = document.getElementById('dream-title');
+      var textEl = document.getElementById('dream-text');
+      var numsEl = document.getElementById('dream-nums');
+      var lotteryBtn = document.getElementById('dream-lottery-btn');
+      if(entry){
+        titleEl.textContent = entry.title;
+        textEl.textContent = entry.text;
+        numsEl.textContent = '🔢 เลขเด็ด: ' + entry.nums.join(' , ');
+        lotteryBtn.style.display = 'inline-block';
+        track('dream_found', val);
+      } else {
+        titleEl.textContent = 'ยังไม่มีคำนี้ในฐานข้อมูล';
+        textEl.textContent = 'ลองพิมพ์คำอื่นดูนะครับ เช่น งู, เงินทอง, ฟันหลุด, บ้าน, รถ, ปลา, แมว, หมา — ใช้คำแรกที่เห็นในฝันจะตรงที่สุด';
+        numsEl.textContent = '';
+        lotteryBtn.style.display = 'none';
+        track('dream_notfound', val);
+      }
+      box.classList.add('on');
+    });
+    document.getElementById('dream-input').addEventListener('keydown', function(e){
+      if(e.key==='Enter') document.getElementById('dream-btn').click();
+    });
   })();
 
   /* ---------- 💞 เช็คดวงความรัก เนื้อคู่ ---------- */
