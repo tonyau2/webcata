@@ -33,7 +33,7 @@
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  body{ background:var(--paper); color:var(--ink); font-family:'Anuphan',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  body{ background:var(--paper); color:var(--ink); font-family:'Anuphan',sans-serif; font-weight:600; line-height:1.65; -webkit-font-smoothing:antialiased; }
   img{ display:block; max-width:100%; }
   a{ color:inherit; }
 
@@ -54,7 +54,7 @@
   .fcard-badge{
     position:absolute; top:8px; right:8px; z-index:2; pointer-events:none;
     background:linear-gradient(135deg, #FF3D2E, var(--flame) 60%, #FFAA2C);
-    color:#fff; font-size:11px; font-weight:700; letter-spacing:-.01em;
+    color:#fff; font-size:15.5px; font-weight:700; letter-spacing:-.01em;
     padding:4px 8px; border-radius:8px; border:1.5px solid #FFF0B8;
     box-shadow:0 0 0 0 rgba(255,106,43,.6), 0 0 10px 2px rgba(255,140,40,.5), 0 0 0 1px rgba(255,255,255,.5) inset;
     text-shadow:0 1px 3px rgba(0,0,0,.28);
@@ -66,7 +66,7 @@
   }
   .fcard-area{
     display:inline-flex; align-items:center; gap:3px;
-    font-size:10.5px; color:var(--dim); font-weight:500;
+    font-size:15px; color:var(--dim); font-weight:500;
   }
 
   /* ---------- 🔥 การ์ดสุ่มเด่นประจำชั่วโมง ---------- */
@@ -81,24 +81,24 @@
   .fcard-hotpick-badge{
     position:absolute; left:0; right:0; bottom:0; z-index:2; pointer-events:none;
     background:linear-gradient(0deg, rgba(255,74,0,.96), rgba(255,74,0,0));
-    color:#fff; font-size:11px; font-weight:700; text-align:center;
+    color:#fff; font-size:15.5px; font-weight:700; text-align:center;
     padding:14px 6px 6px; text-shadow:0 1px 3px rgba(0,0,0,.4);
   }
   .fcard-body{ padding:10px 11px 12px; display:flex; flex-direction:column; gap:6px; flex:1; }
   .fcard-name{
-    font-size:13.5px; font-weight:600; color:var(--ink); line-height:1.4;
+    font-size:16px; font-weight:600; color:var(--ink); line-height:1.4;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
   .fcard-cta{
     margin-top:auto; display:inline-flex; align-items:center; gap:4px;
-    font-size:12px; font-weight:700; color:#fff;
+    font-size:15px; font-weight:700; color:#fff;
     background:linear-gradient(180deg, var(--red), var(--red-2));
     border-radius:8px; padding:7px 10px; justify-content:center;
     box-shadow:0 3px 9px rgba(224,27,61,.32);
   }
   .fcard-cta::after{ content:'→'; }
 
-  .msg{ grid-column:1/-1; text-align:center; color:var(--dim); font-size:14px; padding:50px 12px; }
+  .msg{ grid-column:1/-1; text-align:center; color:var(--dim); font-size:16.5px; padding:50px 12px; }
   .sk{ background:var(--surface); border:1px solid var(--hair); border-radius:14px; overflow:hidden; }
   .sk-img{ aspect-ratio:1/1; background:#F2EAE4; }
   .sk-line{ height:9px; margin:10px 11px; border-radius:5px;
@@ -109,14 +109,14 @@
 
   .note-area{
     max-width:1000px; margin:14px auto 0; padding:0 16px;
-    font-size:11.5px; color:var(--dim); text-align:center; line-height:1.6;
+    font-size:15.5px; color:var(--dim); text-align:center; line-height:1.6;
   }
 
   footer{ text-align:center; padding:10px 16px 44px; }
   .notice{
     max-width:1000px; margin:16px auto 0; padding:10px 14px;
     background:#FFF9EE; border:1px solid rgba(201,153,47,.35);
-    border-radius:9px; color:#7A6034; font-size:11.5px; line-height:1.55; text-align:center;
+    border-radius:9px; color:#7A6034; font-size:15.5px; line-height:1.55; text-align:center;
   }
 
   .food-header-img{ display:block; text-decoration:none; max-width:1000px; margin:0 auto; }
@@ -127,13 +127,13 @@
     display:inline-flex; align-items:center; gap:6px;
     background:var(--surface); border:1.5px solid var(--ink); color:var(--ink);
     text-decoration:none; border-radius:999px; padding:9px 20px;
-    font-size:13.5px; font-weight:700;
+    font-size:16px; font-weight:700;
   }
   .line-btn{
     display:inline-flex; align-items:center; gap:6px;
     background:#06C755; color:#fff; text-decoration:none;
     border-radius:999px; padding:9px 20px;
-    font-size:13.5px; font-weight:700;
+    font-size:16px; font-weight:700;
   }
   .line-btn svg{ width:16px; height:16px; flex:0 0 auto; }
 </style>
