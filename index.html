@@ -41,7 +41,7 @@
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  body{ background:var(--paper); color:var(--ink); font-family:'Anuphan',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; }
+  body{ background:var(--paper); color:var(--ink); font-family:'Anuphan',sans-serif; font-weight:600; line-height:1.65; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; }
   img{ display:block; max-width:100%; }
 
   /* ---------- Masthead ---------- */
@@ -75,7 +75,7 @@
     position:absolute; top:-4px; right:-4px;
     min-width:17px; height:17px; padding:0 4px; border-radius:999px;
     background:var(--red); color:#fff; border:2px solid var(--paper);
-    font-family:'Anuphan',sans-serif; font-size:10px; font-weight:700;
+    font-family:'Anuphan',sans-serif; font-size:15px; font-weight:700;
     display:flex; align-items:center; justify-content:center;
   }
   .favhead.on .favhead-badge{ border-color:var(--red); background:#fff; color:var(--red); }
@@ -101,12 +101,12 @@
     width:34px; height:34px; flex:0 0 auto; border-radius:9px;
     background:linear-gradient(160deg, var(--red), var(--red-2));
     color:#fff; display:grid; place-items:center;
-    font-weight:700; font-size:18px; line-height:1;
+    font-weight:700; font-size:20px; line-height:1;
     box-shadow:0 2px 8px rgba(200,16,46,.28);
   }
-  .wordmark{ font-family:'Trirong',serif; font-weight:600; font-size:19px; line-height:1.2; color:var(--ink); }
-  .motto{ font-size:11.5px; font-weight:600; color:var(--red); letter-spacing:.005em; }
-  .motto b{ font-size:13px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .wordmark{ font-family:'Trirong',serif; font-weight:600; font-size:21px; line-height:1.2; color:var(--ink); }
+  .motto{ font-size:15.5px; font-weight:600; color:var(--red); letter-spacing:.005em; }
+  .motto b{ font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
 
   .pills{ display:flex; gap:7px; max-width:1180px; margin:0 auto; padding:0 16px 9px; overflow-x:auto; scrollbar-width:none; }
   .pills::-webkit-scrollbar{ display:none; }
@@ -122,19 +122,19 @@
   .search-ico{ width:16px; height:16px; color:var(--dim); flex:0 0 auto; }
   #search{
     flex:1; min-width:0; border:0; outline:0; background:transparent;
-    font-family:'Anuphan',sans-serif; font-size:13.5px; color:var(--ink);
+    font-family:'Anuphan',sans-serif; font-size:16px; color:var(--ink);
     padding:0 8px; height:100%;
   }
   #search::placeholder{ color:var(--dim); }
   #search::-webkit-search-cancel-button{ display:none; }
   #search-x{
     border:0; background:var(--paper); color:var(--dim); cursor:pointer;
-    width:20px; height:20px; border-radius:50%; font-size:11px; flex:0 0 auto;
+    width:20px; height:20px; border-radius:50%; font-size:15.5px; flex:0 0 auto;
     display:flex; align-items:center; justify-content:center;
   }
   .pill{
     flex:0 0 auto; background:var(--surface); border:1px solid var(--hair); color:var(--ink);
-    font-family:'Anuphan',sans-serif; font-size:13px; font-weight:500;
+    font-family:'Anuphan',sans-serif; font-size:16px; font-weight:500;
     padding:6px 14px; border-radius:8px; cursor:pointer; white-space:nowrap;
     transition:border-color .15s ease, background .15s ease, color .15s ease;
   }
@@ -167,7 +167,7 @@
   .banner-img img{ width:100%; height:100%; object-fit:contain; }
   .banner-txt{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; position:relative; z-index:2; padding-right:76px; }
   @media(min-width:820px){ .banner-txt{ padding-right:130px; } }
-  .kicker{ font-size:9.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-hi); }
+  .kicker{ font-size:15px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-hi); }
   .banner-name{
     font-family:'Trirong',serif; font-weight:500;
     font-size:clamp(15px,3.7vw,23px); line-height:1.34; color:#fff;
@@ -175,21 +175,21 @@
   }
   .banner-price{ display:flex; align-items:baseline; gap:8px; margin-top:4px; }
   .now{ font-weight:700; font-size:clamp(20px,5vw,30px); color:#fff; letter-spacing:-.01em; }
-  .was{ font-size:12.5px; color:rgba(255,255,255,.62); text-decoration:line-through; }
-  .go{ font-size:12px; font-weight:600; color:var(--gold-hi); margin-top:5px; }
+  .was{ font-size:15.5px; color:rgba(255,255,255,.62); text-decoration:line-through; }
+  .go{ font-size:15px; font-weight:600; color:var(--gold-hi); margin-top:5px; }
   .ends{
     display:inline-flex; align-self:flex-start; background:rgba(0,0,0,.24);
     border-radius:6px; padding:1px 8px; margin-top:3px;
-    font-size:10.5px; font-weight:700; color:#fff;
+    font-size:15px; font-weight:700; color:#fff;
   }
   .band-badge{
     position:absolute; right:12px; top:12px; z-index:3; pointer-events:none;
     background:#fff; color:var(--red);
-    font-weight:700; font-size:17px; line-height:1;
+    font-weight:700; font-size:19px; line-height:1;
     padding:7px 10px; border-radius:9px;
     box-shadow:0 4px 14px rgba(0,0,0,.2);
   }
-  .band-badge small{ display:block; font-size:8.5px; font-weight:600; letter-spacing:.1em; opacity:.72; margin-top:2px; }
+  .band-badge small{ display:block; font-size:15px; font-weight:600; letter-spacing:.1em; opacity:.72; margin-top:2px; }
   .dots{ display:flex; gap:5px; justify-content:center; padding:11px 0 0; }
   .dot{ width:5px; height:5px; border-radius:99px; padding:0; background:var(--hair-2); border:0; cursor:pointer; transition:background .2s ease, width .2s ease; }
   .dot[aria-current="true"]{ background:var(--red); width:16px; }
@@ -201,15 +201,15 @@
     display:none; align-items:center; gap:5px; flex:0 0 auto;
     border:1px solid var(--hair); background:var(--surface); color:var(--ink);
     border-radius:8px; padding:6px 12px; cursor:pointer;
-    font-family:'Anuphan',sans-serif; font-size:12.5px; font-weight:600;
+    font-family:'Anuphan',sans-serif; font-size:15.5px; font-weight:600;
   }
   .back:hover{ border-color:var(--hair-2); }
   .back.on{ display:inline-flex; }
-  .rule h2{ font-family:'Trirong',serif; font-weight:600; font-size:18px; color:var(--ink); white-space:nowrap; }
+  .rule h2{ font-family:'Trirong',serif; font-weight:600; font-size:20px; color:var(--ink); white-space:nowrap; }
   .rule.hot h2{ color:var(--red-2); }
   .rule.hot i{ background:linear-gradient(90deg, rgba(224,27,61,.35), transparent); }
   .rule i{ flex:1; height:1px; background:var(--hair); }
-  .rule span{ font-size:11.5px; color:var(--dim); }
+  .rule span{ font-size:15.5px; color:var(--dim); }
 
   .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
   @media(min-width:620px){ .grid{ grid-template-columns:repeat(3,1fr); gap:13px; } }
@@ -228,13 +228,13 @@
   .tag{
     position:absolute; top:8px; left:8px; z-index:2; pointer-events:none;
     background:linear-gradient(160deg, var(--red), var(--red-2));
-    color:#fff; font-size:13.5px; font-weight:700; letter-spacing:-.01em;
+    color:#fff; font-size:16px; font-weight:700; letter-spacing:-.01em;
     padding:4px 9px; border-radius:9px;
     border:1.5px solid var(--gold-hi);
     box-shadow:0 4px 14px rgba(224,27,61,.45), 0 0 0 1px rgba(255,255,255,.5) inset;
     text-shadow:0 1px 3px rgba(0,0,0,.28);
   }
-  @media(min-width:620px){ .tag{ font-size:15px; padding:5px 11px; } }
+  @media(min-width:620px){ .tag{ font-size:17.5px; padding:5px 11px; } }
   /* ปุ่มแชร์บนการ์ด */
   .sh{ position:absolute; top:6px; right:6px; z-index:3; display:flex; gap:4px; }
   .sh button{
@@ -251,21 +251,21 @@
   @keyframes favPop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.25); } 100%{ transform:scale(1); } }
   .card-body{ padding:9px 10px 11px; display:flex; flex-direction:column; gap:2px; flex:1; }
   .card-name{
-    font-size:13px; font-weight:500; line-height:1.45; color:var(--dim);
+    font-size:16px; font-weight:500; line-height:1.45; color:var(--dim);
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
   .card-price{ display:flex; align-items:baseline; gap:6px; margin-top:auto; padding-top:5px; }
-  .card-now{ font-weight:700; font-size:17px; color:var(--red); letter-spacing:-.01em; }
-  .card-was{ font-size:11.5px; color:var(--dim); text-decoration:line-through; opacity:.8; }
-  .card-ends{ font-size:10.5px; font-weight:700; color:var(--red); }
+  .card-now{ font-weight:700; font-size:19px; color:var(--red); letter-spacing:-.01em; }
+  .card-was{ font-size:15.5px; color:var(--dim); text-decoration:line-through; opacity:.8; }
+  .card-ends{ font-size:15px; font-weight:700; color:var(--red); }
   .sold{
     display:inline-flex; align-items:center; gap:3px;
-    font-size:11px; font-weight:600; color:var(--ink); opacity:.72;
+    font-size:15.5px; font-weight:600; color:var(--ink); opacity:.72;
   }
-  .banner .sold{ color:rgba(255,255,255,.92); font-size:12px; opacity:1; }
+  .banner .sold{ color:rgba(255,255,255,.92); font-size:15px; opacity:1; }
   .clock{ font-variant-numeric:tabular-nums; background:rgba(200,16,46,.1); border-radius:5px; padding:1px 5px; display:inline-block; }
-  .band .clock{ background:rgba(0,0,0,.24); color:#fff; font-size:11.5px; }
-  .card-cta{ margin-top:6px; font-size:11.5px; font-weight:600; color:var(--gold); display:inline-flex; align-items:center; gap:4px; }
+  .band .clock{ background:rgba(0,0,0,.24); color:#fff; font-size:15.5px; }
+  .card-cta{ margin-top:6px; font-size:15.5px; font-weight:600; color:var(--gold); display:inline-flex; align-items:center; gap:4px; }
   .card-cta::after{ content:'→'; transition:transform .18s ease; }
   .card:hover .card-cta::after{ transform:translateX(3px); }
 
@@ -273,15 +273,15 @@
     display:block; margin:22px auto 0; background:var(--surface);
     border:1px solid var(--hair); color:var(--ink);
     border-radius:8px; padding:10px 28px; cursor:pointer;
-    font-family:'Anuphan',sans-serif; font-size:13px;
+    font-family:'Anuphan',sans-serif; font-size:16px;
   }
   .more:hover{ border-color:var(--hair-2); }
   .notice{
     max-width:1180px; margin:16px auto 0; padding:10px 14px;
     background:#FFF9EE; border:1px solid rgba(201,153,47,.35);
-    border-radius:9px; color:#7A6034; font-size:11.5px; line-height:1.55;
+    border-radius:9px; color:#7A6034; font-size:15.5px; line-height:1.55;
   }
-  .msg{ grid-column:1/-1; text-align:center; color:var(--dim); font-size:14px; padding:44px 12px; }
+  .msg{ grid-column:1/-1; text-align:center; color:var(--dim); font-size:16.5px; padding:44px 12px; }
 
   /* ดูของหมดหมวดแล้ว -> ต่อด้วยของอื่นเลย ไม่ต้องกดย้อน */
   #alsorow{ display:none; max-width:1180px; margin:0 auto; padding:8px 16px 0; }
@@ -289,7 +289,7 @@
     display:block; width:100%; margin:16px auto 0;
     background:linear-gradient(135deg, var(--red), var(--flame)); color:#fff;
     border:0; border-radius:10px; padding:13px; cursor:pointer;
-    font-family:'Anuphan',sans-serif; font-size:14px; font-weight:700;
+    font-family:'Anuphan',sans-serif; font-size:16.5px; font-weight:700;
     box-shadow:0 6px 18px rgba(224,27,61,.3);
   }
   .allbtn:active{ transform:scale(.985); }
@@ -315,17 +315,17 @@
   .play span{ width:46px; height:46px; border-radius:50%; background:var(--red); display:grid; place-items:center; transition:transform .2s ease; }
   .play span::after{ content:''; width:0; height:0; margin-left:3px; border-left:13px solid #fff; border-top:8px solid transparent; border-bottom:8px solid transparent; }
   .clip-frame:hover .play span{ transform:scale(1.09); }
-  .clip-cap{ padding:9px 12px 11px; font-size:12.5px; color:var(--dim); }
+  .clip-cap{ padding:9px 12px 11px; font-size:15.5px; color:var(--dim); }
 
   /* ---------- ท้ายเว็บ ---------- */
   .end{ max-width:1180px; margin:0 auto; padding:20px 16px 44px; text-align:center; }
-  .end-title{ font-size:12.5px; color:var(--dim); margin-bottom:10px; }
+  .end-title{ font-size:15.5px; color:var(--dim); margin-bottom:10px; }
   .end-btns{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
   .end-btn{
     display:inline-flex; align-items:center; gap:7px;
     border:1px solid var(--hair); border-radius:8px; padding:9px 16px;
     cursor:pointer; text-decoration:none; background:var(--surface); color:var(--ink);
-    font-family:'Anuphan',sans-serif; font-size:13px; font-weight:500;
+    font-family:'Anuphan',sans-serif; font-size:16px; font-weight:500;
   }
   .end-btn:hover{ border-color:var(--hair-2); }
   .end-btn svg{ width:16px; height:16px; }
@@ -333,7 +333,7 @@
   /* ---------- 1) แถบความคืบหน้าการเลื่อน ---------- */
   .alertbar{
     display:none; margin:0; padding:11px 14px;
-    background:#3B0A12; color:#FFD9DE; font-size:12.5px; line-height:1.5;
+    background:#3B0A12; color:#FFD9DE; font-size:15.5px; line-height:1.5;
     border-bottom:2px solid var(--red);
   }
   .alertbar b{ color:#fff; }
@@ -360,7 +360,7 @@
     z-index:2; pointer-events:none; text-align:center; color:#fff;
     text-shadow:0 3px 14px rgba(0,0,0,.3);
   }
-  .banner-off .lb{ font-size:11px; font-weight:600; letter-spacing:.16em; opacity:.9; }
+  .banner-off .lb{ font-size:15.5px; font-weight:600; letter-spacing:.16em; opacity:.9; }
   .banner-off .nm{
     font-weight:700; font-size:clamp(38px,10vw,68px); line-height:.95;
     letter-spacing:-.03em; font-variant-numeric:tabular-nums;
@@ -368,9 +368,9 @@
   .banner-off .nm span{ font-size:.5em; }
   .banner-off .sub{
     display:inline-block; margin-top:5px; padding:2px 9px; border-radius:999px;
-    background:rgba(255,255,255,.2); font-size:10px; font-weight:700; letter-spacing:.08em;
+    background:rgba(255,255,255,.2); font-size:15px; font-weight:700; letter-spacing:.08em;
   }
-  @media(max-width:520px){ .banner-off{ right:10px; } .banner-off .lb{ font-size:9px; } }
+  @media(max-width:520px){ .banner-off{ right:10px; } .banner-off .lb{ font-size:15px; } }
 
   /* ---------- 4) แถบข่าววิ่ง ---------- */
   .ticker{
@@ -386,7 +386,7 @@
   .ticker-tr:hover{ animation-play-state:paused; }
   .ticker-tr span{
     padding:0 18px; white-space:nowrap; color:#fff;
-    font-size:12px; font-weight:600; letter-spacing:.01em;
+    font-size:15px; font-weight:600; letter-spacing:.01em;
   }
   @keyframes mar{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 
@@ -414,11 +414,11 @@
   /* ---------- แถวสินค้าเลื่อนแนวนอน ---------- */
   .sect{ max-width:1180px; margin:0 auto; padding:22px 16px 0; }
   .sect-head{ display:flex; align-items:center; gap:10px; margin-bottom:11px; }
-  .sect-head h2{ font-family:'Trirong',serif; font-weight:600; font-size:17px; color:var(--ink); white-space:nowrap; }
+  .sect-head h2{ font-family:'Trirong',serif; font-weight:600; font-size:19px; color:var(--ink); white-space:nowrap; }
   .sect-head i{ flex:1; height:1px; background:var(--hair); }
   .sect-more{
     border:0; background:none; cursor:pointer; white-space:nowrap;
-    font-family:'Anuphan',sans-serif; font-size:12px; font-weight:600; color:var(--red);
+    font-family:'Anuphan',sans-serif; font-size:15px; font-weight:600; color:var(--red);
   }
   .sect.flash{ background:linear-gradient(180deg, rgba(255,106,43,.14), transparent 72%); border-radius:14px; padding-top:16px; padding-bottom:6px; }
   .sect.flash h2{ color:var(--red-2); }
@@ -483,10 +483,10 @@
     display:inline-flex; align-items:center; gap:5px;
     background:linear-gradient(180deg, var(--red), var(--red-2)); color:#fff;
     border-radius:8px; padding:3px 10px; margin-left:2px;
-    font-size:12px; font-weight:700; font-variant-numeric:tabular-nums;
+    font-size:15px; font-weight:700; font-variant-numeric:tabular-nums;
     box-shadow:0 3px 12px rgba(224,27,61,.35);
   }
-  .flash-note{ font-size:10.5px; color:var(--dim); margin-top:5px; }
+  .flash-note{ font-size:15px; color:var(--dim); margin-top:5px; }
 
   /* ---------- การ์ดสิทธิพิเศษทรงตั๋ว (กดทั้งใบ -> เด้ง Shopee ทันที) ---------- */
   #codes{ display:none; max-width:1180px; margin:0 auto; padding:20px 16px 0; }
@@ -516,14 +516,14 @@
   .tk-badge{ display:block; filter:drop-shadow(0 2px 4px rgba(0,0,0,.15)); }
   .tk-badge svg{ width:34px; height:34px; display:block; }
   .tk-r{ flex:1; min-width:0; padding:11px 13px; display:flex; flex-direction:column; justify-content:center; gap:4px; }
-  .tk-title{ font-weight:700; font-size:14px; color:var(--ink); line-height:1.35; }
-  .tk-detail{ font-size:11.5px; color:var(--dim); line-height:1.4; }
-  .tk-ends{ font-size:10.5px; font-weight:700; color:var(--red); margin-top:1px; }
+  .tk-title{ font-weight:700; font-size:16.5px; color:var(--ink); line-height:1.35; }
+  .tk-detail{ font-size:15.5px; color:var(--dim); line-height:1.4; }
+  .tk-ends{ font-size:15px; font-weight:700; color:var(--red); margin-top:1px; }
   .tk-cta{
     display:inline-block; margin-top:6px; align-self:flex-start;
     border:0; border-radius:7px; padding:6px 12px;
     background:linear-gradient(180deg, var(--red), var(--red-2)); color:#fff;
-    font-family:'Anuphan',sans-serif; font-size:11.5px; font-weight:700;
+    font-family:'Anuphan',sans-serif; font-size:15.5px; font-weight:700;
     box-shadow:0 3px 9px rgba(224,27,61,.32);
   }
   a.tk:active .tk-cta{ transform:scale(.96); }
@@ -559,13 +559,13 @@
   .food-nudge.on{ display:flex; }
   .food-nudge img{ width:62px; height:62px; border-radius:12px; object-fit:cover; flex:0 0 auto; background:#fff; padding:3px; box-shadow:0 4px 12px rgba(0,0,0,.25); }
   .food-nudge-txt{ flex:1; min-width:0; }
-  .food-nudge-kicker{ font-size:9.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-hi); margin-bottom:2px; }
-  .food-nudge-q{ font-weight:700; font-size:13.5px; color:#fff; line-height:1.3; }
-  .food-nudge-cta{ display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; color:var(--red-2); background:#fff; padding:3px 9px; border-radius:999px; margin-top:6px; }
+  .food-nudge-kicker{ font-size:15px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-hi); margin-bottom:2px; }
+  .food-nudge-q{ font-weight:700; font-size:16px; color:#fff; line-height:1.3; }
+  .food-nudge-cta{ display:inline-flex; align-items:center; gap:3px; font-size:15.5px; font-weight:700; color:var(--red-2); background:#fff; padding:3px 9px; border-radius:999px; margin-top:6px; }
   .food-nudge-cta::after{ content:'→'; }
   .food-nudge-x{
     position:absolute; top:-8px; right:-8px; width:24px; height:24px; border-radius:50%;
-    background:var(--ink); color:#fff; border:2px solid var(--paper); font-size:12px;
+    background:var(--ink); color:#fff; border:2px solid var(--paper); font-size:15px;
     display:grid; place-items:center; cursor:pointer; z-index:2;
   }
   @keyframes foodIn{ from{opacity:0; transform:translateY(14px) scale(.9);} to{opacity:1; transform:none;} }
