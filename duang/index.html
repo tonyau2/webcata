@@ -97,6 +97,45 @@
 
   /* เช็คดวงความรัก */
   /* ทำนายฝัน + เลขเด็ด */
+  .num-type-row{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .num-type-btn{
+    flex:1; min-width:90px; background:rgba(0,0,0,.25); border:1.5px solid rgba(90,200,140,.3); color:var(--dim);
+    border-radius:999px; padding:8px 10px; font-family:'Anuphan',sans-serif; font-size:12px; font-weight:600; cursor:pointer;
+  }
+  .num-type-btn.on{ background:linear-gradient(180deg, #8FE0B0, #5AC88C); color:#0a1a10; border-color:#5AC88C; }
+  .num-input-row input{ font-size:16px; padding:13px 15px; }
+  .num-input-row button{ font-size:14.5px; padding:0 22px; }
+
+  .num-result-wrap{
+    display:none; position:relative; overflow:hidden; margin-top:16px; padding:18px;
+    background:rgba(90,200,140,.1); border:1px solid rgba(90,200,140,.3); border-radius:14px;
+    animation:zodiacPop .35s ease;
+  }
+  .num-result-wrap.on{ display:block; }
+  .num-grade-row{ display:flex; align-items:center; gap:14px; position:relative; z-index:2; }
+  .num-grade{
+    flex:0 0 auto; width:66px; height:66px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+    font-family:'Trirong',serif; font-weight:600; font-size:28px; color:#fff;
+    background:linear-gradient(160deg, #5AC88C, #2E8B57); box-shadow:0 6px 18px rgba(90,200,140,.4);
+    border:2px solid rgba(255,255,255,.25);
+  }
+  .num-grade.grade-top{ background:linear-gradient(160deg, #FFE9AE, #F0B429); color:#3d2a00; box-shadow:0 0 24px rgba(255,215,120,.7), 0 6px 18px rgba(0,0,0,.3); animation:firstFloat 2.4s ease-in-out infinite; }
+  .num-grade.grade-caution{ background:linear-gradient(160deg, #E0794F, #B8461F); box-shadow:0 6px 18px rgba(200,90,40,.4); }
+  .num-grade-info{ flex:1; min-width:0; }
+  .num-title{ font-family:'Trirong',serif; font-weight:600; font-size:19px; color:#B8F0CC; }
+  .num-sum{ font-size:13px; color:var(--dim); margin-top:3px; }
+  .num-text{ font-size:12.5px; color:var(--ink); line-height:1.75; white-space:pre-line; margin-top:12px; position:relative; z-index:2; }
+
+  .confetti-burst{ position:absolute; inset:0; pointer-events:none; z-index:1; }
+  .confetti-burst span{
+    position:absolute; top:38%; left:16%; font-size:22px; opacity:0;
+    animation:confettiPop 1.3s ease-out forwards;
+  }
+  @keyframes confettiPop{
+    0%{ transform:translate(0,0) scale(.3) rotate(0deg); opacity:1; }
+    100%{ transform:translate(var(--tx), var(--ty)) scale(1.15) rotate(var(--rot)); opacity:0; }
+  }
+
   .dream-row{ display:flex; gap:8px; margin-top:6px; }
   .dream-row input{
     flex:1; border:1.5px solid rgba(140,120,255,.35); border-radius:10px; background:rgba(0,0,0,.25);
@@ -110,7 +149,7 @@
   .dream-result{ display:none; margin-top:14px; padding:15px; background:rgba(140,120,255,.1); border:1px solid rgba(140,120,255,.3); border-radius:12px; animation:zodiacPop .35s ease; }
   .dream-result.on{ display:block; }
   .dream-title{ font-family:'Trirong',serif; font-weight:600; font-size:16px; color:#C9BBFF; margin-bottom:6px; }
-  .dream-text{ font-size:13px; color:var(--ink); line-height:1.7; }
+  .dream-text{ font-size:13px; color:var(--ink); line-height:1.7; white-space:pre-line; }
   .dream-nums{ margin-top:10px; font-size:14px; font-weight:700; color:#B8A8FF; }
   .dream-lottery-btn{
     display:inline-block; margin-top:12px; background:linear-gradient(135deg, var(--red-2), var(--red));
@@ -393,6 +432,31 @@
       <div class="dream-text" id="dream-text"></div>
       <div class="dream-nums" id="dream-nums"></div>
       <a class="dream-lottery-btn" id="dream-lottery-btn" href="https://meepromabok.com/lottery.html">📌 จำเลขนี้ไว้ซื้อหวยงวดหน้า · ดูหวยงวดล่าสุดที่นี่ →</a>
+    </div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(160deg, #14261f, #0a140f); border:1.5px solid rgba(90,200,140,.4);">
+    <div class="card-title" style="color:#8FE0B0; font-size:19px;">🔢 เช็คเบอร์มงคล / ทะเบียนรถ / เลขบ้าน</div>
+    <div class="today-line" style="font-size:13.5px;">เลือกประเภท แล้วกรอกตัวเลข ระบบจะรวมเลขทุกหลักแล้วบอกความหมายให้</div>
+    <div class="num-type-row">
+      <button class="num-type-btn on" id="numtype-phone" data-type="phone">📱 เบอร์โทร</button>
+      <button class="num-type-btn" id="numtype-plate" data-type="plate">🚗 ทะเบียนรถ</button>
+      <button class="num-type-btn" id="numtype-house" data-type="house">🏠 เลขที่บ้าน</button>
+    </div>
+    <div class="dream-row num-input-row">
+      <input type="text" id="num-input" inputmode="numeric" placeholder="กรอกเฉพาะตัวเลข">
+      <button id="num-btn">คำนวณ</button>
+    </div>
+    <div class="num-result-wrap" id="num-result-wrap">
+      <div class="confetti-burst" id="num-confetti"></div>
+      <div class="num-grade-row">
+        <div class="num-grade" id="num-grade">-</div>
+        <div class="num-grade-info">
+          <div class="num-title" id="num-title"></div>
+          <div class="num-sum" id="num-sum"></div>
+        </div>
+      </div>
+      <div class="num-text" id="num-text"></div>
     </div>
   </div>
 
@@ -1037,6 +1101,189 @@
     document.getElementById('sh-line-compat').addEventListener('click', function(){ track('share_line','duang_compat'); shareCompatSmart_('line'); });
     document.getElementById('sh-fb-compat').addEventListener('click', function(){ track('share_fb','duang_compat'); shareCompatSmart_('fb'); });
     document.getElementById('sh-copy-compat').addEventListener('click', function(){ track('share_copy','duang_compat'); copyLink_(DUANG_URL, document.getElementById('sh-copy-compat')); });
+  })();
+
+  /* ---------- 🔢 เช็คเบอร์มงคล / ทะเบียนรถ / เลขที่บ้าน ---------- */
+  (function(){
+    // ระบบผลรวมและระบบคู่เลขใช้ตารางความหมายชุดเดียวกัน (ยืนยันจากหลายแหล่งตรงกัน)
+    // รายชื่อ "ดี" ชุดนี้ใช้ได้ทั้งตอนดูผลรวมทั้งเบอร์ และตอนดูทีละคู่เลข
+    var GOOD_NUMS = [2,4,5,6,9,14,15,16,19,20,22,23,24,26,28,29,32,35,36,39,40,41,42,44,45,46,49,50,51,53,54,55,56,59,61,62,63,64,65,66,78,79,82,87,89,90,91,92,93,94,95,96,97,98,99];
+    // เฉพาะคู่ที่ยืนยันตรงกันจริงๆ ว่าควรระวัง (ตัดคู่ที่แหล่งข้อมูลขัดแย้งกันเอง เช่น 69 ออกแล้ว กันข้อมูลผิด)
+    var AVOID_NUMS = [47,48,57,67,68,77];
+    var CAUTION_NUMS = [58,88]; // ไม่ถึงกับไม่ดี แต่ควรระวังเรื่องความสัมพันธ์เป็นพิเศษ
+    var NAMED = {
+      14:'ผู้ยิ่งใหญ่ — เสริมการงาน การเงิน เหมาะกับสายค้าขายเจรจาต่อรอง',
+      15:'ความสุนทรี — มีเสน่ห์ดึงดูดคนรอบข้าง',
+      19:'ผู้เสวยสุข — ชีวิตมักราบรื่น มีความสุขสงบ',
+      23:'ยอดเสน่ห์ — คนรอบตัวเอ็นดูและอยากช่วยเหลือ',
+      24:'สมบูรณ์สุข — การเงินและครอบครัวมั่นคง',
+      32:'เสน่ห์แรง — ดึงดูดโอกาสดีๆ เข้ามาง่าย',
+      36:'สื่อแห่งความรัก — เรื่องความสัมพันธ์มักไปได้สวย',
+      40:'ชอบเดินทาง — มีเกณฑ์ได้เดินทางหรือเปลี่ยนที่อยู่บ่อย',
+      41:'ความผูกพันกับต่างประเทศ — มีโอกาสเกี่ยวข้องกับต่างชาติ',
+      42:'ดวงอุปถัมภ์ — มักมีผู้ใหญ่คอยสนับสนุน',
+      44:'ฝีปากดี — เหมาะกับงานพูด เจรจา หรือสื่อสาร',
+      45:'เทพีแห่งโชค — มีเกณฑ์ได้รับโชคลาภแบบไม่คาดคิด',
+      46:'การแสวงหา — ชอบเรียนรู้และค้นหาสิ่งใหม่อยู่เสมอ',
+      50:'ความกระตือรือร้น — มีพลังในการลงมือทำสิ่งต่างๆ สูง',
+      51:'ความสุขที่ได้มา — ผลตอบแทนจากความพยายามมักคุ้มค่า',
+      54:'ดวงดาวแห่งโชค — มีเกณฑ์โชคดีเรื่องการเงินเป็นพิเศษ',
+      55:'เจริญก้าวหน้าและสุขสบาย — ชีวิตมีแนวโน้มดีขึ้นเรื่อยๆ',
+      56:'มีโชคเรื่องความรัก — ความสัมพันธ์มักราบรื่น',
+    };
+    var TYPE_LABEL = { phone:'เบอร์โทรศัพท์', plate:'ทะเบียนรถ', house:'เลขที่บ้าน' };
+    var currentType = 'phone';
+
+    // ตารางแปลงตัวอักษรหมวดทะเบียนรถเป็นตัวเลข (ยืนยันจากแหล่งข้อมูลจริง)
+    var PLATE_LETTER_MAP = {};
+    (function(){
+      var groups = {
+        1:'กดถทภ', 2:'ขบปงช', 3:'คธรญษ', 4:'ตฒฆ',
+        5:'ฉณฌนมหฮฎฬ', 6:'จลวอ', 7:'ศส', 8:'ยผฝพฤ', 9:'ฐ'
+      };
+      Object.keys(groups).forEach(function(num){
+        groups[num].split('').forEach(function(ch){ PLATE_LETTER_MAP[ch] = Number(num); });
+      });
+    })();
+
+    // เบอร์โทร/เลขบ้าน: รวมเฉพาะตัวเลข (ตัด / และอักขระอื่นออก)
+    // ทะเบียนรถ: แปลงตัวอักษรเป็นเลขตามตาราง แล้วรวมกับตัวเลขจริงทั้งหมด (ยืนยันสูตรจากแหล่งข้อมูล)
+    function sumDigits_(s, type){
+      var raw = String(s||'');
+      var digits = raw.replace(/[^\d]/g,'');
+      var sum = 0;
+      for(var i=0;i<digits.length;i++) sum += Number(digits[i]);
+      var letterSum = 0, letters = [];
+      if(type === 'plate'){
+        raw.split('').forEach(function(ch){
+          if(PLATE_LETTER_MAP[ch] !== undefined){ letterSum += PLATE_LETTER_MAP[ch]; letters.push(ch); }
+        });
+        sum += letterSum;
+      }
+      return { digits:digits, sum:sum, letters:letters, letterSum:letterSum };
+    }
+
+    // จับคู่เลขติดกันแบบซ้อนทับจาก 7 หลักหลัง (ถ้าน้อยกว่า 7 หลัก เช่น ทะเบียนรถ/เลขบ้าน ใช้เท่าที่มี)
+    function analyzePairs_(digits){
+      var last7 = digits.length > 7 ? digits.slice(-7) : digits;
+      var pairs = [];
+      for(var i=0;i<last7.length-1;i++){
+        pairs.push(last7.slice(i, i+2));
+      }
+      var good = [], avoid = [], caution = [];
+      pairs.forEach(function(p){
+        var n = Number(p);
+        if(AVOID_NUMS.indexOf(n)>-1) avoid.push(p);
+        else if(CAUTION_NUMS.indexOf(n)>-1) caution.push(p);
+        else if(GOOD_NUMS.indexOf(n)>-1) good.push(p);
+      });
+      return { pairs:pairs, good:good, avoid:avoid, caution:caution };
+    }
+
+    var NUM_PLACEHOLDER = { phone:'กรอกเฉพาะตัวเลข', plate:'เช่น กข1234 หรือ 1กข1234', house:'เช่น 123/45' };
+    document.querySelectorAll('.num-type-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.num-type-btn').forEach(function(b){ b.classList.remove('on'); });
+        btn.classList.add('on');
+        currentType = btn.dataset.type;
+        document.getElementById('num-input').value = '';
+        document.getElementById('num-input').placeholder = NUM_PLACEHOLDER[currentType];
+        document.getElementById('num-result-wrap').classList.remove('on');
+      });
+    });
+
+    document.getElementById('num-input').addEventListener('input', function(){
+      if(currentType === 'house'){
+        this.value = this.value.replace(/[^\d/]/g,'');
+      } else if(currentType === 'plate'){
+        this.value = this.value.replace(/[^\dก-ฮ]/g,'');
+      } else {
+        this.value = this.value.replace(/[^\d]/g,'');
+      }
+    });
+
+    document.getElementById('num-btn').addEventListener('click', function(){
+      var raw = document.getElementById('num-input').value;
+      var r = sumDigits_(raw, currentType);
+      var box = document.getElementById('num-result-wrap');
+      var titleEl = document.getElementById('num-title');
+      var sumEl = document.getElementById('num-sum');
+      var textEl = document.getElementById('num-text');
+      var gradeEl = document.getElementById('num-grade');
+      if(!r.digits){
+        titleEl.textContent = 'กรอกตัวเลขก่อนนะครับ';
+        sumEl.textContent = '';
+        textEl.textContent = '';
+        gradeEl.textContent = '?';
+        gradeEl.className = 'num-grade';
+        box.classList.add('on');
+        return;
+      }
+
+      var pairInfo = analyzePairs_(r.digits);
+      var totalPairs = pairInfo.pairs.length;
+      var goodRatio = totalPairs ? pairInfo.good.length / totalPairs : 0;
+
+      // ตัดสินภาพรวมจาก "คู่เลข" เป็นหลัก (ตัวชี้วัดที่มีน้ำหนักจริงมากกว่าผลรวม ตามที่ยืนยันมา)
+      var overall, overallNote, grade, gradeClass;
+      if(pairInfo.avoid.length){
+        overall = 'ควรพิจารณา'; grade = 'C'; gradeClass = 'grade-caution';
+        overallNote = 'มีคู่เลขที่ควรระวังอยู่ ' + pairInfo.avoid.length + ' คู่ ลองดูรายละเอียดด้านล่างประกอบการตัดสินใจ';
+      } else if(totalPairs && pairInfo.good.length === totalPairs){
+        overall = 'ดีเยี่ยม'; grade = 'A+'; gradeClass = 'grade-top';
+        overallNote = 'คู่เลขดีครบทุกคู่ (' + pairInfo.good.length + '/' + totalPairs + ') ถือว่าหายากและแข็งแรงมากตามหลักเลขศาสตร์';
+      } else if(goodRatio >= 0.5){
+        overall = 'ดี'; grade = 'A'; gradeClass = '';
+        overallNote = 'มีคู่เลขดีมากกว่าครึ่ง (' + pairInfo.good.length + '/' + totalPairs + ')';
+      } else {
+        overall = 'ปานกลาง'; grade = 'B'; gradeClass = '';
+        overallNote = 'คู่เลขส่วนใหญ่เป็นกลาง ไม่ได้โดดเด่นเป็นพิเศษ แต่ก็ไม่มีคู่ที่ควรระวังเลย';
+      }
+
+      gradeEl.textContent = grade;
+      gradeEl.className = 'num-grade' + (gradeClass ? ' ' + gradeClass : '');
+      titleEl.textContent = TYPE_LABEL[currentType] + ' — ภาพรวม: ' + overall;
+      sumEl.textContent = '🔗 คู่เลขดี ' + pairInfo.good.length + '/' + totalPairs + ' คู่' + (pairInfo.avoid.length ? ' · ควรระวัง ' + pairInfo.avoid.length + ' คู่' : '');
+
+      var sumTierText;
+      if(NAMED[r.sum]) sumTierText = 'ดีมาก — ' + NAMED[r.sum];
+      else if(GOOD_NUMS.indexOf(r.sum)>-1) sumTierText = 'ดี';
+      else sumTierText = 'ปานกลาง';
+
+      var pairDetail = '';
+      if(totalPairs){
+        pairDetail = 'คู่เลขทั้งหมด (' + (r.digits.length>7?'จาก 7 หลักหลัง':'จากทุกหลัก') + '): ';
+        if(pairInfo.good.length) pairDetail += '\n✅ คู่ดี: ' + pairInfo.good.join(', ');
+        if(pairInfo.caution.length) pairDetail += '\n😐 ควรระวังเรื่องความสัมพันธ์: ' + pairInfo.caution.join(', ');
+        if(pairInfo.avoid.length) pairDetail += '\n⚠️ ควรระวัง: ' + pairInfo.avoid.join(', ');
+      }
+
+      var letterNote = '';
+      if(currentType === 'plate' && r.letters.length){
+        letterNote = '\n🔤 แปลงตัวอักษร: ' + r.letters.map(function(ch){ return ch+'='+PLATE_LETTER_MAP[ch]; }).join(', ') + ' (รวมเป็นส่วนหนึ่งของผลรวมแล้ว)';
+      }
+      textEl.textContent = overallNote + '\n\n' + pairDetail + letterNote + '\n\n📊 ผลรวมทั้งเลข = ' + r.sum + ' (' + sumTierText + ') — เป็นข้อมูลประกอบรอง คู่เลขด้านบนมีน้ำหนักมากกว่า';
+      lastShareCaption_ = 'เช็ค' + TYPE_LABEL[currentType] + ' ภาพรวม ' + overall + ' (คู่ดี ' + pairInfo.good.length + '/' + totalPairs + ') ที่มีโปรมาบอก 🔢';
+      box.classList.add('on');
+
+      // เอฟเฟกต์เฉลิมฉลอง — เฉพาะผลที่ดีจริงๆ (ดีเยี่ยม/ดี) ไม่ทำตอนผลปานกลาง/ควรระวัง กันดูขัดแย้งในตัวเอง
+      if(overall === 'ดีเยี่ยม' || overall === 'ดี'){
+        var confetti = document.getElementById('num-confetti');
+        var particles = overall==='ดีเยี่ยม' ? ['🎉','✨','💫','⭐','🎊','✨'] : ['✨','⭐','💫'];
+        confetti.innerHTML = particles.map(function(p, i){
+          var angle = (i / particles.length) * Math.PI * 2 + (Math.random()*0.6-0.3);
+          var dist = 90 + Math.random()*60;
+          var tx = Math.cos(angle)*dist, ty = Math.sin(angle)*dist - 30;
+          var rot = Math.floor(Math.random()*360-180);
+          return '<span style="--tx:'+tx+'px;--ty:'+ty+'px;--rot:'+rot+'deg;animation-delay:'+(i*0.05)+'s;">'+p+'</span>';
+        }).join('');
+      }
+
+      track('numerology_check', currentType + ':' + r.sum);
+    });
+    document.getElementById('num-input').addEventListener('keydown', function(e){
+      if(e.key==='Enter') document.getElementById('num-btn').click();
+    });
   })();
 
   /* ---------- 3) จั่วไพ่ทำนายดวง (ไพ่ออกแบบเอง ไม่ใช่ไพ่ทาโรต์จริง) ---------- */
