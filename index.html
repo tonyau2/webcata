@@ -1640,6 +1640,12 @@
 </div>
 
 <script>
+  // ลงทะเบียน Service Worker เสมอ ไม่ว่าจะเคยปิดกล่องเชิญไปแล้วหรือไม่
+  // (จำเป็นสำหรับให้ Chrome/Android ยอมรับว่าเว็บนี้ติดตั้งเป็นแอปได้จริง)
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').catch(function(e){ console.log('SW register failed', e); });
+  }
+
   (function(){
     var INSTALL_DISMISS_KEY = 'mpb_install_dismissed';
     try{ if(localStorage.getItem(INSTALL_DISMISS_KEY)) return; }catch(e){}
